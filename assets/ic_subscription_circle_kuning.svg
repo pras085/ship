@@ -1,0 +1,33 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_556_5315)">
+<g filter="url(#filter0_d_556_5315)">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24Z" fill="#FFC217"/>
+</g>
+<g filter="url(#filter1_d_556_5315)">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M11.9997 18.6634C15.6816 18.6634 18.6663 15.6786 18.6663 11.9967C18.6663 8.31485 15.6816 5.33008 11.9997 5.33008C8.31778 5.33008 5.33301 8.31485 5.33301 11.9967C5.33301 15.6786 8.31778 18.6634 11.9997 18.6634Z" fill="#FFEFD1"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_d_556_5315" x="-8" y="-4" width="40" height="40" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="4"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.172549 0 0 0 0 0.152941 0 0 0 0 0.219608 0 0 0 0.08 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_556_5315"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_556_5315" result="shape"/>
+</filter>
+<filter id="filter1_d_556_5315" x="-2.66699" y="1.33008" width="29.3335" height="29.333" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="4"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.172549 0 0 0 0 0.152941 0 0 0 0 0.219608 0 0 0 0.08 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_556_5315"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_556_5315" result="shape"/>
+</filter>
+<clipPath id="clip0_556_5315">
+<rect width="24" height="24" fill="white"/>
+</clipPath>
+</defs>
+</svg>

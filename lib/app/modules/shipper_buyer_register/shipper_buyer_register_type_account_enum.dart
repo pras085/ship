@@ -1,0 +1,1 @@
+enum ShipperBuyerRegisterTypeAccount { INDIVIDU, PERUSAHAAN }

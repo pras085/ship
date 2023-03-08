@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <g id="Group_17424" data-name="Group 17424" transform="translate(-26 -237)">
+    <rect id="Rectangle_3642" data-name="Rectangle 3642" width="32" height="32" rx="16" transform="translate(26 237)" fill="#f0945b"/>
+    <g id="ic-ecommerce-money" transform="translate(32 243)">
+      <rect id="Rectangle_429" data-name="Rectangle 429" width="20" height="20" fill="none"/>
+      <g id="ic-ecommerce-money-2" data-name="ic-ecommerce-money" transform="translate(1.667 5.133)">
+        <rect id="Rectangle_50" data-name="Rectangle 50" width="16.667" height="9.725" rx="2" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+        <path id="Path_142" data-name="Path 142" d="M5.333,6.16C5.333,8,3.842,9.9,2,9.9H2" transform="translate(-2 -6.16)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+        <path id="Path_143" data-name="Path 143" d="M2,13.27H2c1.842,0,3.333,1.967,3.333,3.808" transform="translate(-2 -7.345)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+        <path id="Path_144" data-name="Path 144" d="M18,17.078c0-1.842,1.492-3.808,3.333-3.808h0" transform="translate(-4.667 -7.345)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+        <path id="Path_145" data-name="Path 145" d="M21.333,9.9h0C19.492,9.9,18,8,18,6.16v.408" transform="translate(-4.667 -6.16)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+        <circle id="Ellipse_31" data-name="Ellipse 31" cx="2" cy="2" r="2" transform="translate(6.334 2.866)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      </g>
+    </g>
+  </g>
+</svg>

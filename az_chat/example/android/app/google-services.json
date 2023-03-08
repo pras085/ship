@@ -1,0 +1,126 @@
+{
+  "project_info": {
+    "project_number": "112542466840",
+    "project_id": "muatmuat-10fda",
+    "storage_bucket": "muatmuat-10fda.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:112542466840:android:9e16234f13ca9d5afb946d",
+        "android_client_info": {
+          "package_name": "com.azlogistik.azlogistik_chat_example"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "112542466840-av1ghq1i2mbbiev1uqtefet73emffp5u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzEXqZyh-3Dl5hHljArEwHv1RwwKfmd8w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "112542466840-av1ghq1i2mbbiev1uqtefet73emffp5u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:112542466840:android:c09cfee389201741fb946d",
+        "android_client_info": {
+          "package_name": "com.azlogistik.muatmuat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "112542466840-av1ghq1i2mbbiev1uqtefet73emffp5u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzEXqZyh-3Dl5hHljArEwHv1RwwKfmd8w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "112542466840-av1ghq1i2mbbiev1uqtefet73emffp5u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:112542466840:android:ce50f425d2803343fb946d",
+        "android_client_info": {
+          "package_name": "com.azlogistik.muatmuatseller"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "112542466840-av1ghq1i2mbbiev1uqtefet73emffp5u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzEXqZyh-3Dl5hHljArEwHv1RwwKfmd8w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "112542466840-av1ghq1i2mbbiev1uqtefet73emffp5u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:112542466840:android:10ec824d50a681b4fb946d",
+        "android_client_info": {
+          "package_name": "com.azlogistik.muatmuattransporter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "112542466840-av1ghq1i2mbbiev1uqtefet73emffp5u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzEXqZyh-3Dl5hHljArEwHv1RwwKfmd8w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "112542466840-av1ghq1i2mbbiev1uqtefet73emffp5u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

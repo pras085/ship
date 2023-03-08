@@ -1,0 +1,3 @@
+
+D:\AZ Project\Erdio\muatmuat>adb -s 192.168.32.16:5555 push muatmuat_1111202201.apk /storage/emulated/0/Download/muatmuat_1111202201.apk
+muatmuat_1017202201.apk: 
