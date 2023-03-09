@@ -203,7 +203,7 @@ class SubscriptionHomeView extends GetView<SubscriptionHomeController> {
                                 ],
                               ),
                               onTap: () async {
-                                var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAkses(Get.context, "16");
+                                var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "16");
                                 if (!hasAccess) {
                                   return;
                                 }
@@ -372,7 +372,7 @@ class SubscriptionHomeView extends GetView<SubscriptionHomeController> {
                         ],
                       ),
                       onTap: () async {
-                        var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAkses(Get.context, "402");
+                        var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "402");
                         if (!hasAccess) {
                           return;
                         }
@@ -398,7 +398,7 @@ class SubscriptionHomeView extends GetView<SubscriptionHomeController> {
             fontWeight: tipeFirst ? FontWeight.w700 : FontWeight.w600,
             onTap: () async {
               // if (tipeFirst) {
-              var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAkses(Get.context, "16");
+              var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "16");
               if (!hasAccess) {
                 return;
               }
@@ -524,7 +524,7 @@ class SubscriptionHomeView extends GetView<SubscriptionHomeController> {
                   ],
                 ),
                 onTap: () async {
-                  var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAkses(Get.context, "402");
+                  var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "402");
                   if (!hasAccess) {
                     return;
                   }
@@ -560,7 +560,7 @@ class SubscriptionHomeView extends GetView<SubscriptionHomeController> {
                 color: Color(ListColor.colorBlue),
                 maxWidth: true,
                 onTap: () async {
-                  var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAkses(Get.context, "16");
+                  var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "403");
                   if (!hasAccess) {
                     return;
                   }
@@ -601,7 +601,7 @@ class SubscriptionHomeView extends GetView<SubscriptionHomeController> {
                     color: Color(ListColor.colorBlue),
                     maxWidth: true,
                     onTap: () async {
-                      var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAkses(Get.context, "400");
+                      var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "400");
                       if (!hasAccess) {
                         return;
                       }
@@ -981,7 +981,7 @@ class SubscriptionHomeView extends GetView<SubscriptionHomeController> {
                         ],
                       ),
                       onTap: () async {
-                        var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAkses(Get.context, "402");
+                        var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "574");
                         if (!hasAccess) {
                           return;
                         }
@@ -1009,7 +1009,7 @@ class SubscriptionHomeView extends GetView<SubscriptionHomeController> {
                 color: Color(ListColor.colorBlue),
                 maxWidth: true,
                 onTap: () async {
-                  var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAkses(Get.context, "400");
+                  var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "400");
                   if (!hasAccess) {
                     return;
                   }
@@ -1042,7 +1042,12 @@ class SubscriptionHomeView extends GetView<SubscriptionHomeController> {
             borderRadius: 20,
             color: Color(ListColor.colorBlue),
             maxWidth: true,
-            onTap: () {}),
+            onTap: () async {
+              var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "401");
+              if (!hasAccess) {
+                return;
+              }
+            }),
         Container(
           height: GlobalVariable.ratioWidth(Get.context) * 16,
         )
@@ -1129,7 +1134,7 @@ class SubscriptionHomeView extends GetView<SubscriptionHomeController> {
             color: Color(ListColor.colorBlue),
             maxWidth: true,
             onTap: () async {
-              var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAkses(Get.context, "400");
+              var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "404");
               if (!hasAccess) {
                 return;
               }
@@ -1163,7 +1168,12 @@ class SubscriptionHomeView extends GetView<SubscriptionHomeController> {
                 borderRadius: 20,
                 color: Color(ListColor.colorBlue),
                 maxWidth: true,
-                onTap: () {})
+                onTap: () async {
+                  var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "405");
+                  if (!hasAccess) {
+                    return;
+                  }
+                })
             : Container(),
         Container(
           height: GlobalVariable.ratioWidth(Get.context) * 16,
@@ -1424,7 +1434,7 @@ class _AppBar extends PreferredSize {
                                     SubscriptionPopupKeuntungan.showAlertDialog(
                                         context: Get.context,
                                         onTap: () async {
-                                          var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAkses(Get.context, "16");
+                                          var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "16");
                                           if (!hasAccess) {
                                             return;
                                           }

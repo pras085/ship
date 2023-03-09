@@ -47,7 +47,7 @@ class _ListIklanPlacesPromoViewState extends State<ListIklanPlacesPromoView> {
     controller.argument.value = menu;
     controller.fetchDataIklan();
     controller.scrollController.addListener(() {
-      print("SCROLL POSITION: ${controller.scrollController.position.pixels}");
+      // print("SCROLL POSITION: ${controller.scrollController.position.pixels}");
     });
   }
 
@@ -152,6 +152,10 @@ class _ListIklanPlacesPromoViewState extends State<ListIklanPlacesPromoView> {
                   if (res != null) {
                     if (res is Map && res.isNotEmpty) {
                       controller.filter.value = res;
+                      if (res['PlatformRekomendasi'] != null) {
+                        controller.isBF.value = res['PlatformRekomendasi']['value'].contains("0");
+                        controller.isTM.value = res['PlatformRekomendasi']['value'].contains("1");
+                      }
                     } else {
                       controller.filter.value = null;
                     }
@@ -348,6 +352,7 @@ class _ListIklanPlacesPromoViewState extends State<ListIklanPlacesPromoView> {
                                 // START CUSTOM WIDGET HEREEE
                                 Obx(() => controller.locationController.location.value != null ?
                                   Container(
+                                    key: controller.badgeKey,
                                     width: double.infinity,
                                     margin: EdgeInsets.only(
                                       top: GlobalVariable.ratioWidth(context) * 8, // -2px customText
@@ -430,7 +435,7 @@ class _ListIklanPlacesPromoViewState extends State<ListIklanPlacesPromoView> {
                                       ],
                                     ),
                                   )
-                                else
+                                else ...[
                                   Padding(
                                     padding: EdgeInsets.symmetric(
                                       horizontal: GlobalVariable.ratioWidth(context) * 16,
@@ -479,7 +484,8 @@ class _ListIklanPlacesPromoViewState extends State<ListIklanPlacesPromoView> {
                                       ),
                                     ),
                                   ),
-
+                                ],
+                                
                                 Obx(() => controller.locationController.location.value != null ?
                                   Padding(
                                     padding: EdgeInsets.symmetric(
@@ -490,8 +496,8 @@ class _ListIklanPlacesPromoViewState extends State<ListIklanPlacesPromoView> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         StaticCardBuyer(
-                                          isBigFleet: true, // default for places
-                                          isTransportMarket: true, // default for places
+                                          isBigFleet: controller.isBF.value, // default for places
+                                          isTransportMarket: controller.isTM.value, // default for places
                                         ),
                                         SizedBox(
                                           height: GlobalVariable.ratioWidth(context) * 10,
@@ -500,18 +506,21 @@ class _ListIklanPlacesPromoViewState extends State<ListIklanPlacesPromoView> {
                                           title: "Temukan # Iklan Transportation Store di ${controller.locationController.location.value.city}", 
                                           location: controller.locationController.location.value,
                                           layananID: "4", // transportation Store 
+                                          layananName: "Transportation Store",
                                           adsType: ADS_TYPE.product,
                                         ),
                                         AdsPlacesCardBuyer(
                                           title: "Temukan # Iklan Gudang dijual di ${controller.locationController.location.value.city}", 
                                           location: controller.locationController.location.value,
-                                          layananID: "6", // transportation Store 
+                                          layananID: "6", // Property & Warehouse 
+                                          layananName: "Property & Warehouse",
                                           adsType: ADS_TYPE.product,
                                         ),
                                         AdsPlacesCardBuyer(
                                           title: "Temukan # Iklan lowongan kerja di ${controller.locationController.location.value.city}", 
                                           location: controller.locationController.location.value,
-                                          layananID: "9", // transportation Store 
+                                          layananID: "9", // Human Capital
+                                          layananName: "Human Capital",
                                           adsType: ADS_TYPE.compro,
                                         ),
                                       ],

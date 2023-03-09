@@ -221,7 +221,7 @@ class _ListIklanViewState extends State<ListIklanView> {
                             color: Color(
                               controller.searchResult.value.isNotEmpty
                               ? 0xFF000000
-                              : 0xFFCECECE
+                              : 0xFF676767
                             ),
                             overflow: TextOverflow.ellipsis,
                           )),

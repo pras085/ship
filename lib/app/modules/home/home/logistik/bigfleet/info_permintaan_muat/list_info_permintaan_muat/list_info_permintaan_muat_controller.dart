@@ -147,37 +147,50 @@ class ListInfoPermintaanMuatController extends GetxController
 
   bool _isCompleteBuildWidget = false;
 
-  bool lihatRole = false;
-  bool buatRole = false;
-  bool exportAktifRole = false;
-  bool exportHistoryRole = false;
-  bool exportDetailRole = false;
-  bool editRole = false;
+  var lihatRole = false.obs;
+  var buatRole = false.obs;
+  var exportAktifRole = false.obs;
+  var exportHistoryRole = false.obs;
+  var exportDetailRole = false.obs;
+  var editRole = false.obs;
 
   @override
   void onInit() async{
     super.onInit();
-    await cekRoleUser();
-
   }
 
   Future<void> cekRoleUser() async {
     // Role Lihat Info Permintaan Muat
-    var lihatResponse = await Future.wait([
-      CekSubUserDanHakAkses().cekSubUserDanHakAkses(Get.context, "611"),
-      CekSubUserDanHakAkses().cekSubUserDanHakAkses(Get.context, "652"),
-    ]);
-    if (lihatResponse[0] != null && lihatResponse[1] != null ) {
-      if (lihatResponse[0] == true && lihatResponse[1] == true) {
-         lihatRole = true;
-      }
-    } 
-    buatRole = await CekSubUserDanHakAkses().cekSubUserDanHakAkses(Get.context, "440");
-    exportAktifRole = await CekSubUserDanHakAkses().cekSubUserDanHakAkses(Get.context, "441"); 
-    exportHistoryRole = await CekSubUserDanHakAkses().cekSubUserDanHakAkses(Get.context, "442"); 
-    editRole = await CekSubUserDanHakAkses().cekSubUserDanHakAkses(Get.context, "443"); 
-    exportDetailRole = await CekSubUserDanHakAkses().cekSubUserDanHakAkses(Get.context, "604"); 
-
+    lihatRole.value = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(
+      context:Get.context, 
+      menuId : '611',
+      showDialog: false,
+    );
+    buatRole.value = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(
+      context:Get.context, 
+      menuId : "440",
+      showDialog: false,
+    );
+    exportAktifRole.value = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(
+      context:Get.context, 
+      menuId : "441",
+      showDialog: false,
+    ); 
+    exportHistoryRole.value = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(
+      context:Get.context, 
+      menuId : "442",
+      showDialog: false,
+    ); 
+    editRole.value = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(
+      context:Get.context, 
+      menuId : "443",
+      showDialog: false,
+    ); 
+    exportDetailRole.value = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(
+      context:Get.context, 
+      menuId : "604",
+      showDialog: false,
+    ); 
   }
 
   void firstInit(){
@@ -525,6 +538,7 @@ class ListInfoPermintaanMuatController extends GetxController
 
     if (!_isCompleteBuildWidget) {
       _isCompleteBuildWidget = true;
+      cekRoleUser();
       getAllInfoPermintaanMuatActiveOnRefresh(
           isUsingLoadingManual: true, isAddToTemp: true);
       isAlreadyLoadActiveFirstTime.value = true;
@@ -1001,22 +1015,19 @@ class ListInfoPermintaanMuatController extends GetxController
                   isTabActive 
                       ? _itemInfoPermintaanMuatModalBottomSheet(
                           title: "LoadRequestInfoButtonLabelEdit".tr,
-                          onTap: () {
+                          haveAccess: buatRole.value,
+                          onTap: () async {
+                            var response =  await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "443");
+                            if (!response) return;
                             goToDetailPermintaanMuat(
                                 infoPermintaanMuatModel.id, true);
                           })
-                      : buatRole 
-                        ? _itemInfoPermintaanMuatModalBottomSheet(
-                          title: "LoadRequestInfoButtonLabelEdit".tr,
-                          textColor: Colors.grey,
-                          onTap: () {},
-                          )
-                        : _itemInfoPermintaanMuatModalBottomSheet(
-                          title: "LoadRequestInfoButtonLabelCopyAndCreate".tr,
-                          onTap: () {
-                            _getDetailPermintaanMuat(
-                                infoPermintaanMuatModel.id);
-                          }),
+                      : _itemInfoPermintaanMuatModalBottomSheet(
+                        title: "LoadRequestInfoButtonLabelCopyAndCreate".tr,
+                        onTap: () {
+                          _getDetailPermintaanMuat(
+                              infoPermintaanMuatModel.id);
+                        }),
                   isTabActive ? _lineSaparator() : SizedBox.shrink(),
                   isTabActive
                       ? _itemInfoPermintaanMuatModalBottomSheet(
@@ -1063,7 +1074,7 @@ class ListInfoPermintaanMuatController extends GetxController
   }
 
   Widget _itemInfoPermintaanMuatModalBottomSheet(
-      {String title, void Function() onTap, Color textColor = Colors.black}) {
+      {String title, void Function() onTap, Color textColor = Colors.black, bool haveAccess = true,}) {
     return InkWell(
         onTap: () {
           Get.back();
@@ -1077,7 +1088,11 @@ class ListInfoPermintaanMuatController extends GetxController
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CustomText(title, color: textColor, fontWeight: FontWeight.w600)
+              CustomText(
+                title, 
+                color: haveAccess ? textColor : Color(ListColor.colorGrey3), 
+                fontWeight: FontWeight.w600,
+              )
             ],
           ),
         ));

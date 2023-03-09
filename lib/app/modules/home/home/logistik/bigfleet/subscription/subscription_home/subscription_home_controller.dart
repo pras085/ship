@@ -349,7 +349,7 @@ class SubscriptionHomeController extends GetxController {
         SubscriptionPopupKeuntungan.showAlertDialog(
             context: Get.context,
             onTap: () async {
-              var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAkses(Get.context, "16");
+              var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "16");
               if (!hasAccess) {
                 return;
               }

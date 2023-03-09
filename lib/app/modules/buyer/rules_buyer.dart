@@ -4,10 +4,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
+import 'package:muatmuat/app/modules/ARK/extra_widget/global_variable_ark.dart';
 import 'package:muatmuat/app/template/dialog/dialog_buyer.dart';
 import 'package:muatmuat/app/template/widgets/card/card_company.dart';
+import 'package:muatmuat/app/template/widgets/card/card_item.dart';
 import 'package:muatmuat/app/template/widgets/card/card_product.dart';
 import 'package:muatmuat/app/utils/utils.dart';
+import 'package:muatmuat/app/widgets/custom_text.dart';
 
 import 'detail/detail_iklan_compro_view.dart';
 import 'detail/detail_iklan_product_view.dart';
@@ -78,6 +81,8 @@ class RulesBuyer {
       || subKategoriId == '26' // Dealer & Karoseri | Katalog Produk Karoseri
       || subKategoriId == '27' // Dealer & Karoseri | Katalog Produk Karoseri
       || subKategoriId == '55' // Human Capital | Lowongan Umum
+      || subKategoriId == '50' // Places & Promo | Promo Kab/Kota
+      || subKategoriId == '51' // Places & Promo | Promo Nasional
       // Khabib1 >
 
       // Octa1 <
@@ -106,7 +111,7 @@ class RulesBuyer {
       || subKategoriId == '32' // Transportasi Intermoda | Sea Freight
       || subKategoriId == '12' // Repair & Maintenance | Teknisi
       || subKategoriId == '57' // Human Capital | HR Consultant and Training
-      || subKategoriId == '10' // Places & Promo | Places
+      || subKategoriId == '49' // Places & Promo | Places
       // Andy2 >
 
       // Khabib2 < 
@@ -275,7 +280,8 @@ class RulesBuyer {
               'KategoriID': "$kategoriId",
               'SubKategoriID': "$subKategoriId",
               'IklanID': data['ID'],
-              'Kategori': data['kategori']
+              'Kategori': data['kategori'],
+              'Layanan': layanan
             },
           );
         },
@@ -328,6 +334,7 @@ class RulesBuyer {
       // Pras5 >
 
       // Refo5 <
+      || subKategoriId == '21' // Property & Warehouse | Katalog Produk Lainnya
       // Refo5 >
     ){
       return CardProduct(
@@ -337,7 +344,8 @@ class RulesBuyer {
               'KategoriID':kategoriId,
               'SubKategoriID': subKategoriId,
               'IklanID': data['ID'],
-              'Kategori': data['kategori']
+              'Kategori': data['kategori'],
+              'Layanan': layanan
             },
           );
         },
@@ -408,7 +416,8 @@ class RulesBuyer {
               'KategoriID': kategoriId,
               'SubKategoriID': subKategoriId,
               'IklanID': data['ID'],
-              'Kategori': data['kategori']
+              'Kategori': data['kategori'],
+              'Layanan': layanan
             },
           );
         },
@@ -452,7 +461,8 @@ class RulesBuyer {
               'KategoriID': kategoriId,
               'SubKategoriID': subKategoriId,
               'IklanID': data['ID'],
-              'Kategori': data['kategori']
+              'Kategori': data['kategori'],
+              'Layanan': layanan
             },
           );
         },
@@ -487,7 +497,8 @@ class RulesBuyer {
               'KategoriID': kategoriId,
               'SubKategoriID': subKategoriId,
               'IklanID': data['ID'],
-              'Kategori': data['kategori']
+              'Kategori': data['kategori'],
+              'Layanan': layanan
             },
           );
         },
@@ -541,7 +552,8 @@ class RulesBuyer {
               'KategoriID': kategoriId,
               'SubKategoriID': subKategoriId,
               'IklanID': data['ID'],
-              'Kategori': data['kategori']
+              'Kategori': data['kategori'],
+              'Layanan': layanan
             },
           );
         },
@@ -603,7 +615,8 @@ class RulesBuyer {
               'KategoriID': kategoriId,
               'SubKategoriID': subKategoriId,
               'IklanID': data['ID'],
-              'Kategori': data['kategori']
+              'Kategori': data['kategori'],
+              'Layanan': layanan
             },
           );
         },
@@ -630,20 +643,6 @@ class RulesBuyer {
     // Card Product Only Text
     else if (
       subKategoriId == '55' // Human Capital | Lowongan Umum
-      // Andy6 <
-      // Andy6 >
-
-      // Khabib6 < 
-      // Khabib6 >
-
-      // Octa6 <
-      // Octa6 >
-
-      // Pras6 <
-      // Pras6 >
-
-      // Refo6 <
-      // Refo6 >
     ) {
       return CardProduct(
         highlight: "${data['highlight']}" != "0",
@@ -680,7 +679,8 @@ class RulesBuyer {
               'KategoriID': kategoriId,
               'SubKategoriID': subKategoriId,
               'IklanID': data['ID'],
-              'Kategori': data['kategori']
+              'Kategori': data['kategori'],
+              'Layanan': layanan
             },
           );
         },
@@ -710,8 +710,11 @@ class RulesBuyer {
             arguments: {
               'KategoriID': kategoriId,
               'SubKategoriID': subKategoriId,
-              'IklanID': data['ID'],
-              'Kategori': data['kategori']
+              'KategoriPlacesID': "${data['KategoriID']}",
+              'SubKategoriPlacesID': "${data['SubKategoriID']}",
+              'IklanID': "${data['ID']}",
+              'Kategori': data['kategori'],
+              'Layanan': layanan
             },
           );
         },
@@ -726,6 +729,83 @@ class RulesBuyer {
         address: data['Alamat']
       ); 
     }
+    // Card Places & Promo | Promo Kota/Kab or Nasional
+    else if (
+      subKategoriId == '50' // Places & Promo | Promo Kab/Kota
+      || subKategoriId == '51' // Places & Promo | Promo Nasional
+    ) {
+      LabelColor labelColor;
+      String label;
+      String lokasi = data['LokasiPromoKotaKab'];
+      num price;
+      num priceNormal;
+      if ("${data['SubKategoriID']}" == '50') {
+        label = "Promo Kota/Kabupaten";
+        labelColor = LabelColor.yellow;
+      }
+      if ("${data['SubKategoriID']}" == '51') {
+        label = "Promo Nasional";
+        lokasi = "Berlaku Seluruh Indonesia";
+        labelColor = LabelColor.orange;
+      }
+      try {
+        if (data['Harga'] != null) {
+          price = double.parse(Utils.removeNumberFormat(data['Harga']));
+        }
+      } catch (e) {}
+      try {
+        if (data['HargaNormal'] != null) {
+          priceNormal = double.parse(Utils.removeNumberFormat(data['HargaNormal']));
+        }
+      } catch (e) {}
+      return CardProduct(
+        onTap: () {
+          Get.to(() => DetailIklanComproView(),
+            arguments: {
+              'KategoriID': kategoriId,
+              'SubKategoriID': subKategoriId,
+              'IklanID': data['ID'],
+              'Kategori': data['kategori']
+            },
+          );
+        },
+        highlight: "${data['highlight']}" != "0",
+        verified: "${data['data_seller']['verified']}" != "0",
+        favorite: "${data['favorit']}" != "0",
+        onFavorited: onFavorited,
+        topLabel: label,
+        title: data['Judul'] ?? "",
+        titleStyle: TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+        ),
+        subtitleWidget: Container(
+          margin: EdgeInsets.only(
+            top: GlobalVariable.ratioWidth(Get.context) * 6,
+          ),
+          height: GlobalVariable.ratioWidth(Get.context) * 24,
+          alignment: Alignment.centerLeft,
+          child: CustomText(
+            data['data_seller']['nama_individu_perusahaan'],
+            fontSize: 10,
+            height: 12/10,
+            fontWeight: FontWeight.w600,
+            overflow: TextOverflow.ellipsis,
+            withoutExtraPadding: true,
+          ),
+        ),
+        discountPrice: priceNormal,
+        price: price,
+        verticalDetail: true,
+        detail: getCardDataKeyBySubKategoriId(subKategoriId, data),
+        imageUrl: data['Foto'] != null && data['Foto'].isNotEmpty ? data['Foto'][0] ?? "" : "",
+        location: lokasi,
+        date: DateTime.parse(data['Created']),
+        formatDate: "dd MMM yyyy",
+        topLabelColor: labelColor,
+        showDateAtFooter: true,
+      ); 
+    }
     return CardProduct(
       onTap: () {
         // log(data.toString() + 'peace sign');
@@ -736,7 +816,8 @@ class RulesBuyer {
             'KategoriID': kategoriId,
             'SubKategoriID': subKategoriId,
             'IklanID': data['ID'],
-            'Kategori': data['kategori']
+            'Kategori': data['kategori'],
+            'Layanan': layanan
           },
         );
       },
@@ -956,6 +1037,27 @@ class RulesBuyer {
       return {
         'Layanan Perusahaan': "${data['LayananPerusahaan']}",
         'Tahun Berdiri': "${data['TahunBerdiri']}",
+      };
+    }
+    else if (
+      subKategoriId == '50' // Places & Promo | Promo Kab/Kota
+      || subKategoriId == '51' // Places & Promo | Promo Nasional
+    ) {
+      String periode;
+      try {
+        final startDate = Utils.formatDate(
+          value: data['PeriodeMulai'], 
+          format: "dd MMM yyyy",
+        );
+        final endDate = Utils.formatDate(
+          value: data['PeriodeBerakhir'], 
+          format: "dd MMM yyyy",
+        );
+        periode = "$startDate - $endDate";
+      } catch (e) {}
+      return {
+        'Kategori': "${data['Kategori']}",
+        if (periode != null) 'Periode': "$periode",
       };
     }
     // Khabib8 >
@@ -1377,12 +1479,12 @@ class RulesBuyer {
         {
           'icon': 'assets/detail_compro_buyer/ic_tahun_berdiri_detail_buyer.svg',
           'label': "Tahun Berdiri",
-          'value': "${data['TahunBerdiri']}".replaceAll(".", ""),
+          'value': "${data['TahunBerdiri'] ?? ""}".replaceAll(".", ""),
         },
         {
           'icon': 'assets/detail_compro_buyer/ic_website_buyer.svg',
           'label': "Website",
-          'value': data['Website'],
+          'value': data['Website'] ?? "",
         },
       ];
     }
@@ -1811,6 +1913,37 @@ class RulesBuyer {
         {
           'id': 'Salary',
           'name': "Estimasi Gaji",
+          'child': [
+            {'id': "desc", 'name': "Tertinggi"},
+            {'id': "asc", 'name': "Terendah"},
+          ],
+        },
+      ];
+    }
+    else if (
+      subKategoriId == '50' // Places & Promo | Promo Kota/Kabupaten
+      || subKategoriId == '51' // Places & Promo | Promo Nasional
+    ) {
+      return [
+        {
+          'id': 'Created',
+          'name': "Waktu Dibuat",
+          'child': [
+            {'id': "desc", 'name': "Terbaru"},
+            {'id': "asc", 'name': "Terlama"},
+          ],
+        },
+        {
+          'id': 'Judul',
+          'name': "Alfabet",
+          'child': [
+            {'id': "asc", 'name': "A-Z"},
+            {'id': "desc", 'name': "Z-A"},
+          ],
+        },
+        {
+          'id': 'Harga',
+          'name': "Harga",
           'child': [
             {'id': "desc", 'name': "Tertinggi"},
             {'id': "asc", 'name': "Terendah"},
@@ -3567,11 +3700,12 @@ class RulesBuyer {
           'title': 'Tahun Berdiri',
           'KategoriID': 34,
           'SubKategoriID': 30,
-          'min_value': "0",
-          'max_value': "10000",
+          'min_value': "1970",
+          'max_value': DateTime.now().year.toString(),
           'dynamic_min_key': '-', // get the key that you want to dynamically adjust the max data.
           'dynamic_max_key': 'TahunBerdiri', // get the key that you want to dynamically adjust the max data.
           'tag_frontend': "tahun_berdiri_jasa_air_freight-rangefield",
+          'number_type': NumberType.YEAR
         },
         {
           'key': 'JumlahKantordiIndonesia',
@@ -3628,11 +3762,12 @@ class RulesBuyer {
           'title': 'Tahun Berdiri',
           'KategoriID': 35,
           'SubKategoriID': 31,
-          'min_value': "0",
-          'max_value': "10000",
+          'min_value': "1970",
+          'max_value': DateTime.now().year.toString(),
           'dynamic_min_key': '-', // get the key that you want to dynamically adjust the max data.
           'dynamic_max_key': 'TahunBerdiri', // get the key that you want to dynamically adjust the max data.
           'tag_frontend': "tahun_berdiri_jasa_rail_freight-rangefield",
+          'number_type': NumberType.YEAR
         },
         {
           'key': 'JumlahKantordiIndonesia',
@@ -3933,11 +4068,12 @@ class RulesBuyer {
           'title': 'Tahun Berdiri',
           'KategoriID': 38,
           'SubKategoriID': 34,
-          'min_value': "0",
-          'max_value': "10000",
+          'min_value': "1970",
+          'max_value': DateTime.now().year.toString(),
           'dynamic_min_key': '-', // get the key that you want to dynamically adjust the max data.
           'dynamic_max_key': 'TahunBerdiri', // get the key that you want to dynamically adjust the max data.
           'tag_frontend': "tahun_berdiri_jasa_3pl_company-rangefield",
+          'number_type': NumberType.YEAR
         },
       ];
     }
@@ -3965,11 +4101,12 @@ class RulesBuyer {
           'title': 'Tahun Berdiri',
           'KategoriID': 37,
           'SubKategoriID': 33,
-          'min_value': "0",
-          'max_value': "10000",
+          'min_value': "1970",
+          'max_value': DateTime.now().year.toString(),
           'dynamic_min_key': '-', // get the key that you want to dynamically adjust the max data.
           'dynamic_max_key': 'TahunBerdiri', // get the key that you want to dynamically adjust the max data.
           'tag_frontend': "tahun_berdiri_jasa_freight_forwardding-rangefield",
+          'number_type': NumberType.YEAR
         },
         {
           'key': 'JumlahKantordiIndonesia',
@@ -4024,6 +4161,70 @@ class RulesBuyer {
           'tag_frontend': "opsi_penjual-checkboxfield",
           'value_alias': "Hanya Tampilkan Penjual yang Terverifikasi", // must be have the same length as value
           'value': "1",
+        },
+      ];
+    }
+    // 
+    else if(subKategoriId == '49'){ // Places & Promo | Places
+      return [
+        {
+          'key': 'LokasiIklan',
+          'title': 'Lokasi',
+          'KategoriID': 53,
+          'SubKategoriID': 49,
+          'tag_frontend': "lokasi_places-lokasifield",
+        },
+        {
+          'key': 'dealer_&_karoseri',
+          'title': 'Dealer & Karoseri',
+          'KategoriID': 53,
+          'SubKategoriID': 49,
+          'tag_frontend': "dealer_&_karoseri-checkboxfield",
+          'value_alias': "Dealer,Perusahaan Karoseri,Perusahaan Lainnya",
+          'value': "23,25,27",
+        },
+        {
+          'key': 'repair_&_maintenance_services',
+          'title': 'Repair & Maintenance Services',
+          'KategoriID': 53,
+          'SubKategoriID': 49,
+          'tag_frontend': "repair_&_maintenance_services-checkboxfield",
+          'value_alias': "Bengkel,Teknisi,Perusahaan Lainnya",
+          'value': "11,12,14",
+        },
+        {
+          'key': 'property_&_warehouse',
+          'title': 'Property & Warehouse',
+          'KategoriID': 53,
+          'SubKategoriID': 49,
+          'tag_frontend': "property_&_warehouse-checkboxfield",
+          'value_alias': "Gudang Barang Cair,Jasa Pergudangan,Pusat Logistik Berikat,Perusahaan Lainnya",
+          'value': "17,18,19,22",
+        },
+        {
+          'key': 'transportasi_intermoda',
+          'title': 'Transportasi Intermoda',
+          'KategoriID': 53,
+          'SubKategoriID': 49,
+          'tag_frontend': "transportasi_intermoda-checkboxfield",
+          'value_alias': "Road Transportation,Air Freight,Rail Freight,Sea Freight,Freight Forwarding,3-5 PL Company,Perusahaan Lainnya",
+          'value': "29,30,31,32,33,34,35",
+        },
+        {
+          'key': 'Kategori',
+          'title': 'Places',
+          'KategoriID': 53,
+          'SubKategoriID': 49,
+          'tag_frontend': "kategori_places-checkboxfield"
+        },
+        {
+          'key': 'PlatformRekomendasi',
+          'title': 'Platform Rekomendasi',
+          'KategoriID': 53,
+          'SubKategoriID': 49,
+          'tag_frontend': "platform-checkboxfield",
+          'value_alias': "Big Fleets,Transport Market",
+          'value': "0,1",
         },
       ];
     }

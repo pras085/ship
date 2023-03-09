@@ -29,7 +29,7 @@ class DetailAllListCard extends StatelessWidget {
     return Scaffold(
       appBar: AppBarDetailBuyer(
         onClickBack: Get.back,
-        title: 'Promo',
+        title: isPromo ? 'Pilihan Promo Hari Ini' : 'Brosur',
         isWithPrefix: false,
       ),
       body: SafeArea(
@@ -84,7 +84,7 @@ class DetailAllListCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             CustomText(
-              title ?? data['data_seller']['nama_individu_perusahaan'] ?? '',
+              title ?? data['data_seller']['nama_individu_perusahaan'] ?? data['data_seller']['nama_seller'],
               fontWeight: FontWeight.w600,
               fontSize: 16,
             ),

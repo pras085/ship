@@ -55,13 +55,23 @@ class ListInfoPermintaanMuatView
                   hintText: "LoadRequestInfoLabelSearchHint".tr,
                   listIconWidgetOnRight: [
                     GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                           // Share.share("test");
                           if (controller.posTab.value == 0) {
-                            if(!controller.exportAktifRole) return;
+                            var response =  await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(
+                              context: Get.context, 
+                              menuId: "441",
+                              showDialog: true,
+                            );
+                            if (!response) return;
                             print('::: Export Muat Aktif ');
                           } else {
-                            if(!controller.exportHistoryRole) return;
+                            var response =  await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(
+                              context: Get.context, 
+                              menuId: "442",
+                              showDialog: true,
+                            );
+                            if (!response) return;                            
                             print('::: Export Muat History ');
                           }
                         },
@@ -158,14 +168,16 @@ class ListInfoPermintaanMuatView
                   height: 80,
                   // decoration: BoxDecoration(),
                   child: FloatingActionButton(
-                    backgroundColor: controller.buatRole ? Color(ListColor.color4) : Color(ListColor.colorGrey),
-                    onPressed: () async{
-                      print("::::"+controller.buatRole.toString());
-                      if (!controller.buatRole) {
-                        return;
-                      } else {
-                      controller.goToCreatePermintaanMuat();
-                      }
+                    splashColor: Colors.transparent,
+                    backgroundColor: controller.buatRole.value ? Color(ListColor.color4) : Color(ListColor.colorGrey),
+                    onPressed: () async {
+                      var response =  await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(
+                        context: Get.context,
+                        menuId: "440",
+                        showDialog: true,
+                      );
+                      if (!response) return;
+                      controller.goToCreatePermintaanMuat();        
                       // GetToPage.toNamed<ListUserInfoPermintaanMuatController>(
                       //     Routes.LIST_USER_INFO_PERMINTAAN_MUAT,
                       //     arguments: [
@@ -174,7 +186,8 @@ class ListInfoPermintaanMuatView
                     },
                     child: Icon(
                       Icons.add_rounded,
-                      color: controller.buatRole ? Color(ListColor.colorWhite)  : Color(ListColor.colorGrey),
+                      // color: controller.buatRole.value ? Color(ListColor.colorWhite)  : Color(ListColor.colorGrey),
+                      color: Color(ListColor.colorWhite),
                       size: 60,
                     ),
                     elevation: 2.0,

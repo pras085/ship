@@ -12,6 +12,7 @@ import 'package:muatmuat/app/core/controllers/filter_controller_custom.dart';
 import 'package:muatmuat/app/core/controllers/sorting_controller.dart';
 import 'package:muatmuat/app/core/enum/list_data_design_type_button_corner_right_enum.dart';
 import 'package:muatmuat/app/core/enum/type_in_filter.enum.dart';
+import 'package:muatmuat/app/core/function/cek_sub_user_dan_hak_akses.dart';
 import 'package:muatmuat/app/core/function/cool_alert_dialog.dart';
 import 'package:muatmuat/app/core/function/global_alert_dialog.dart';
 import 'package:muatmuat/app/core/function/list_data_design_function.dart';
@@ -75,6 +76,8 @@ class ManajemenMitraController extends GetxController
   final numberApprove = "0".obs;
   var listGroup = 0.obs;
   var namaListGroup = "PartnerManagementSemuaGrup".tr.obs;
+  var invite = "true".obs;
+  var loading = true.obs;
 
   final searchMitraTextEditingController = TextEditingController().obs;
 
@@ -235,6 +238,8 @@ class ManajemenMitraController extends GetxController
 
   @override
   void onInit() async {
+    await cekInvite();
+    loading.value = false;
     _setListUndangRekanBisnisDesc2();
     _initListDesign();
     _contactModalBottomSheetController =
@@ -372,6 +377,13 @@ class ManajemenMitraController extends GetxController
   //       await ApiHelper(context: Get.context, isShowDialogLoading: false)
   //           .fetchFilteredMitra(shipperID.toString(), "", Map(), 10, 0);
   // }
+
+   Future<void> cekInvite() async {
+          var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "61", showDialog: false);
+          if (!hasAccess) {
+            invite.value = "false";
+          }
+    }
 
   void refreshGroupMitra({bool isShowLoadingCircular = false}) {
     getListGroupMitra(0, isShowLoadingCircular: isShowLoadingCircular);

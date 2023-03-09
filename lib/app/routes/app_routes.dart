@@ -292,6 +292,8 @@ abstract class Routes {
       '/ringkasan-manajemen-notifikasi';
   static const NOTIF_CHAT_SCREEN = '/notif-chat';
 
+  static const INSTANT_ORDER = '/instant-order';
+
   // PROFILE PENGGUNA LAIN
   static const REPORT = '/report';
   static const TESTIMONI = '/testimoni';

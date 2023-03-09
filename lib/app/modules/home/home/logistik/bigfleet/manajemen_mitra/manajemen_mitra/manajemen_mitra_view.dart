@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:muatmuat/app/core/controllers/sorting_controller.dart';
 import 'package:muatmuat/app/core/enum/list_data_design_type_button_corner_right_enum.dart';
+import 'package:muatmuat/app/core/function/cek_sub_user_dan_hak_akses.dart';
 import 'package:muatmuat/app/core/function/chat_function.dart';
 import 'package:muatmuat/app/core/models/mitra_model.dart';
 import 'package:muatmuat/app/widgets/appbar_with_tab2.dart';
@@ -39,7 +40,16 @@ class ManajemenMitraView extends GetView<ManajemenMitraController> {
         child: Obx(
           () => DefaultTabController(
             length: 3,
-            child: Scaffold(
+            child: 
+            controller.loading.value == true ?
+            Container(
+            height: MediaQuery.of(Get.context).size.height,
+            color: Colors.white,
+            child: Center(
+            child: CircularProgressIndicator()
+            ),
+            ) :
+            Scaffold(
               resizeToAvoidBottomInset: false,
               appBar: AppBarWithTab2(
                 onClickSearch: () {
@@ -419,15 +429,14 @@ class ManajemenMitraView extends GetView<ManajemenMitraController> {
                                   controller.showFilter();
                                 }
                               },
-                              isActive: (controller
-                                          .isRequestApproveTabApproveView
-                                          .value &&
-                                      (controller
-                                          .isUsingFilterApproveMitra.value) ||
-                                  (controller.isRequestApproveTabRequestView
-                                          .value &&
-                                      (controller
-                                          .isUsingFilterRequestMitra.value))),
+                              isDisable: !(
+                                    controller.isRequestApproveTabApproveView.value && (controller.isUsingFilterApproveMitra.value || controller.listApproveRejectMitra.length > 0) ||
+                                    controller.isRequestApproveTabRequestView.value && (controller.isUsingFilterRequestMitra.value || controller.listRequestCancelMitra.length > 0)
+                                ),
+                              isActive: (
+                                    controller.isRequestApproveTabApproveView.value && (controller.isUsingFilterApproveMitra.value || controller.listApproveRejectMitra.length > 0) ||
+                                    controller.isRequestApproveTabRequestView.value && (controller.isUsingFilterRequestMitra.value || controller.listRequestCancelMitra.length > 0)
+                                ),
                             ),
                           ),
                           _button(
@@ -560,7 +569,16 @@ class ManajemenMitraView extends GetView<ManajemenMitraController> {
                             child: Container(),
                           ),
                           _button(
-                            onTap: () {
+                            onTap: () async {
+                              var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "61");
+                              if (!hasAccess) {
+                                return;
+                              }
+
+                              if(
+                                  controller.isRequestApproveTabApproveView.value && (controller.isUsingFilterApproveMitra.value || controller.listApproveRejectMitra.length > 0) ||
+                                  controller.isRequestApproveTabRequestView.value && (controller.isUsingFilterRequestMitra.value || controller.listRequestCancelMitra.length > 0)
+                              ) 
                               _showDialogInvite();
                             },
                             borderColor: Color(ListColor.colorLightGrey7),
@@ -579,22 +597,33 @@ class ManajemenMitraView extends GetView<ManajemenMitraController> {
                                         right: GlobalVariable.ratioWidth(
                                                 Get.context) *
                                             4),
-                                    child: SvgPicture.asset(
-                                      "assets/ic_undang_rekan_mitra.svg",
-                                      height: GlobalVariable.ratioWidth(
-                                              Get.context) *
-                                          12,
+                                    child: Obx(()=>
+                                      SvgPicture.asset(
+                                        "assets/ic_undang_rekan_mitra.svg",
+                                        height: GlobalVariable.ratioWidth(
+                                                Get.context) *12,
+                                        color: controller.invite.value == "true" && (
+                                            controller.isRequestApproveTabApproveView.value && (controller.isUsingFilterApproveMitra.value || controller.listApproveRejectMitra.length > 0) ||
+                                            controller.isRequestApproveTabRequestView.value && (controller.isUsingFilterRequestMitra.value || controller.listRequestCancelMitra.length > 0)
+                                        ) ? null : Color(ListColor.colorLightGrey2)
+                                      ),
                                     )),
                                 Container(
                                   margin: EdgeInsets.only(
                                       right: GlobalVariable.ratioWidth(
                                               Get.context) *
                                           8),
-                                  child: CustomText(
-                                    "PartnerManagementLabelInvitePartner".tr,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(ListColor.colorBlue),
+                                  child: Obx(()=>
+                                    CustomText(
+                                      "PartnerManagementLabelInvitePartner".tr,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                      color: controller.invite.value == "true" && (
+                                          controller.isRequestApproveTabApproveView.value && (controller.isUsingFilterApproveMitra.value || controller.listApproveRejectMitra.length > 0) ||
+                                          controller.isRequestApproveTabRequestView.value && (controller.isUsingFilterRequestMitra.value || controller.listRequestCancelMitra.length > 0)
+                                      )
+                                      ? Color(ListColor.colorBlue) : Color(ListColor.colorLightGrey2),
+                                    ),
                                   ),
                                 )
                               ],

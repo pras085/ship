@@ -18,6 +18,7 @@ class AdsPlacesCardBuyer extends StatefulWidget {
   final String title;
   final SelectLocationBuyerModel location;
   final String layananID;
+  final String layananName;
   final ADS_TYPE adsType;
 
   const AdsPlacesCardBuyer({ 
@@ -25,6 +26,7 @@ class AdsPlacesCardBuyer extends StatefulWidget {
     @required this.title,
     @required this.location,
     @required this.layananID,
+    @required this.layananName,
     @required this.adsType
   }) : super(key: key);
 
@@ -107,7 +109,7 @@ class _AdsPlacesCardBuyerState extends State<AdsPlacesCardBuyer> {
                       kategoriId: "${dataList[i]['KategoriID']}",
                       subKategoriId: "${dataList[i]['SubKategoriID']}",
                       data: dataList[i],
-                      layanan: "${dataList[i]['Kategori']['nama']}",
+                      layanan: widget.layananName,
                       onFavorited: () {
                         // addToWishlist(i);
                       }

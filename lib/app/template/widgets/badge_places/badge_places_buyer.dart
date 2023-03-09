@@ -90,7 +90,14 @@ class _BadgePlacesBuyerState extends State<BadgePlacesBuyer> {
               ),
             );
           }
-        } else if (response[1]['Message']['Code'] == 200 && (response[1]['Data'] is Map)) {
+        } else {
+          // error
+          if (response[0]['Message'] != null && response[0]['Message']['Text'] != null) {
+            throw("${response[0]['Message']['Text']}");
+          }
+          throw("failed to fetch data!");
+        }
+        if (response[1]['Message']['Code'] == 200 && (response[1]['Data'] is Map)) {
           if ("${response[1]['Data']['tsm']['value']}" != "0") {
             result.add(
               BadgePlacesModelBuyer(
@@ -109,7 +116,14 @@ class _BadgePlacesBuyerState extends State<BadgePlacesBuyer> {
               ),
             );
           }
-        } else if (response[2]['Message']['Code'] == 200 && (response[2]['Data'] is Map)) {
+        } else {
+          // error
+          if (response[1]['Message'] != null && response[1]['Message']['Text'] != null) {
+            throw("${response[1]['Message']['Text']}");
+          }
+          throw("failed to fetch data!");
+        }
+        if (response[2]['Message']['Code'] == 200 && (response[2]['Data'] is Map)) {
           if ("${response[2]['Data']['HargaTransportCount']}" != "0") {
             result.add(
               BadgePlacesModelBuyer(
@@ -130,13 +144,7 @@ class _BadgePlacesBuyerState extends State<BadgePlacesBuyer> {
           }
         } else {
           // error
-          if (response[0]['Message'] != null && response[0]['Message']['Text'] != null) {
-            throw("${response[0]['Message']['Text']}");
-          }
-          else if (response[1]['Message'] != null && response[1]['Message']['Text'] != null) {
-            throw("${response[1]['Message']['Text']}");
-          }
-          else if (response[2]['Message'] != null && response[2]['Message']['Text'] != null) {
+          if (response[2]['Message'] != null && response[2]['Message']['Text'] != null) {
             throw("${response[2]['Message']['Text']}");
           }
           throw("failed to fetch data!");

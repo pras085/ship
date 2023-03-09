@@ -81,7 +81,7 @@ class ListDataDesignFunction {
         // ]);
         var result = await Get.toNamed(Routes.OTHERSIDE, arguments: [
           dataTransporter.transporterID,
-          dataTransporter.isGoldTransporter
+          dataTransporter.isGoldTransporter,
         ]);
         if (resultValueFunction != null) resultValueFunction(result, index);
       },

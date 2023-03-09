@@ -167,15 +167,15 @@ class SearchInfoPermintaanMuatView
                                     margin: EdgeInsets.only(
                                         left: GlobalVariable.ratioWidth(
                                                 Get.context) *
-                                            8),
+                                            6),
                                     child: SvgPicture.asset(
                                       "assets/search_magnifition_icon.svg",
                                       width: GlobalVariable.ratioWidth(
                                               Get.context) *
-                                          20,
+                                          24,
                                       height: GlobalVariable.ratioWidth(
                                               Get.context) *
-                                          20,
+                                          24,
                                       color: Color(ListColor.color4),
                                     ),
                                   ),

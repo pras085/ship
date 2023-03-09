@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:muatmuat/app/core/function/cek_sub_user_dan_hak_akses.dart';
 
 class Bigfleets3Controller extends GetxController {
   //TODO: Implement BigfleetsController
@@ -14,11 +15,17 @@ class Bigfleets3Controller extends GetxController {
   ];
 
   var imageSliders = [].obs;
+  var transport = "true".obs;
+  var partner = "true".obs;
+  var loading = true.obs;
 
   final indexImageSlider = 0.obs;
 
   @override
-  void onInit() {
+  void onInit() async{
+    await cekTransport();
+    await cekMitra();
+    loading.value = false;
     imageSliders.value = imgList
         .map((item) => Container(
               child: Container(
@@ -64,4 +71,18 @@ class Bigfleets3Controller extends GetxController {
 
   @override
   void onClose() {}
+
+  Future<void> cekTransport() async {
+          var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "408", showDialog: false);
+          if (!hasAccess) {
+            transport.value = "false";
+          }
+    }
+
+  Future<void> cekMitra() async {
+          var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "607", showDialog: false);
+          if (!hasAccess) {
+            partner.value = "false";
+          }
+    }
 }

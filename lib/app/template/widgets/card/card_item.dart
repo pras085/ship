@@ -6,6 +6,10 @@ import 'package:muatmuat/app/template/utils/utils.dart';
 import 'package:muatmuat/app/widgets/custom_text.dart';
 import 'package:muatmuat/global_variable.dart';
 
+enum LabelColor {
+  yellow, orange, blue
+}
+
 /// Class ini merupakan base card yang digunakan di buyer
 abstract class CardItem extends StatelessWidget {
   final double padding;

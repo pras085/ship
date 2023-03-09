@@ -41,10 +41,11 @@ class _BarangLainnyaViewState extends State<BarangLainnyaView> {
 
   @override
   Widget build(BuildContext context) {
+    var namaSeller = controller.args['Data']['data_seller']['nama_indidivu_perusahaan'];
     if(
       controller.args['SubKategoriID'] == '13' // Repair & Maintenance | Proulk Lainnya
     ){
-      controller.args['Data']['data_seller']['nama_indidivu_perusahaan'] = controller.args['Data']['data_seller']['nama_seller'];
+      namaSeller = controller.args['Data']['data_seller']['nama_seller'];
     }
     return SafeArea(
       child: Scaffold(
@@ -58,7 +59,7 @@ class _BarangLainnyaViewState extends State<BarangLainnyaView> {
             Obx(() {
               return OtherProduct(
                 urlimg: controller.args['Data']['data_seller']['image_seller'], 
-                headertext: controller.args['Data']['data_seller']['nama_individu_perusahaan'], 
+                headertext: namaSeller ?? controller.args['Data']['data_seller']['nama_individu_perusahaan'], 
                 isVerified: controller.args['Data']['data_seller']['verified'] == 1, 
                 joined: controller.args['Data']['data_seller']['anggota_sejak'], 
                 ontap: () => DialogBuyer.showCallBottomSheet(listData: controller.args['Data'])

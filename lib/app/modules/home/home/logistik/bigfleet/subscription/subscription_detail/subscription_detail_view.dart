@@ -41,8 +41,12 @@ class SubscriptionDetailView extends GetView<SubscriptionDetailController> {
                     ? Material(
                         color: Colors.transparent,
                         child: InkWell(
-                          onTap: () {
+                          onTap: () async {
                             // Get.back();
+                            var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "584");
+                            if (!hasAccess) {
+                              return;
+                            }
                             controller.tapDownload = true;
                             controller.cekDownloadFile();
                           },
@@ -69,7 +73,11 @@ class SubscriptionDetailView extends GetView<SubscriptionDetailController> {
                         child: Material(
                           color: Colors.transparent,
                           child: InkWell(
-                            onTap: () {
+                            onTap: () async {
+                              var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "585");
+                              if (!hasAccess) {
+                                return;
+                              }
                               controller.shareFile();
                             },
                             child: SvgPicture.asset(
@@ -1270,7 +1278,7 @@ class SubscriptionDetailView extends GetView<SubscriptionDetailController> {
                   color: Color(ListColor.colorBlue),
                   useBorder: true,
                   onTap: () async {
-                    var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAkses(Get.context, "16");
+                    var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "16");
                     if (!hasAccess) {
                       return;
                     }
@@ -1282,7 +1290,7 @@ class SubscriptionDetailView extends GetView<SubscriptionDetailController> {
                 marginLeft: 6,
                 backgroundColor: Color(ListColor.colorBlue),
                 onTap: () async {
-                  var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAkses(Get.context, "16");
+                  var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "16");
                   if (!hasAccess) {
                     return;
                   }

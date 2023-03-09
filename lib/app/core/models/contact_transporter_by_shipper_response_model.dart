@@ -15,7 +15,7 @@ class ContactTransporterByShipperResponseModel {
     if (contactDataJson != null) {
       try {
         contactTransporterByShipperModel = ContactTransporterByShipperModel(
-            userID: contactDataJson["UserID"],
+            userID: contactDataJson["UserID"].toString(),
             namePic1: contactDataJson["NamePic1"],
             contactPic1: contactDataJson["ContactPic1"],
             namePic2: contactDataJson["NamePic2"],

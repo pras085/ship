@@ -31,14 +31,10 @@ class Utils {
   static formatDate({@required String value, @required String format}) {
     if (value.isEmpty) return "";
     if (Get.locale == null) return DateFormat(format).format(DateTime.parse(value));
-    return DateFormat(format).format(DateTime.parse(value));
+    return DateFormat(format, Get.locale == const Locale('id') ? 'id' : 'en_US').format(DateTime.parse(value));
   }
 
   static formatCurrency({@required num value, int decimalDigits = 2}) {
     return NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: value % 1 == 0 ? 0 : decimalDigits).format(value);
   }
-}
-
-enum LabelColor {
-  yellow, orange, blue
 }

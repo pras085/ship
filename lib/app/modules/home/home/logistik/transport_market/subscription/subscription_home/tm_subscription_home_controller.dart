@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:muatmuat/app/core/function/cek_sub_user_dan_hak_akses.dart';
 import 'package:muatmuat/app/core/function/get_to_page_function.dart';
 import 'package:muatmuat/app/core/function/global_alert_dialog.dart';
 import 'package:muatmuat/app/core/models/message_from_url_model.dart';
@@ -18,6 +19,7 @@ import 'package:muatmuat/app/routes/app_pages.dart';
 import 'package:muatmuat/app/style/list_colors.dart';
 import 'package:muatmuat/app/widgets/custom_text.dart';
 import 'package:muatmuat/app/utils/shared_preferences_helper.dart';
+import 'package:muatmuat/app/widgets/tutorial.dart';
 import 'package:muatmuat/global_variable.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
@@ -84,6 +86,7 @@ class TMSubscriptionHomeController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
+    initTargets();
     getDataCek();
   }
 
@@ -314,6 +317,10 @@ class TMSubscriptionHomeController extends GetxController {
         TMSubscriptionPopupKeuntungan.showAlertDialog(
             context: Get.context,
             onTap: () async {
+              var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "475");
+              if (!hasAccess) {
+                return;
+              }
               var result =
                   await GetToPage.toNamed<TMCreateSubscriptionController>(
                       Routes.TM_CREATE_SUBSCRIPTION,
@@ -334,75 +341,173 @@ class TMSubscriptionHomeController extends GetxController {
   }
 
   void showTutorial(context) {
-    tutorialCoachMark = TutorialCoachMark(
-      context,
-      targets: targets,
-      colorShadow: Color(ListColor.colorBlue3),
-      hideSkip: true,
-      textSkip: "",
-      paddingFocus: GlobalVariable.ratioWidth(Get.context) * 7,
-      opacityShadow: 0.9,
-      onFinish: () {
-        print("finish");
-      },
-      onClickTarget: (target) {
-        print('onClickTarget: $target');
-      },
-      onSkip: () {
-        print("skip");
-      },
-      onClickOverlay: (target) {
-        print('onClickOverlay: $target');
-      },
-    )..show();
+    Tutorial().showTutor(
+      context: context,
+      tcm: tutorialCoachMark,
+      targets: targets
+    );
+    // tutorialCoachMark = TutorialCoachMark(
+    //   context,
+    //   targets: targets,
+    //   colorShadow: Color(ListColor.colorBlue3).withOpacity(0.9),
+    //   hideSkip: true,
+    //   textSkip: "",
+    //   paddingFocus: GlobalVariable.ratioWidth(Get.context) * 7,
+    //   opacityShadow: 0.9,
+    //   onFinish: () {
+    //     print("finish");
+    //   },
+    //   onClickTarget: (target) {
+    //     print('onClickTarget: $target');
+    //   },
+    //   onSkip: () {
+    //     print("skip");
+    //   },
+    //   onClickOverlay: (target) {
+    //     print('onClickOverlay: $target');
+    //   },
+    // )..show();
   }
 
   void initTargets() {
     targets.add(
-      TargetFocus(
-        identify: "Target 0",
-        keyTarget: keyTutor0,
-        contents: [
-          TargetContent(
-            align: ContentAlign.bottom,
-            child: Container(
-              color: Colors.transparent,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    alignment: Alignment.center,
-                    color: Colors.purple,
-                    width: GlobalVariable.ratioWidth(Get.context) * 296,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        top: GlobalVariable.ratioWidth(Get.context) * 0,
-                        bottom: GlobalVariable.ratioWidth(Get.context) * 14
-                      ),
-                      child: CustomText(
-                        "Paket Langganan Saat Ini",
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18,
-                        height: 21.78/18,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  CustomText(
-                      "Pada section ini Anda dapat melihat status dan periode paket langganan Anda. Saat Ini Anda menikmati akses gratis Big Fleets selama 6 bulan.",
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      height: 18.2/14,
-                      color: Colors.white,
-                    ),
-                ],
-              ),
-            ))
-        ],
+      Tutorial().setTarget(
+        context: Get.context, 
+        identify: "0", 
+        globalKey: keyTutor0, 
+        title: "Paket Langganan Saat Ini", 
+        subTitle: "Pada section ini Anda dapat melihat status dan periode paket langganan Anda. Saat Ini Anda menikmati akses gratis Big Fleets selama 6 bulan.", 
+        contentAlign: ContentAlign.bottom, 
+        textAlign: ContentAlign.bottom,
         shape: ShapeLightFocus.RRect,
-        radius: GlobalVariable.ratioWidth(Get.context) * 10,
-      ),
+      )
     );
+
+    targets.add(
+      Tutorial().setTarget(
+        context: Get.context, 
+        identify: "1", 
+        globalKey: keyTutor1, 
+        title: "Langganan Sub User yang Sedang Aktif", 
+        subTitle: "Pada section ini Anda juga dapat melihat jumlah Sub User yang telah Anda aktifkan paket berlangganan setiap bulannya.", 
+        contentAlign: ContentAlign.top, 
+        textAlign: ContentAlign.top,
+        shape: ShapeLightFocus.RRect,
+      )
+    );
+
+    targets.add(
+      Tutorial().setTarget(
+        context: Get.context, 
+        identify: "2", 
+        globalKey: keyTutor2, 
+        title: "Tentukan Penugasan Sub User", 
+        subTitle: "Anda perlu memilih sub user untuk dapat bergabung mengelola perusahaan Anda di muatmuat pada batas periode berlangganan tertentu.", 
+        contentAlign: ContentAlign.bottom, 
+        textAlign: ContentAlign.bottom,
+        shape: ShapeLightFocus.RRect,
+      )
+    );
+
+    targets.add(
+      Tutorial().setTarget(
+        context: Get.context, 
+        identify: "3", 
+        globalKey: keyTutor3, 
+        title: "Pembayaran yang Belum Selesai", 
+        subTitle: "Lihat Pembayaran yang belum Anda selesaikan setelah Anda berhasil memesan paket berlangganan.", 
+        contentAlign: ContentAlign.bottom, 
+        textAlign: ContentAlign.bottom,
+        shape: ShapeLightFocus.RRect,
+      )
+    );
+
+    targets.add(
+      Tutorial().setTarget(
+        context: Get.context, 
+        identify: "4", 
+        globalKey: keyTutor4, 
+        title: "Riwayat Pembayaran Paket Berlangganan", 
+        subTitle: "Anda dapat melihat pembayaran paket berlangganan yang pernah berhasil Anda pesan sebelumnya.", 
+        contentAlign: ContentAlign.bottom, 
+        textAlign: ContentAlign.bottom,
+        shape: ShapeLightFocus.RRect,
+        skipAlign: Alignment.topRight
+      )
+    );
+
+    // targets.add(
+    //   TargetFocus(
+    //     identify: "Target 0",
+    //     keyTarget: keyTutor0,
+    //     contents: [
+    //       TargetContent(
+    //         align: ContentAlign.bottom,
+    //         child: Container(
+    //           color: Colors.transparent,
+    //           child: Column(
+    //             mainAxisSize: MainAxisSize.min,
+    //             crossAxisAlignment: CrossAxisAlignment.center,
+    //             children: <Widget>[
+    //               Container(
+    //                 alignment: Alignment.center,
+    //                 width: GlobalVariable.ratioWidth(Get.context) * 296,
+    //                 child: Padding(
+    //                   padding: EdgeInsets.only(
+    //                     top: GlobalVariable.ratioWidth(Get.context) * 0,
+    //                     bottom: GlobalVariable.ratioWidth(Get.context) * 14
+    //                   ),
+    //                   child: CustomText(
+    //                     "Paket Langganan Saat Ini",
+    //                     fontWeight: FontWeight.w700,
+    //                     textAlign: TextAlign.center,
+    //                     fontSize: 18,
+    //                     height: 21.78/18,
+    //                     color: Colors.white,
+    //                   ),
+    //                 ),
+    //               ),
+    //               Container(
+    //                 alignment: Alignment.center,
+    //                 width: GlobalVariable.ratioWidth(Get.context) * 296,
+    //                 child: CustomText(
+    //                   "Pada section ini Anda dapat melihat status dan periode paket langganan Anda. Saat Ini Anda menikmati akses gratis Big Fleets selama 6 bulan.",
+    //                   fontWeight: FontWeight.w600,
+    //                   textAlign: TextAlign.center,
+    //                   fontSize: 14,
+    //                   height: 18.2/14,
+    //                   color: Colors.white,
+    //                 ),
+    //               ),
+    //             ],
+    //           ),
+    //         )),
+    //       TargetContent(
+    //         align: ContentAlign.custom,
+    //         customPosition: 
+    //           CustomTargetContentPosition(
+    //             left: GlobalVariable.ratioWidth(Get.context) * 269,
+    //             // left: 0,
+    //             bottom: GlobalVariable.ratioWidth(Get.context) * 30
+    //           )
+    //         ,
+    //         child: Column(
+    //           crossAxisAlignment: CrossAxisAlignment.start,
+    //           mainAxisSize: MainAxisSize.min,
+    //           children: <Widget> [
+    //             CustomText(
+    //               "LEWATI",
+    //               color: Colors.white, 
+    //               fontWeight: FontWeight.w700,
+    //               fontSize: 14,
+    //             ),
+    //           ],
+    //         )
+    //       )
+    //     ],
+    //     shape: ShapeLightFocus.RRect,
+    //     radius: GlobalVariable.ratioWidth(Get.context) * 10,
+    //   ),
+    // );
   }
 }

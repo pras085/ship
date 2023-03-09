@@ -20,18 +20,24 @@ class ChangeLanguage {
   ChangeLanguage(this.context);
 
   Future getLanguage({checkAPI = true}) async {
-    if (checkAPI) {
-      var responseBody = await ApiHelper(
-              context: context,
-              isShowDialogLoading: false,
-              isShowDialogError: false)
-          .fetchLanguage();
-      Map languageMap;
-      if (responseBody != null && responseBody is Map && (responseBody).isNotEmpty) {
-        languageMap = await ChangeLanguageResponseModel().fromJson(context, responseBody);
-        await setLanguage(map: Map<String, String>.from(languageMap));
-        Get.forceAppUpdate();
+    try{
+      if (checkAPI) {
+        var responseBody = await ApiHelper(
+                context: context,
+                isShowDialogLoading: false,
+                isShowDialogError: false)
+            .fetchLanguage();
+        Map languageMap;
+        if (responseBody != null && responseBody is Map && (responseBody).isNotEmpty) {
+          languageMap = await ChangeLanguageResponseModel().fromJson(context, responseBody);
+          await setLanguage(map: Map<String, String>.from(languageMap));
+          Get.forceAppUpdate();
+        } 
       } else {
+        await setLanguage();
+        Get.forceAppUpdate();
+      }
+    } catch (error) {
         GlobalAlertDialog.showAlertDialogCustom(
           context: context,
           title: "Error",
@@ -43,10 +49,6 @@ class ChangeLanguage {
             await getLanguage(checkAPI: true);
           });
       }
-    } else {
-      await setLanguage();
-      Get.forceAppUpdate();
-    }
   }
 
   Future setLanguage({Map<String, String> map}) async {
@@ -64,7 +66,7 @@ class ChangeLanguage {
           GlobalVariable.languageCode: languageMap
         });
       }
-    } catch(eror){
+    } catch(error){
       GlobalAlertDialog.showAlertDialogCustom(
         context: context,
         title: "Error",

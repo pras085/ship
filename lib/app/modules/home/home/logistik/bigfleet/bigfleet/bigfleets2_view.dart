@@ -44,10 +44,6 @@ class Bigfleets2View extends GetView<Bigfleets2Controller> {
   List<BigfleetMenuIcon> _listMenuIcon = [
     BigfleetMenuIcon('Subscription', "subscription.png",
         ListColor.colorBackgroundCircleBigFleetSubscription, () async {
-          var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAkses(Get.context, "589");
-          if (!hasAccess) {
-            return;
-          }
           GetToPage.toNamed<SubscriptionHomeController>(Routes.SUBSCRIPTION_HOME);
     }),
     BigfleetMenuIcon('BigFleetsLabelMenuTransporter'.tr, "truck_icon.png",

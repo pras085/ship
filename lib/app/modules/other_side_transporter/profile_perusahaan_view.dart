@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:muatmuat/app/core/function/cek_sub_user_dan_hak_akses.dart';
 import 'package:muatmuat/app/core/function/get_to_page_function.dart';
 import 'package:muatmuat/app/modules/home/home/logistik_new/report/report_controller.dart';
 import 'package:muatmuat/app/modules/notification/notif_controller.dart';
@@ -37,35 +38,68 @@ import 'profile_perusahaan_model.dart';
 class OtherSideTransView extends GetView<OtherSideTransController> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBarProfile(
-        isBlueMode: true,
-        title: "Profil Transporter",
-        isWithShadow: false,
-        prefixIcon: [
-          InkWell(
-            onTap: () {
-              GetToPage.toNamed<NotifControllerNew>(
-                                    Routes.NOTIF);
-            },
-            child: SvgPicture.asset('assets/ic_notif_on.svg',
-              width: GlobalVariable.ratioWidth(context) * 24,
-              height: GlobalVariable.ratioWidth(context) * 24,
+    return Obx(
+      ()=> 
+      controller.loading.value == true?
+      Container(
+      color: Colors.white,
+      height: MediaQuery.of(Get.context).size.height,
+      child: Center(
+        child: CircularProgressIndicator()
+        ),
+      ) :
+      Scaffold(
+        appBar: AppBarProfile(
+          isBlueMode: true,
+          title: "Profil Transporter",
+          isWithShadow: false,
+          prefixIcon: [
+            InkWell(
+              onTap: () async{
+            var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "674");
+            if (!hasAccess) {
+              return;
+            }
+            GetToPage.toNamed<NotifControllerNew>(
+                                      Routes.NOTIF);
+              },
+              child: Image.asset('assets/share_new_on.png',
+                width: GlobalVariable.ratioWidth(context) * 24,
+                height: GlobalVariable.ratioWidth(context) * 24,
+                color: controller.canshare.value == false ? Color(0xFFCECECE) : Colors.white,
+              ),
             ),
-          ),
-        ],
+            SizedBox(
+              width: GlobalVariable.ratioWidth(context) * 16,
+            ),
+            InkWell(
+              onTap: () async {
+                var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "584");
+            if (!hasAccess) {
+              return;
+            }
+            GetToPage.toNamed<NotifControllerNew>(Routes.NOTIF);
+              },
+              child: Image.asset('assets/download_new_on.png',
+                width: GlobalVariable.ratioWidth(context) * 24,
+                height: GlobalVariable.ratioWidth(context) * 24,
+                color: controller.candownload.value == false ? Color(0xFFCECECE) : Colors.white,
+              ),
+            ),
+          ],
+        ),
+        body: Obx(() {
+          if (controller.dataModelResponse.value.state == ResponseStates.COMPLETE) {
+            return _content(context, controller.dataModelResponse.value.data);
+          } else if (controller.dataModelResponse.value.state == ResponseStates.ERROR) {
+            return ErrorDisplayComponent("${controller.dataModelResponse.value.exception}",
+              onRefresh: () => controller.fetchDataCompany(),
+            );
+          }
+          return Container();
+          // return LoadingComponent();
+        }),
       ),
-      body: Obx(() {
-        if (controller.dataModelResponse.value.state == ResponseStates.COMPLETE) {
-          return _content(context, controller.dataModelResponse.value.data);
-        } else if (controller.dataModelResponse.value.state == ResponseStates.ERROR) {
-          return ErrorDisplayComponent("${controller.dataModelResponse.value.exception}",
-            onRefresh: () => controller.fetchDataCompany(),
-          );
-        }
-        return Container();
-        // return LoadingComponent();
-      }),
     );
   }
 

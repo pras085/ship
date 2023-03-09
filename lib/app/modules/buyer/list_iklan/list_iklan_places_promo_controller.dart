@@ -37,7 +37,11 @@ class ListIklanPlacesPromoController extends GetxController {
   var isLoading = false.obs;
   var scrollController = ScrollController();
   var bannerKey = GlobalKey();
+  var badgeKey = GlobalKey();
   var lastPosition = 0.0.obs;
+
+  var isBF = true.obs;
+  var isTM = true.obs;
 
   Future fetchDataIklan({refresh = true}) async {
     try {
@@ -47,8 +51,20 @@ class ListIklanPlacesPromoController extends GetxController {
         page.value = 0; // reset value
       }
 
+      // HARDCODED FOR PROMO KAB/KOTA
+      String kategoriId = "${argument.value['KategoriID']}";
+      String subKategoriId = "${argument.value['ID']}";
+      if (kategoriId == "54") {
+        kategoriId = "54,55";
+      }
+      if (subKategoriId == "50") {
+        subKategoriId = "50,51";
+      }
+
       // ensure argument is not null, initialize on "onInit" func in view
       final body = {
+        'KategoriID': kategoriId,
+        'SubKategoriID': subKategoriId,
         'search': searchResult.value,
         'limit': "5",
         'pageNow': "${page.value+1}",
@@ -122,7 +138,7 @@ class ListIklanPlacesPromoController extends GetxController {
           
           if (refresh) {
             lastPosition.value = 0;
-            Future.delayed(Duration(milliseconds: 200), () {
+            Future.delayed(Duration(milliseconds: 500), () {
               getCurrentPosition(first: true);
             });
           }
@@ -165,8 +181,7 @@ class ListIklanPlacesPromoController extends GetxController {
     double counter = 499;
 
     if (first) {
-      // Belum ditambahkan tinggi listview
-      lastPosition.value = counter + getWidgetSizeByKey(bannerKey).height;
+      lastPosition.value = counter + getWidgetSizeByKey(bannerKey).height + getWidgetSizeByKey(badgeKey).height;
     } else {
       lastPosition.value += counter;
     }

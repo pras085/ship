@@ -175,6 +175,7 @@ class RulesDetailIklanBuyer {
         (
           subKategoriId != "28" // Dealer & Karoseri | Perusahaan Lainnya
           || subKategoriId == "18" // Property & Warehouse | Jasa Pergudangan
+          || subKategoriId == "49" // Places & Promo | Places
         )
       )
         list.add(_contentDetailPopup(context: context, title: "Kelebihan", content: data['Kelebihan']));
@@ -184,7 +185,6 @@ class RulesDetailIklanBuyer {
         (
           subKategoriId == "18" // Property & Warehouse | Jasa Pergudangan
           || subKategoriId == "19" // Property & Warehouse | PLB
-          || subKategoriId == "49" // Places & Promo | Places
         )
       )
         list.add(_contentDetailPopup(context: context, title: "Layanan", content: data['Layanan']));
@@ -399,7 +399,7 @@ class RulesDetailIklanBuyer {
 
       var mainImage = "${data['LogoPerusahaan'][0] ?? ""}";
       var title = "${data['data_seller']['nama_individu_perusahaan'] ?? ''}";
-      if (subKategoriId == "57") {
+      if (subKategoriId == "57") { // Human Capital | HR Consultant & Training
         mainImage = "${data['data_seller']['TypeUser']}" == "0" ? data['data_seller']['image_seller'] ?? "" : data['LogoPerusahaan'][0] ?? "";
         title = "${data['data_seller']['TypeUser']}" == "0" ? data['data_seller']['nama_seller'] ?? "" : data['data_seller']['nama_individu_perusahaan'] ?? "";
       }
@@ -594,7 +594,18 @@ class RulesDetailIklanBuyer {
                         title: title,
                         isPromo: true
                       ));
-                    } else {
+                    }
+                    else if(
+                      subKategoriId == "14" // Repair & Maintenance | Perusahaan Lainnya
+                    ){
+                      title = data['data_seller']['nama_seller']; 
+                      Get.to(() => DetailAllListCard(
+                        data: data, 
+                        title: title,
+                        isPromo: true
+                      ));
+                    } 
+                    else {
                       Get.to(() => DetailAllListCard(data: data, isPromo: true));
                     }
                   },
@@ -638,32 +649,34 @@ class RulesDetailIklanBuyer {
                 // Refo4 <
                 // Refo4 >
               )
-                Column(
-                  children: [
-                    DetailCardBrosurBuyer(
-                      cardList: List.from(data['Brosur']).map((e) => {
-                        'name': e['Brosur_judul'],
-                        'image': (e['Brosur_image'] is List && (e['Brosur_image'] as List).length > 0) ? e['Brosur_image'][0] ?? "" : e['Brosur_image'] ?? "",
-                      }).toList(),
-                      onCardTap: (i) {
-                        Get.to(() => MediaPreviewBuyer(
-                          urlMedia: [
-                            if ((data['Brosur'][i]['Brosur_image'] is List && (data['Brosur'][i]['Brosur_image'] as List).length > 0))
-                              ...List.from(data['Brosur'][i]['Brosur_image']).map((e) {
-                                return e;
-                              }).toList()
-                            else data['Brosur'][i]['Brosur_image'] ?? "",
-                          ], 
-                          hideIndicator: true, 
-                        ));
-                      }, 
-                      onShowAllTap: () => Get.to(() => DetailAllListCard(data: data, isPromo: false)),
-                    ),
-                    SizedBox(
-                      height: GlobalVariable.ratioWidth(context) * 24,
-                    ),
-                  ],
-                ),
+                if (data['Brosur'] != null && data['Brosur'] != '' && data['Brosur'] is List && (data['Brosur'] as List).length > 0 ) ...[
+                  Column(
+                    children: [
+                      DetailCardBrosurBuyer(
+                        cardList: List.from(data['Brosur']).map((e) => {
+                          'name': e['Brosur_judul'],
+                          'image': (e['Brosur_image'] is List && (e['Brosur_image'] as List).length > 0) ? e['Brosur_image'][0] ?? "" : e['Brosur_image'] ?? "",
+                        }).toList(),
+                        onCardTap: (i) {
+                          Get.to(() => MediaPreviewBuyer(
+                            urlMedia: [
+                              if ((data['Brosur'][i]['Brosur_image'] is List && (data['Brosur'][i]['Brosur_image'] as List).length > 0))
+                                ...List.from(data['Brosur'][i]['Brosur_image']).map((e) {
+                                  return e;
+                                }).toList()
+                              else data['Brosur'][i]['Brosur_image'] ?? "",
+                            ], 
+                            hideIndicator: true, 
+                          ));
+                        }, 
+                        onShowAllTap: () => Get.to(() => DetailAllListCard(data: data, isPromo: false)),
+                      ),
+                      SizedBox(
+                        height: GlobalVariable.ratioWidth(context) * 24,
+                      ),
+                    ],
+                  )
+                ],
               if (data['Testimoni'] != null && data['Testimoni'] != '' && data['Testimoni'] is List && (data['Testimoni'] as List).length > 0 )
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: GlobalVariable.ratioWidth(context) * 16),
@@ -675,7 +688,7 @@ class RulesDetailIklanBuyer {
                   ),
                 ),
               if (
-                subKategoriId == "12"
+                subKategoriId == "12" // Repair & Maintenance | Teknisi
               ) 
                 DetailCardServiceBuyer(
                   cardList: List.from(data['JasaServis']).map((e) => {
@@ -764,6 +777,7 @@ class RulesDetailIklanBuyer {
       String namaSeller = '${data['data_seller']['nama_individu_perusahaan']}';
       if(
         subKategoriId == '13' // Repair & Maintenance | Produk Lainnya
+        || subKategoriId == '14' // Repair & Maintenance | Perusahaan Lainnya
       ){
         namaSeller = '${data['data_seller']['nama_seller']}';
       }

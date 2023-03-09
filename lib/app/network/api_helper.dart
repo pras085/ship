@@ -37,21 +37,29 @@ class ApiHelper {
   static String urlzo = "https://zo3.assetlogistik.com/";
   static String urlzo2 = "https://zo2.assetlogistik.com/";
   static String urlInternal = "https://internalqc.assetlogistik.com/";
+  // static String urlIklan = "https://iklanqc.assetlogistik.com/";
+  // static String urlSeller = "https://apiiklanqc.assetlogistik.com/";
+  // static String urlBanner = "https://banneradsqc.assetlogistik.com/";
 
   //url developer
   // static String url = "https://devintern.assetlogistik.com/";
   // static String urlzo = "https://devzo.assetlogistik.com/";
   // static String urlzo2 = "https://zo1.assetlogistik.com/";
   // static String urlInternal = "https://internal.assetlogistik.com/";
+  static String urlIklan = "https://iklan.assetlogistik.com/";
+  static String urlSeller = "https://apiiklan.assetlogistik.com/";
+  static String urlBanner = "https://bannerads.assetlogistik.com/";
+
+  static String urlFian = "https://dev.assetlogistik.com/";
 
   //url demo
   // static String url = "https://demobf.assetlogistik.id/";
   // static String urlzo = "https://demotm.assetlogistik.id/";
   // static String urlzo2 = "https://demotmlelang.assetlogistik.id/";
   // static String urlInternal = "https://demo.assetlogistik.id/";
-  static String urlIklan = "https://demoiklan.assetlogistik.id/";
-  static String urlSeller = "https://apiiklan.assetlogistik.com/";
-  static String urlBanner = "https://bannerads.assetlogistik.com/";
+  // static String urlIklan = "https://demoiklan.assetlogistik.id/";
+  // static String urlSeller = "https://apiiklan.assetlogistik.com/";
+  // static String urlBanner = "https://bannerads.assetlogistik.com/";
 
   //final String _url = "192.168.31.9/wfh/";
   //"http://47.241.76.187/muatmuat/";

@@ -215,6 +215,7 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
             errorStyle: TextStyle(
                 height: widget.isShowError ? null : 0,
                 color: errorColor,
+                fontWeight: FontWeight.w600,
                 fontSize: widget.isShowError
                     ? GlobalVariable.ratioFontSize(context) * 12
                     : 0),

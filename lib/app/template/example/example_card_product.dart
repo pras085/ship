@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:muatmuat/app/template/utils/utils.dart';
 import 'package:muatmuat/app/template/widgets/card/card_company.dart';
+import 'package:muatmuat/app/template/widgets/card/card_item.dart';
 import 'package:muatmuat/app/template/widgets/card/card_product.dart';
 import 'package:muatmuat/app/widgets/appbar_detail.dart';
 import 'package:muatmuat/global_variable.dart';

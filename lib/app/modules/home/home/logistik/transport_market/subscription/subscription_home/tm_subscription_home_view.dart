@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:muatmuat/app/core/function/cek_sub_user_dan_hak_akses.dart';
 import 'package:muatmuat/app/core/function/custom_toast.dart';
 import 'package:muatmuat/app/core/function/get_to_page_function.dart';
 import 'package:muatmuat/app/modules/home/home/logistik/transport_market/subscription/alert_dialog/tm_subscription_popup_keuntungan.dart';
@@ -123,8 +124,9 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
                       ],
                     ))
                 : TutorListener(
+                  tutorAwal: true,
                   listener: () async {
-                    // controller.showTutorial(context);
+                    controller.showTutorial(context);
                     // print("tes call");
                   },
                     child: Container(
@@ -203,6 +205,10 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
                                 ],
                               ),
                               onTap: () async {
+                                var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "475");
+                                if (!hasAccess) {
+                                  return;
+                                }
                                 var result = await GetToPage.toNamed<
                                     TMSubscriptionMenungguPembayaranListController>(
                                   Routes.TM_SUBSCRIPTION_MENUNGGU_PEMBAYARAN_LIST,
@@ -367,7 +373,11 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
                           )
                         ],
                       ),
-                      onTap: () {
+                      onTap: () async {
+                        var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "478");
+                        if (!hasAccess) {
+                          return;
+                        }
                         GetToPage.toNamed<
                                 TMSubscriptionRiwayatLanggananBFDanSUListController>(
                             Routes
@@ -390,6 +400,10 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
             fontWeight: tipeFirst ? FontWeight.w700 : FontWeight.w600,
             onTap: () async {
               // if (tipeFirst) {
+              var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "475");
+              if (!hasAccess) {
+                return;
+              }
               var result =
                   await GetToPage.toNamed<TMCreateSubscriptionController>(
                       Routes.TM_CREATE_SUBSCRIPTION,
@@ -517,7 +531,11 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
                     )
                   ],
                 ),
-                onTap: () {
+                onTap: () async {
+                  var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "478");
+                  if (!hasAccess) {
+                    return;
+                  }
                   GetToPage.toNamed<
                           TMSubscriptionRiwayatLanggananBFDanSUListController>(
                       Routes.TM_SUBSCRIPTION_RIWAYAT_LANGGANAN_BF_DAN_SU_LIST,
@@ -547,6 +565,10 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
                 color: Color(ListColor.colorBlue),
                 maxWidth: true,
                 onTap: () async {
+                  var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "480");
+                  if (!hasAccess) {
+                    return;
+                  }
                   var result =
                       await GetToPage.toNamed<TMCreateSubscriptionController>(
                           Routes.TM_CREATE_SUBSCRIPTION,
@@ -950,7 +972,11 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
                           )
                         ],
                       ),
-                      onTap: () {
+                      onTap: () async {
+                        var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "479");
+                        if (!hasAccess) {
+                          return;
+                        }
                         GetToPage.toNamed<
                                 TMSubscriptionRiwayatLanggananBFDanSUListController>(
                             Routes
@@ -975,6 +1001,10 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
                 color: Color(ListColor.colorBlue),
                 maxWidth: true,
                 onTap: () async {
+                  var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "476");
+                  if (!hasAccess) {
+                    return;
+                  }
                   var result =
                       await GetToPage.toNamed<TMCreateSubuserController>(
                           Routes.TM_CREATE_SUBUSER,
@@ -1005,7 +1035,12 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
             borderRadius: 20,
             color: Color(ListColor.colorBlue),
             maxWidth: true,
-            onTap: () {}),
+            onTap: () async {
+              var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "477");
+              if (!hasAccess) {
+                return;
+              }
+            }),
         Container(
           height: GlobalVariable.ratioWidth(Get.context) * 16,
         )
@@ -1092,6 +1127,10 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
             color: Color(ListColor.colorBlue),
             maxWidth: true,
             onTap: () async {
+              var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "481");
+              if (!hasAccess) {
+                return;
+              }
               var result = await GetToPage.toNamed<TMCreateSubuserController>(
                   Routes.TM_CREATE_SUBUSER,
                   arguments: [
@@ -1122,7 +1161,12 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
                 borderRadius: 20,
                 color: Color(ListColor.colorBlue),
                 maxWidth: true,
-                onTap: () {})
+                onTap: () async {
+                  var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "482");
+                  if (!hasAccess) {
+                    return;
+                  }
+                })
             : Container(),
         Container(
           height: GlobalVariable.ratioWidth(Get.context) * 16,

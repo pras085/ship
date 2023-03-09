@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:muatmuat/app/core/function/cek_sub_user_dan_hak_akses.dart';
 import 'package:muatmuat/app/core/function/get_to_page_function.dart';
 import 'package:muatmuat/app/modules/ARK/cari_harga_transport/cari_harga_transport/cari_harga_transport_controller.dart';
 import 'package:muatmuat/app/modules/ARK/cari_harga_transport/hasil_cari_harga_transport/hasil_cari_harga_transport_controller.dart';
@@ -34,7 +35,11 @@ class TransportMarketView extends GetView<TransportMarketController> {
         title: "TransportMarketIndexLabelSubscription".tr, //Subscription
         icon: GlobalVariable.imagePath + "ic_subscription.svg",
         color: ListColor.colorWhite,
-        onPress: () {
+        onPress: () async {
+          var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "612");
+          if (!hasAccess) {
+            return;
+          }
           GetToPage.toNamed<TMSubscriptionHomeController>(Routes.TM_SUBSCRIPTION_HOME);
         }),
     MenuHorizontalScrollTransportMarket(

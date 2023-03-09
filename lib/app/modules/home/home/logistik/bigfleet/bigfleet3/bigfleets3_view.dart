@@ -14,8 +14,11 @@ import 'package:muatmuat/app/modules/home/home/logistik/bigfleet/subscription/su
 import 'package:muatmuat/app/routes/app_pages.dart';
 import 'package:muatmuat/app/style/list_colors.dart';
 import 'package:muatmuat/app/core/function/get_to_page_function.dart';
+import 'package:muatmuat/app/widgets/back_button.dart';
 import 'package:muatmuat/app/widgets/custom_text.dart';
 import 'package:muatmuat/global_variable.dart';
+
+import 'instant_order/instant-order-view.dart';
 
 class Bigfleets3View extends GetView<Bigfleets3Controller> {
   double _heightAppBar = 96; //AppBar().preferredSize.height;
@@ -67,7 +70,7 @@ class Bigfleets3View extends GetView<Bigfleets3Controller> {
     BigfleetMenuIcon('Subscription', "subscription.png",
     0xFF8CC036, 
     () async {
-          var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAkses(Get.context, "589");
+          var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "589");
           if (!hasAccess) {
             return;
           }
@@ -128,7 +131,7 @@ class Bigfleets3View extends GetView<Bigfleets3Controller> {
         'Instant Order',
         "icon_instant_tender.png",
         0xFF5EC6CD, () {
-      Get.toNamed(Routes.LIST_INFO_PERMINTAAN_MUAT);
+      Get.toNamed(Routes.INSTANT_ORDER);
     }),
     BigfleetMenuIcon(
         'Invoice dan Piutang',
@@ -350,7 +353,12 @@ class Bigfleets3View extends GetView<Bigfleets3Controller> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                _backButtonWidget(),
+                                CustomBackButton(
+                                  context: context, 
+                                  onTap: () {
+                                    Get.back();
+                                  }
+                                ),
                                 CustomText('Big Fleets', color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700,),
                                 Container(height:  GlobalVariable.ratioWidth(context) * 13, width:  GlobalVariable.ratioWidth(context) * 44,
                                 decoration: BoxDecoration(

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:muatmuat/app/core/function/cek_sub_user_dan_hak_akses.dart';
 import 'package:muatmuat/app/core/function/custom_toast.dart';
 import 'package:muatmuat/app/core/function/get_to_page_function.dart';
 import 'package:muatmuat/app/modules/api_profile.dart';
@@ -33,10 +34,16 @@ class OtherSideTransController extends GetxController {
   var totaltestimoni = "".obs;
   var averagetestimoni = "".obs;
   var totalunittruck = "".obs;
+  var canshare = true.obs;
+  var candownload = true.obs;
+  var loading = true.obs;
 
   @override
   void onInit() async {
     super.onInit();
+    await cekShare();
+    await cekDownload();
+    loading.value = false;
     log(Get.arguments[0].toString() + 'yuta');
     log(Get.arguments[1].toString());
     idtrans.value = Get.arguments[0].toString();
@@ -122,6 +129,20 @@ class OtherSideTransController extends GetxController {
       
     }
   }
+
+   Future<void> cekShare() async {
+      var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "408", showDialog: false);
+      if (!hasAccess) {
+        canshare.value = false;
+      }
+    }
+
+   Future<void> cekDownload() async {
+      var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "408", showDialog: false);
+      if (!hasAccess) {
+        candownload.value = false;
+      }
+    }
 
   double getPercentage() {
     double result = 0;

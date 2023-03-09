@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dash/flutter_dash.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:muatmuat/app/core/function/cek_sub_user_dan_hak_akses.dart';
 import 'package:muatmuat/app/modules/home/home/logistik/transport_market/subscription/models/tm_tipe_paket.dart';
 import 'package:muatmuat/app/modules/home/home/logistik/transport_market/subscription/subscription_detail/tm_subscription_detail_controller.dart';
 import 'package:muatmuat/app/style/list_colors.dart';
@@ -47,8 +48,12 @@ class TMSubscriptionDetailView extends GetView<TMSubscriptionDetailController> {
                     ? Material(
                         color: Colors.transparent,
                         child: InkWell(
-                          onTap: () {
+                          onTap: () async {
                             // Get.back();
+                            var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "487");
+                            if (!hasAccess) {
+                              return;
+                            }
                             controller.tapDownload = true;
                             controller.cekDownloadFile();
                           },
@@ -73,7 +78,11 @@ class TMSubscriptionDetailView extends GetView<TMSubscriptionDetailController> {
                         child: Material(
                           color: Colors.transparent,
                           child: InkWell(
-                            onTap: () {
+                            onTap: () async {
+                              var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "488");
+                              if (!hasAccess) {
+                                return;
+                              }
                               controller.shareFile();
                             },
                             child: SvgPicture.asset(
@@ -1266,7 +1275,11 @@ class TMSubscriptionDetailView extends GetView<TMSubscriptionDetailController> {
                   marginRight: 6,
                   color: Color(ListColor.colorBlue),
                   useBorder: true,
-                  onTap: () {
+                  onTap: () async {
+                    var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "475");
+                    if (!hasAccess) {
+                      return;
+                    }
                     controller.showAskBatalDialog();
                   })),
           Expanded(
@@ -1274,7 +1287,11 @@ class TMSubscriptionDetailView extends GetView<TMSubscriptionDetailController> {
                 text: "SubscriptionPayNow".tr,
                 marginLeft: 6,
                 backgroundColor: Color(ListColor.colorBlue),
-                onTap: () {
+                onTap: () async {
+                  var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "475");
+                  if (!hasAccess) {
+                    return;
+                  }
                   controller.bayarSekarang();
                 }),
           ),

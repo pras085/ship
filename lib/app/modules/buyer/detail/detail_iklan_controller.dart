@@ -26,8 +26,8 @@ class DetailIklanController extends GetxController {
 
       if (isRefresh) dataModelResponse.value = ResponseState.loading();
       final body = {
-        'KategoriID': "${args.value['KategoriID']}",
-        'SubKategoriID': subKategoriId,
+        'KategoriID': "${subKategoriId == "49" ? args.value['KategoriPlacesID'] : args.value['KategoriID']}",
+        'SubKategoriID': subKategoriId == "49" ? args.value['SubKategoriPlacesID'] : subKategoriId,
         'IklanID': "${args.value['IklanID']}",
       };
       // add user ID if there is a user

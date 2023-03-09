@@ -150,6 +150,8 @@ import 'package:muatmuat/app/modules/ARK/proses_tender/search_proses_tender/sear
 import 'package:muatmuat/app/modules/ARK/proses_tender/search_proses_tender/search_proses_tender_view.dart';
 import 'package:muatmuat/app/modules/ARK/tender/tender_binding.dart';
 import 'package:muatmuat/app/modules/ARK/tender/tender_view.dart';
+import 'package:muatmuat/app/modules/home/home/logistik/bigfleet/bigfleet3/instant_order/instant-order-binding.dart';
+import 'package:muatmuat/app/modules/home/home/logistik/bigfleet/bigfleet3/instant_order/instant-order-view.dart';
 import 'package:muatmuat/app/modules/home/home/logistik_new/report/report_binding.dart';
 import 'package:muatmuat/app/modules/home/home/logistik_new/report/report_view.dart';
 import 'package:muatmuat/app/modules/home/home/logistik_new/testimoni/testimoni_binding.dart';
@@ -1360,6 +1362,12 @@ class AppPages {
       name: Routes.NOTIF_CHAT_SCREEN,
       page: () => NotifChatView(),
       binding: NotifChatBinding(),
+    ),
+
+    GetPage(
+      name: Routes.INSTANT_ORDER,
+      page: () => InstantOrderView(),
+      binding: InstantOrderBinding(),
     ),
     // //transport market
     // GetPage(

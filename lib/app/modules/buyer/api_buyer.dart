@@ -122,12 +122,12 @@ class ApiBuyer {
 
   Future getCounterIklan(Map<String, dynamic> body) async {
     return await _apiHelper.fetchDataFromUrlPOSTMuatMuat(
-        ApiHelper.urlSeller + "api/get_counter_iklan", body);
+        ApiHelper.urlFian + "api/get_counter_iklan", body);
   }
 
   Future getPlacesPromo(Map<String, dynamic> body) async {
     return await _apiHelper.fetchDataFromUrlPOSTMuatMuat(
-        ApiHelper.urlSeller + "api/get_places_promo", body);
+        ApiHelper.urlzo + "api/get_places_promo", body);
   }
 
 }

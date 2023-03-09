@@ -8,9 +8,13 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 class TutorialAwal extends StatefulWidget {
   final Widget child;
+  final bool tutorAwal;
+  final Function onTap;
   TutorialAwal({
     Key key,
     this.child,
+    this.tutorAwal,
+    this.onTap,
 
   }) : super(key: key);
 
@@ -24,10 +28,11 @@ class _TutorialAwalState extends State<TutorialAwal> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      createHighlightOverlay();
+      if (widget.tutorAwal) {
+        createHighlightOverlay(widget.onTap);
+      }
       return;
     });
-    // createHighlightOverlay();
     return widget.child;
   }
 
@@ -44,7 +49,7 @@ class _TutorialAwalState extends State<TutorialAwal> {
     super.dispose();
   }
 
-  void createHighlightOverlay() {
+  void createHighlightOverlay(Function onTap) {
     // Remove the existing OverlayEntry.
     removeHighlightOverlay();
 
@@ -56,6 +61,7 @@ class _TutorialAwalState extends State<TutorialAwal> {
         return GestureDetector(
           onTap: (){
             removeHighlightOverlay();
+            onTap();
           },
           child: SafeArea(
             child: Stack(
@@ -286,11 +292,15 @@ class _TutorialAwalState extends State<TutorialAwal> {
 }
 
 class Tutorial {
-  void showTutor ({BuildContext context, TutorialCoachMark tcm, List<TargetFocus> targets}) {
+  void showTutor ({
+    @required BuildContext context, 
+    @required TutorialCoachMark tcm, 
+    @required List<TargetFocus> targets
+  }) {
     tcm = TutorialCoachMark(
       context,
       targets: targets,
-      colorShadow: Color(ListColor.colorBlue3),
+      colorShadow: Color(ListColor.colorBlue3).withOpacity(0.9),
       textSkip: "",
       hideSkip: true,
       paddingFocus: GlobalVariable.ratioWidth(context) * 7,
@@ -307,7 +317,7 @@ class Tutorial {
       onClickOverlay: (target) {
         print('onClickOverlay: $target');
       },
-    );
+    )..show();
   }
 
   TargetFocus setTarget (
@@ -371,18 +381,28 @@ class Tutorial {
                   ),
                 ),
                 Container(
+                  alignment: 
+                    textAlign == ContentAlign.left
+                      ? Alignment.centerLeft
+                      : textAlign == ContentAlign.right 
+                        ? Alignment.centerRight
+                        : Alignment.center,
+                  // color: Colors.purple,
+                  width: textAlign == ContentAlign.left || textAlign == ContentAlign.right
+                    ? GlobalVariable.ratioWidth(context) * 207
+                    : GlobalVariable.ratioWidth(context) * 296,
                   child: CustomText(
-                      subTitle,
-                      textAlign: textAlign == ContentAlign.left
-                        ? TextAlign.left
-                        : textAlign == ContentAlign.right 
-                          ? TextAlign.right
-                          : TextAlign.center,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      height: 18.2/14,
-                      color: Colors.white,
-                    ),
+                    subTitle,
+                    textAlign: textAlign == ContentAlign.left
+                      ? TextAlign.left
+                      : textAlign == ContentAlign.right 
+                        ? TextAlign.right
+                        : TextAlign.center,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                    height: 18.2/14,
+                    color: Colors.white,
+                  ),
                 ),
               ],
             ),
@@ -394,15 +414,16 @@ class Tutorial {
             skipAlign == Alignment.topRight 
             ? CustomTargetContentPosition(
               left: GlobalVariable.ratioWidth(context) * 269,
-              top: 0
+              top: GlobalVariable.ratioWidth(context) * 30
             )
             : CustomTargetContentPosition(
               left: GlobalVariable.ratioWidth(context) * 269,
-              bottom: 0
+              bottom: GlobalVariable.ratioWidth(context) * 30
             )
           ,
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget> [
               CustomText(
                 "LEWATI",
@@ -425,11 +446,14 @@ class TutorListener extends StatefulWidget {
   final Widget child;
   final Function listener;
   final List<TutorialCoachMark> listTcm;
+  final bool tutorAwal;
+
   final Key key;
   TutorListener({
     this.child,
     this.listener,
     this.listTcm,
+    this.tutorAwal,
     this.key,
   }): super(key: key);
 
@@ -450,9 +474,19 @@ class _TutorListenerState extends State<TutorListener> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      widget.listener();
+      if (!widget.tutorAwal) {
+        widget.listener();
+      } 
       return;
     });
-    return widget.child;
+    return TutorialAwal(
+      onTap: () {
+        if (widget.tutorAwal) {
+          widget.listener();
+        }
+      },
+      tutorAwal: widget.tutorAwal,
+      child: widget.child
+    );
   }
 }

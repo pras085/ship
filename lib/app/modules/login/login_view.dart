@@ -416,6 +416,7 @@ class LoginView extends GetView<LoginController> {
                                                   ).doLoginUser(parameter);
                                                   if (response != null) {
                                                     if (response["Message"]["Code"] == 200) {
+                                                      log("CEK SUB USER DI LOGIN VIEW => " + response["Data"]["IsSubUser"].toString());
                                                       GlobalVariable.userModelGlobal = UserModel(
                                                         docID: response["Data"]["ID"].toString(),
                                                         name: response["Data"]["Name"],

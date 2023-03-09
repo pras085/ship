@@ -25,6 +25,11 @@ class CardProduct extends CardItem {
   final double discountPrice;
   /// [subtitle] terletak dibawah harga.
   final String subtitle;
+  /// [subtitleWidget] untuk custom widget, dibawah harga.
+  /// parameter ini juga mempunyai fungsi lain sebagai pembeda untuk card places promo
+  /// tolong jangan diubah!
+  final Widget subtitleWidget;
+  TextStyle titleStyle;
   TextStyle subtitleStyle;
   /// [detail] harus diisi dengan format namaLabel dan value.
   /// 
@@ -67,6 +72,8 @@ class CardProduct extends CardItem {
     this.price,
     this.discountPrice,
     this.subtitle,
+    this.subtitleWidget,
+    this.titleStyle,
     this.subtitleStyle,
     this.detail,
     this.verticalDetail = false,
@@ -84,6 +91,7 @@ class CardProduct extends CardItem {
 
   @override
   Widget build(BuildContext context) {
+    if (titleStyle == null) titleStyle = TextStyle(fontWeight: FontWeight.w700, fontSize: 12,);
     if (subtitleStyle == null) subtitleStyle = TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: Colors.black);
     if (detailLabelStyle == null) detailLabelStyle = TextStyle(fontSize: 10, fontWeight: FontWeight.w500, height: 1.4, color: Colors.black);
     if (detailValueStyle == null) detailValueStyle = TextStyle(fontSize: 10, fontWeight: FontWeight.w600, height: 1.4, color: Colors.black);
@@ -198,7 +206,7 @@ class CardProduct extends CardItem {
                 ),
               ] else ...[
                 if (title != null && title.isNotEmpty) ...[
-                  SizedBox(height: GlobalVariable.ratioWidth(context) * 2),
+                  if (subtitleWidget == null) SizedBox(height: GlobalVariable.ratioWidth(context) * 2),
                   SizedBox(
                     height: GlobalVariable.ratioWidth(context) * 31.7, 
                     child: CustomText(
@@ -215,19 +223,21 @@ class CardProduct extends CardItem {
                 SizedBox(height: GlobalVariable.ratioWidth(context) * 6),
                 if (discountPrice != null) ...[
                   CustomText(
-                    Utils.formatCurrency(value: price),
+                    Utils.formatCurrency(value: discountPrice),
                     fontWeight: FontWeight.w500,
                     fontSize: 10,
                     height: 1,
                     color: Color(ListColor.colorGreyTemplate3),
+                    decoration: TextDecoration.lineThrough,
+                    decorationColor: Color(0xFF676767),
                     withoutExtraPadding: true,
                   ),
                   SizedBox(height: GlobalVariable.ratioWidth(context) * 2),
                   CustomText(
-                    Utils.formatCurrency(value: discountPrice),
+                    Utils.formatCurrency(value: price),
                     fontWeight: FontWeight.w700,
                     fontSize: 12,
-                    height: 1,
+                    height: 14.4/12,
                     withoutExtraPadding: true,
                   ),
                 ] else ...[
@@ -245,9 +255,10 @@ class CardProduct extends CardItem {
                 SizedBox(
                   height: GlobalVariable.ratioWidth(context) * 31.7, 
                   child: CustomText(
-                    title,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 12,
+                    title,   
+                    fontSize: titleStyle.fontSize,
+                    color: titleStyle.color,
+                    fontWeight: titleStyle.fontWeight,
                     height: 1.2,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -264,7 +275,8 @@ class CardProduct extends CardItem {
                 fontWeight: subtitleStyle.fontWeight,
                 withoutExtraPadding: true,
               )
-            ],
+            ]
+            else if (subtitleWidget != null) subtitleWidget,
             if (detail != null && detail.isNotEmpty) ...[
               SizedBox(
                 height: GlobalVariable.ratioWidth(context) * (verticalDetail ? 6 : 8),

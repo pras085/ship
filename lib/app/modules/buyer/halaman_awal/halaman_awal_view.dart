@@ -93,7 +93,9 @@ class _HalamanAwalViewState extends State<HalamanAwalView> {
                     'subKategori': e.nama,
                     ...e.toJson(),
                   };
-                  await Get.to(controller.layananId.value == "10" ? ListIklanPlacesPromoView() : ListIklanView(),
+                  await Get.to(() => "${e.iD}" == "49" || "${e.iD}" == "50" || "${e.iD}" == "51" ? 
+                    ListIklanPlacesPromoView() :
+                    ListIklanView(),
                     arguments: dataArgs,
                   );
                   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);

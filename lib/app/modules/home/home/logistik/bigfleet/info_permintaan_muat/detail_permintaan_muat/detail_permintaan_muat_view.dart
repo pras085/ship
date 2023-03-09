@@ -5,6 +5,7 @@ import 'package:flutter_dash/flutter_dash.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:muatmuat/app/core/function/cek_sub_user_dan_hak_akses.dart';
 import 'package:muatmuat/app/core/function/get_to_page_function.dart';
 import 'package:muatmuat/app/core/function/global_alert_dialog.dart';
 import 'package:muatmuat/app/modules/home/home/logistik/bigfleet/info_permintaan_muat/detail_permintaan_muat/component/map_detail_permintaan_muat.dart';
@@ -82,7 +83,11 @@ class DetailPermintaanMuatView extends GetView<DetailPermintaanMuatController> {
           actions: [
             Padding(
               padding: EdgeInsets.only(right: GlobalVariable.ratioWidth(Get.context) * 16),
-              child: GestureDetector(onTap: () {}, child: Icon(Icons.share_outlined, size: GlobalVariable.ratioWidth(Get.context) * 24, color: Colors.white,)),
+              child: GestureDetector(
+                onTap: () async {
+                  var response =  await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "442");
+                  if (!response) return;
+              }, child: Icon(Icons.share_outlined, size: GlobalVariable.ratioWidth(Get.context) * 24, color: Colors.white,)),
             ),
           ],
         ),
