@@ -402,6 +402,7 @@ class RulesBuyer {
     ) {
       var address = data['Alamat'];
       var title = data['NamaPerusahaan'] ?? "";
+      var date = DateTime.parse(data['Created']);
 
       // Repair & Maintenance | Teknisi
       if (subKategoriId == '12') {
@@ -409,6 +410,17 @@ class RulesBuyer {
         title = data['data_seller']['nama_seller'];
       }
 
+      if(
+        subKategoriId == '14' // Repair & Maintenance | Perusahaan Lainnya
+        || subKategoriId == '40' // Transportasi Intermoda | Perusahaan Lainnya
+        || subKategoriId == '53' // Human Capital | Perusahaan Lainnya
+        || subKategoriId == '22' // Property & Warehouse | Perusahaan Lainnya
+        || subKategoriId == '28' // Dealer & Karoseri | Perusahaan Lainnya
+        || subKategoriId == '48' // Transportation Store | Perusahaan Lainnya
+      ){
+        date = null;
+        title = data['data_seller']['nama_seller'];
+      }
       return CardCompany(
         onTap: () {
           Get.to(() => DetailIklanComproView(),
@@ -425,7 +437,7 @@ class RulesBuyer {
         verified: "${data['data_seller']['verified']}" != "0",
         favorite: "${data['favorit']}" != "0",
         onFavorited: onFavorited,
-        date: DateTime.parse(data['Created']),
+        date: date,
         title: title,
         imageUrl: data['LogoPerusahaan'][0] ?? "",
         location: data['LokasiIklan'],

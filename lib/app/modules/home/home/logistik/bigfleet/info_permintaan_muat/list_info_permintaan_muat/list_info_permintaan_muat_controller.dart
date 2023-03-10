@@ -1074,7 +1074,7 @@ class ListInfoPermintaanMuatController extends GetxController
   }
 
   Widget _itemInfoPermintaanMuatModalBottomSheet(
-      {String title, void Function() onTap, Color textColor = Colors.black, bool haveAccess = true,}) {
+      {String title, void Function() onTap, Color textColor = Colors.black, bool haveAccess = true}) {
     return InkWell(
         onTap: () {
           Get.back();

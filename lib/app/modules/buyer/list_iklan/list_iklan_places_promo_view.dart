@@ -406,7 +406,7 @@ class _ListIklanPlacesPromoViewState extends State<ListIklanPlacesPromoView> {
                                           "Anda Belum Memiliki Iklan Yang Difavoritkan"  
                                           // filter on and favorit off
                                           : controller.filter.value != null && controller.filter.value.isNotEmpty && !controller.isFavorite.value ?
-                                          "Hasil Filter Anda tidak ditemukan"
+                                          "Hasil Filter Anda Tidak Ditemukan"
                                           : "Hasil Pencarian Anda Tidak Ditemukan",
                                           fontSize: 14,
                                           fontWeight: FontWeight.w600,

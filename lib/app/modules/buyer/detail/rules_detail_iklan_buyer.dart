@@ -403,6 +403,13 @@ class RulesDetailIklanBuyer {
         mainImage = "${data['data_seller']['TypeUser']}" == "0" ? data['data_seller']['image_seller'] ?? "" : data['LogoPerusahaan'][0] ?? "";
         title = "${data['data_seller']['TypeUser']}" == "0" ? data['data_seller']['nama_seller'] ?? "" : data['data_seller']['nama_individu_perusahaan'] ?? "";
       }
+       // Pras >
+      if(
+        subKategoriId == '14' // Repair & Maintenance | Perusahaan Lainnya
+      ){
+        title = '${data['data_seller']['nama_seller']}';
+      }
+      // Pras <
 
       return Column(
         children: [
@@ -777,7 +784,6 @@ class RulesDetailIklanBuyer {
       String namaSeller = '${data['data_seller']['nama_individu_perusahaan']}';
       if(
         subKategoriId == '13' // Repair & Maintenance | Produk Lainnya
-        || subKategoriId == '14' // Repair & Maintenance | Perusahaan Lainnya
       ){
         namaSeller = '${data['data_seller']['nama_seller']}';
       }
@@ -981,7 +987,7 @@ class RulesDetailIklanBuyer {
               title: "Lokasi Iklan", 
               latitude: double.parse("${data['data_seller']['lat']}"), 
               longitude: double.parse("${data['data_seller']['long']}"),
-              hideAddress: true,
+              address: data['LokasiIklan'],
             ),
           BannerAds(
             layananID: layananId,
