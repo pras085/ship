@@ -299,7 +299,7 @@ class RulesDetailIklanBuyer {
                 _contentDetailPopup(
                   context: context,
                   content: data['MerkYangDilayani'],
-                  title: 'Merk yang Dilayanani',
+                  title: 'Merk yang Dilayani',
                 ),
                 _gap(context),
               ],
@@ -403,13 +403,13 @@ class RulesDetailIklanBuyer {
         mainImage = "${data['data_seller']['TypeUser']}" == "0" ? data['data_seller']['image_seller'] ?? "" : data['LogoPerusahaan'][0] ?? "";
         title = "${data['data_seller']['TypeUser']}" == "0" ? data['data_seller']['nama_seller'] ?? "" : data['data_seller']['nama_individu_perusahaan'] ?? "";
       }
-       // Pras >
+      //Pras
       if(
-        subKategoriId == '14' // Repair & Maintenance | Perusahaan Lainnya
+        subKategoriId == "14" // Repair & maintenance | Perusahaan Lainnya
       ){
-        title = '${data['data_seller']['nama_seller']}';
+        title = "${data['data_seller']['nama_seller']}";
       }
-      // Pras <
+      //Pras
 
       return Column(
         children: [
@@ -651,6 +651,9 @@ class RulesDetailIklanBuyer {
                 // Khabib4 >
 
                 // Octa4 <
+                || subKategoriId == "29" // Transportasi Intermoda | Road Transportation
+                || subKategoriId == "30" // Transportasi Intermoda | Air Freight
+                || subKategoriId == "31" // Transportasi Intermoda | Rail Freight
                 // Octa4 >
 
                 // Refo4 <
@@ -752,6 +755,8 @@ class RulesDetailIklanBuyer {
       // Andy3 >
 
       // Khabib3 < 
+      || subKategoriId == '50' // Places & Promo | Promo Kota/Kab
+      || subKategoriId == '51' // Places & Promo | Promo Nasional
       // Khabib3 >
 
       // Octa3 <
@@ -773,6 +778,12 @@ class RulesDetailIklanBuyer {
       // Refo3 <
       // Refo3 >
     ) {
+      // places & promo
+      PromoType promoType;
+      String promoLocation;
+      String discPrice;
+      bool hidePrice = false;
+
       String adName = "${data['Judul']}";
       String harga = data['Harga'] != null && data['Harga'] != "" ? data['Harga'] : null;
       String adPriceInfo;
@@ -823,6 +834,36 @@ class RulesDetailIklanBuyer {
       // Andy4 >
 
       // Khabib4 < 
+      else if (
+        subKategoriId == '50' // Places & Promo | Promo Kota/Kab
+      ) {
+        String periode;
+        try {
+          final startDate = Utils.formatDate(
+            value: data['PeriodeMulai'], 
+            format: "dd MMM yyyy",
+          );
+          final endDate = Utils.formatDate(
+            value: data['PeriodeBerakhir'], 
+            format: "dd MMM yyyy",
+          );
+          periode = "$startDate - $endDate";
+        } catch (e) {}
+        promoType = PromoType.KABKOTA;
+        promoLocation = "${data['LokasiPromoKotaKab']}";
+        discPrice = data['HargaNormal'] != null && "${data['HargaNormal']}".trim().isNotEmpty ? Utils.formatCurrency(value: double.parse(Utils.removeNumberFormat(data['HargaNormal']))) : null;
+        adInfo = InfoDetailTitleProductBuyer(
+          label: "Periode",
+          value: "$periode",
+        );
+        hidePrice = harga == null && discPrice == null;
+      }
+      else if (
+        subKategoriId == '51' // Places & Promo | Promo Nasional
+      ) {
+        promoType = PromoType.NASIONAL;
+        hidePrice = harga == null && discPrice == null;
+      }
       // Khabib4 >
 
       // Octa4 <
@@ -862,6 +903,10 @@ class RulesDetailIklanBuyer {
             adInfo: adInfo,
             adLocation: data['LokasiIklan'],
             adDate: DateTime.parse(data['Created']),
+            adDiscPrice: discPrice,
+            promoType: promoType,
+            promoLocation: promoLocation,
+            hidePrice: hidePrice,
           ),
           if (data['Harga_lokasi_harga'] != null)
             Column(
@@ -987,7 +1032,7 @@ class RulesDetailIklanBuyer {
               title: "Lokasi Iklan", 
               latitude: double.parse("${data['data_seller']['lat']}"), 
               longitude: double.parse("${data['data_seller']['long']}"),
-              address: data['LokasiIklan'],
+              hideAddress: true,
             ),
           BannerAds(
             layananID: layananId,
@@ -1190,6 +1235,16 @@ class RulesDetailIklanBuyer {
               ),
               _gap(context),
             ],
+          BannerAds(
+            layananID: layananId,
+            formMasterID: kategoriId,
+            penempatanID: "4",
+          ),
+          BannerAds(
+            layananID: layananId,
+            formMasterID: kategoriId,
+            penempatanID: "2",
+          )
         ],
       );
     }
@@ -1390,6 +1445,16 @@ class RulesDetailIklanBuyer {
                 ),
               ],
             ),
+          BannerAds(
+            layananID: layananId,
+            formMasterID: kategoriId,
+            penempatanID: "4",
+          ),
+          BannerAds(
+            layananID: layananId,
+            formMasterID: kategoriId,
+            penempatanID: "2",
+          )
         ],
       );
     }

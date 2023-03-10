@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:muatmuat/app/core/enum/list_data_design_type_button_corner_right_enum.dart';
+import 'package:muatmuat/app/core/function/cek_sub_user_dan_hak_akses.dart';
 import 'package:muatmuat/app/core/models/transporter_list_design_model.dart';
 import 'package:muatmuat/app/routes/app_pages.dart';
 import 'package:muatmuat/app/style/list_colors.dart';
@@ -58,18 +59,26 @@ class ListDataDesignFunction {
       {ListDataDesignTypeButtonCornerRight typeButton =
           ListDataDesignTypeButtonCornerRight.NONE,
       @required ListDataMitraFrom dari,
-      void Function() onTapBottonCornerRight}) {
+      void Function() onTapBottonCornerRight,
+      bool disableaccept,
+      bool disablereject
+      }) {
     return _transporterTile(listData[index], index,
         typeButton: typeButton,
         onTapBottonCornerRight: onTapBottonCornerRight,
-        dari: dari);
+        dari: dari,
+        disableaccept: disableaccept,
+        disablereject: disablereject);
   }
 
   Widget _transporterTile(TransporterListDesignModel dataTransporter, int index,
       {ListDataDesignTypeButtonCornerRight typeButton =
           ListDataDesignTypeButtonCornerRight.NONE,
       @required ListDataMitraFrom dari,
-      void Function() onTapBottonCornerRight}) {
+      void Function() onTapBottonCornerRight,
+      bool disableaccept,
+      bool disablereject
+      }) {
     double borderRadius = GlobalVariable.ratioWidth(Get.context) * 10;
     return GestureDetector(
       onTap: () async {
@@ -291,16 +300,25 @@ class ListDataDesignFunction {
                                       text: labelButton1RightOfDesc,
                                       marginTop: 13,
                                       marginBottom: 8,
-                                      backgroundColor:
-                                          Color(ListColor.colorBlue),
-                                      onTap: () {
+                                      backgroundColor: disableaccept == true? Color(ListColor.colorGrey2) : Color(ListColor.colorBlue),
+                                      useBorder: false,
+                                      onTap: () async {
+                                        var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "411", showDialog: false);
+                                        if (!hasAccess) {
+                                          return;
+                                        }
                                         onTapButton1RightOfDesc(index);
                                       }),
                                   _button(
                                       marginBottom: 13,
                                       text: labelButton2RightOfDesc,
-                                      color: Color(ListColor.colorBlue),
-                                      onTap: () {
+                                      color: disablereject == true? Color(ListColor.colorGrey2) : Color(ListColor.colorBlue),
+                                      borderColor: disablereject == true? ListColor.colorGrey2 : ListColor.colorBlue,
+                                      onTap: () async {
+                                        var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "413", showDialog: false);
+                                        if (!hasAccess) {
+                                          return;
+                                        }
                                         onTapButton2RightOfDesc(index);
                                       }),
                                 ],
@@ -501,6 +519,7 @@ class ListDataDesignFunction {
     FontWeight fontWeight = FontWeight.w600,
     double fontSize = 12,
     Color color = Colors.white,
+    int borderColor,
     Color backgroundColor = Colors.white,
     Widget customWidget,
   }) {
@@ -529,7 +548,7 @@ class ListDataDesignFunction {
           border: useBorder
               ? Border.all(
                   width: GlobalVariable.ratioWidth(Get.context) * 1,
-                  color: Color(ListColor.colorBlue),
+                  color: Color(borderColor),
                 )
               : null),
       child: Material(

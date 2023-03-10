@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:muatmuat/app/core/function/cek_sub_user_dan_hak_akses.dart';
 import 'package:muatmuat/app/core/function/get_to_page_function.dart';
 import 'package:muatmuat/app/modules/data_kapasitas_pengiriman/data_kapasitas_pengiriman_controller.dart';
 import 'package:muatmuat/app/modules/testimoni_profile/testimoni_profile_controller.dart';
@@ -122,15 +123,19 @@ class ProfilePerusahaanView extends GetView<ProfilePerusahaanController> {
                   child: Material(
                     shape: CircleBorder(
                       side: BorderSide(
-                        color: Color(ListColor.colorBlue),
+                        color: controller.edited.value? Color(ListColor.colorBlue) : Color(ListColor.colorGrey2),
                         width: GlobalVariable.ratioWidth(context) * 1,
                       ),
                     ),
                     color: Colors.white,
                     clipBehavior: Clip.antiAlias,
                     child: InkWell(
-                      onTap: () {
-                        controller.showUpload();
+                      onTap: () async {
+                          var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "524", showDialog: true);
+                          if (!hasAccess) {
+                            return;
+                          }
+                          controller.showUpload();
                       },
                       child: SizedBox(
                         width: GlobalVariable.ratioWidth(context) * 35,
@@ -140,7 +145,7 @@ class ProfilePerusahaanView extends GetView<ProfilePerusahaanController> {
                             'assets/template_buyer/edit_icon_2.svg',
                             width: GlobalVariable.ratioWidth(context) * 12,
                             height: GlobalVariable.ratioWidth(context) * 12,
-                            color: Color(ListColor.colorBlue),
+                            color: controller.edited.value? Color(ListColor.colorBlue) : Color(ListColor.colorGrey2)
                           ),
                         ),
                       ),
@@ -243,7 +248,11 @@ class ProfilePerusahaanView extends GetView<ProfilePerusahaanController> {
                       ],
                     ),
                     GestureDetector(
-                      onTap: () {
+                      onTap: () async {
+                        var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "525", showDialog: false);
+                        if (!hasAccess) {
+                          return;
+                        }
                         GetToPage.toNamed<UbahDataPerusahaanController>(Routes.UBAH_DATA_PERUSAHAAN);
                       },
                       child: Row(
@@ -253,7 +262,7 @@ class ProfilePerusahaanView extends GetView<ProfilePerusahaanController> {
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                             textAlign: TextAlign.end,
-                            color: Color(ListColor.colorBlue),
+                            color: controller.accaddress.value?  Color(ListColor.colorBlue) : Color(ListColor.colorGrey2),
                           ),
                           SizedBox(
                             width: GlobalVariable.ratioWidth(context) * 4,
@@ -262,7 +271,7 @@ class ProfilePerusahaanView extends GetView<ProfilePerusahaanController> {
                             'assets/template_buyer/edit_icon_2.svg',
                             width: GlobalVariable.ratioWidth(context) * 14,
                             height: GlobalVariable.ratioWidth(context) * 14,
-                            color: Color(ListColor.colorBlue),
+                            color: controller.accaddress.value?  Color(ListColor.colorBlue) : Color(ListColor.colorGrey2),
                           ),
                         ],
                       ),
@@ -365,13 +374,19 @@ class ProfilePerusahaanView extends GetView<ProfilePerusahaanController> {
                   context: context,
                   title: "Data Kapasitas Pengiriman",
                   onTap: () => GetToPage.toNamed<DataKapasitasPengirimanController>(Routes.DATA_KAPASITAS_PENGIRIMAN),
+                  disable: false,
                 ),
                 _contentDataShipperMenu(
                   context: context,
                   title: "Kontak PIC",
-                  onTap: () {
+                  onTap: () async {
+                    var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "527", showDialog: false);
+                    if (!hasAccess) {
+                      return;
+                    }
                     GetToPage.toNamed<UbahKontakPicController>(Routes.UBAH_KONTAK_PIC);
                   },
+                  disable: controller.accpic.value? false : true,
                 ),
                 _contentDataShipperMenu(
                   context: context,
@@ -379,6 +394,7 @@ class ProfilePerusahaanView extends GetView<ProfilePerusahaanController> {
                   onTap: () {
                     GetToPage.toNamed<TestimoniProfileController>(Routes.TESTIMONI_PROFILE);
                   },
+                  disable: false,
                 ),
               ],
             ),
@@ -455,6 +471,7 @@ class ProfilePerusahaanView extends GetView<ProfilePerusahaanController> {
     @required BuildContext context,
     String title,
     VoidCallback onTap,
+    bool disable
   }) {
     return Material(
       color: Colors.white,
@@ -490,13 +507,14 @@ class ProfilePerusahaanView extends GetView<ProfilePerusahaanController> {
                   fontWeight: FontWeight.w600,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
+                  color: disable? Color(ListColor.colorGrey2) : Colors.black,
                 ),
               ),
               SvgPicture.asset(
                 'assets/ic_arrow_right_profile.svg',
                 width: GlobalVariable.ratioWidth(context) * 16,
                 height: GlobalVariable.ratioWidth(context) * 16,
-                color: Colors.black,
+                color: disable? Color(ListColor.colorGrey2) : Colors.black,
               ),
             ],
           ),

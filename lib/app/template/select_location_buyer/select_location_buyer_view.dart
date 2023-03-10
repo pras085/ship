@@ -145,7 +145,7 @@ class _SelectLocationBuyerViewState extends State<SelectLocationBuyerView> {
                                     isCollapsed: true,
                                     hintText: "Cari Lokasi",
                                     hintStyle: TextStyle(
-                                      color: Color(ListColor.colorLightGrey4),
+                                      color: Color(ListColor.colorLightGrey6),
                                       fontWeight: FontWeight.w600,
                                     ),
                                     enabledBorder: InputBorder.none,

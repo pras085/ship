@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:muatmuat/app/core/function/cek_sub_user_dan_hak_akses.dart';
 import 'package:muatmuat/app/core/function/custom_toast.dart';
 import 'package:muatmuat/app/core/function/get_to_page_function.dart';
 import 'package:muatmuat/app/modules/api_profile.dart';
@@ -17,10 +18,16 @@ class ProfilePerusahaanController extends GetxController {
   var dataModelResponse = ResponseState<ProfilePerusahaanModel>().obs;
   var dataPerusahaan =
       ProfilePerusahaanModel(); // wes kadung digae, males hapus.
+  var edited = true.obs;
+  var accaddress = true.obs;
+  var accpic = true.obs;
 
   @override
   void onInit() async {
     super.onInit();
+    await cekEdit();
+    await cekAlamat();
+    await cekPIC();
     fetchDataCompany();
   }
 
@@ -59,6 +66,27 @@ class ProfilePerusahaanController extends GetxController {
       dataModelResponse.value = ResponseState.error("$error");
     }
   }
+
+  Future<void> cekEdit() async {
+          var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "524", showDialog: false);
+          if (!hasAccess) {
+            edited.value = false;
+          }
+    }
+  
+  Future<void> cekAlamat() async {
+          var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "525", showDialog: false);
+          if (!hasAccess) {
+            accaddress.value = false;
+          }
+    }
+
+  Future<void> cekPIC() async {
+          var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "527", showDialog: false);
+          if (!hasAccess) {
+            accpic.value = false;
+          }
+    }
 
   // MEMUNCULKAN BOTTOM SHEET
   Future showUpload() async {

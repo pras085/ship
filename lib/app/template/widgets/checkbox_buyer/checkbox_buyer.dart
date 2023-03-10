@@ -84,6 +84,7 @@ class CheckboxBuyer extends StatelessWidget {
               final result = await Get.to(() => PageCheckboxBuyer(
                 title: title,
                 listCheckbox: listCheckbox,
+                listAliasCheckbox: listAliasCheckbox,
                 selectedListCheckbox: selectedListCheckbox,
               )) as List;
               if (result != null) {

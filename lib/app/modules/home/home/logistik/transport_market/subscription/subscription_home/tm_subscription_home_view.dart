@@ -603,6 +603,10 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
                     color: Color(ListColor.colorBlue),
                     maxWidth: true,
                     onTap: () async {
+                      var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "476");
+                      if (!hasAccess) {
+                        return;
+                      }
                       var result =
                           await GetToPage.toNamed<TMCreateSubuserController>(
                               Routes.TM_CREATE_SUBUSER,
@@ -1370,6 +1374,10 @@ class _AppBar extends PreferredSize {
                                           .showAlertDialog(
                                               context: Get.context,
                                               onTap: () async {
+                                                var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "475");
+                                                if (!hasAccess) {
+                                                  return;
+                                                }
                                                 var result = await GetToPage.toNamed<
                                                         TMCreateSubscriptionController>(
                                                     Routes

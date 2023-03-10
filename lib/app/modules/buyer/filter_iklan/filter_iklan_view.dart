@@ -11,6 +11,7 @@ import 'package:muatmuat/app/template/select_location_buyer/select_location_buye
 import 'package:muatmuat/app/template/select_location_buyer/select_location_buyer_view.dart';
 import 'package:muatmuat/app/template/widgets/checkbox_buyer/checkbox_buyer.dart';
 import 'package:muatmuat/app/template/widgets/dropdown_truck_carrier/dropdown_truck_carrier.dart';
+import 'package:muatmuat/app/template/widgets/periode_picker/periode_picker_buyer.dart';
 import 'package:muatmuat/app/template/widgets/range/range_buyer.dart';
 import 'package:muatmuat/app/template/widgets/text_field/double_text_field.dart';
 import 'package:muatmuat/app/utils/response_state.dart';
@@ -121,7 +122,7 @@ class _FilterIklanViewState extends State<FilterIklanView> {
                 },
               };
               // adjust the value with supportingData 'max' from getData()
-              if (rules['dynamic_max_key'] != null) {
+              if (rules['dynamic_max_key'] != null && argsData is Map) {
                 d['property']['max_value'] = argsData[rules['dynamic_max_key']];
               }
               result.add(d);
@@ -138,6 +139,7 @@ class _FilterIklanViewState extends State<FilterIklanView> {
               o['tag_frontend'].split("-").last == "radiofield" 
               || o['tag_frontend'].split("-").last == "smarttextfielddouble"
               || o['tag_frontend'].split("-").last == "truckcarrierdropdowndouble"
+              || o['tag_frontend'].split("-").last == "periodepromofield"
               || o['tag_frontend'].split("-").last == "checkboxfretextfield"
             ) tipe = 1; // use for string
             else if (o['tag_frontend'].split("-").last == "checkboxfield") tipe = 3; // use for infinite list
@@ -233,6 +235,7 @@ class _FilterIklanViewState extends State<FilterIklanView> {
                   (
                     data[i]['tag_frontend'].split("-").last == "truckcarrierdropdowndouble"
                     || data[i]['tag_frontend'].split("-").last == "smarttextfielddouble" 
+                    || data[i]['tag_frontend'].split("-").last == "periodepromofield" 
                   )
                   // find the last index of group by title. thanks to andy for the idea.
                   && i == data.indexWhere((e) => e['property']['group_by_title'] == data[i]['property']['group_by_title'])
@@ -625,6 +628,38 @@ class _FilterIklanViewState extends State<FilterIklanView> {
                       }, 
                       dataListTruck: dataListTruck, 
                       dataListCarrier: dataListCarrier,
+                    );
+                  }
+                }
+                else if (
+                  data[i]['tag_frontend'].split("-").last == "periodepromofield" 
+                  // find the last index of group by title. thanks to andy for the idea.
+                  && i == data.lastIndexWhere((e) => e['property']['group_by_title'] == data[i]['property']['group_by_title'])
+                ) {
+                  
+                  // get all data group by title.
+                  // on this circumstance, we can savely call previous data.
+                  // thanks to the method lastIndexWhere.
+                  List<Map> periode = data.where((e) {
+                    return e['property']['group_by_title'] == data[i]['property']['group_by_title'];
+                  }).toList();
+
+                  if (periode.length > 1) {
+                    // find the real index from data
+                    final findIdx0 = data.indexWhere((el) => el['key'] == periode[0]['key']);
+                    final findIdx1 = data.indexWhere((el) => el['key'] == periode[1]['key']);
+                    return PeriodePickerBuyer(
+                      title: data[i]['property']['group_by_title'], 
+                      startValue: filter[data[findIdx0]['key']]['value'], 
+                      endValue: filter[data[findIdx1]['key']]['value'], 
+                      onStartSubmitted: (value) {
+                        filter[data[findIdx0]['key']]['value'] = value;
+                        setState(() {});
+                      },
+                      onEndSubmitted: (value) {
+                        filter[data[findIdx1]['key']]['value'] = value;
+                        setState(() {});
+                      }, 
                     );
                   }
                 }

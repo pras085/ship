@@ -81,18 +81,28 @@ class Bigfleets3View extends GetView<Bigfleets3Controller> {
     // }
     ),
     BigfleetMenuIcon('BigFleetsLabelMenuTransporter'.tr, "truck_icon.png",
-        0xFFEEC50E, () {
-      GetToPage.toNamed<ListTransporterController>(Routes.LIST_TRANSPORTER);
+    0xFFEEC50E,
+    () async {
+          var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "408");
+          if (!hasAccess) {
+            return;
+          }
+          GetToPage.toNamed<ListTransporterController>(Routes.LIST_TRANSPORTER);
     }),
     BigfleetMenuIcon('Kontrak Harga', "icon_kontrak_harga.png",
         0xFF345DAC, () {
       GetToPage.toNamed<ListTransporterController>(Routes.LIST_TRANSPORTER);
     }),
-    BigfleetMenuIcon(
-        'BigFleetsLabelMenuManagementPartners'.tr,
-        "manajemen_mitra_icon.png",
-        ListColor.colorBackgroundCircleBigFleetManajemenMitra, () {
-      GetToPage.toNamed<ManajemenMitraController>(Routes.MANAJEMEN_MITRA);
+    BigfleetMenuIcon('BigFleetsLabelMenuManagementPartners'.tr,"manajemen_mitra_icon.png",
+    ListColor.colorBackgroundCircleBigFleetManajemenMitra,
+    () async {
+          // uncomment
+          
+          var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "408");
+          if (!hasAccess) {
+            return;
+          }
+          GetToPage.toNamed<ManajemenMitraController>(Routes.MANAJEMEN_MITRA);
     }),
     // BigfleetMenuIcon(
     //     'BigFleetsLabelMenuInfoPraTender'.tr,

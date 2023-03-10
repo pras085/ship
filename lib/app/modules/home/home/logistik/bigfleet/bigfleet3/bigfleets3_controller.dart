@@ -23,6 +23,7 @@ class Bigfleets3Controller extends GetxController {
 
   @override
   void onInit() async{
+    super.onInit();
     await cekTransport();
     await cekMitra();
     loading.value = false;
@@ -73,16 +74,16 @@ class Bigfleets3Controller extends GetxController {
   void onClose() {}
 
   Future<void> cekTransport() async {
-          var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "408", showDialog: false);
-          if (!hasAccess) {
-            transport.value = "false";
-          }
+    var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "408", showDialog: false);
+    if (!hasAccess) {
+      transport.value = "false";
     }
+  }
 
   Future<void> cekMitra() async {
-          var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "607", showDialog: false);
-          if (!hasAccess) {
-            partner.value = "false";
-          }
+    var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "607", showDialog: false);
+    if (!hasAccess) {
+      partner.value = "false";
     }
+  }
 }

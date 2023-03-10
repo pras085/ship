@@ -11,11 +11,13 @@ class PageCheckboxBuyer extends StatefulWidget {
 
   final String title;
   final List listCheckbox;
+  final List listAliasCheckbox;
   final List selectedListCheckbox;
 
   const PageCheckboxBuyer({
     @required this.title,
     @required this.listCheckbox,
+    this.listAliasCheckbox,
     @required this.selectedListCheckbox,
   });
 
@@ -69,7 +71,7 @@ class _PageCheckboxBuyerState extends State<PageCheckboxBuyer> {
               children: [
                 Expanded(
                   child: CustomText(
-                    "${widget.listCheckbox[i]}",
+                    "${widget.listAliasCheckbox != null ? widget.listAliasCheckbox[i] : widget.listCheckbox[i]}",
                     fontSize: 14,
                     color: Color(ListColor.colorGreyTemplate3),
                     fontWeight: FontWeight.w500,

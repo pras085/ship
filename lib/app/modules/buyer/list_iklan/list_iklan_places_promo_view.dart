@@ -47,7 +47,7 @@ class _ListIklanPlacesPromoViewState extends State<ListIklanPlacesPromoView> {
     controller.argument.value = menu;
     controller.fetchDataIklan();
     controller.scrollController.addListener(() {
-      // print("SCROLL POSITION: ${controller.scrollController.position.pixels}");
+      print("SCROLL POSITION: ${controller.scrollController.position.pixels}");
     });
   }
 
@@ -179,7 +179,7 @@ class _ListIklanPlacesPromoViewState extends State<ListIklanPlacesPromoView> {
               // Pencarian
               Center(
                 child: InkWell(
-                  onTap: () async {
+                  onTap: controller.isFavorite.value ? null : () async {
                     final res = await Get.to(() => SearchPageBuyer(),
                       arguments: controller.searchResult.value,
                     );
@@ -313,15 +313,16 @@ class _ListIklanPlacesPromoViewState extends State<ListIklanPlacesPromoView> {
               Expanded(
                 child: Obx(() {
                   return SmartRefresher(
-                    // enablePullUp: true,
+                    enablePullUp: controller.locationController.location.value == null,
                     controller: controller.refreshController,
-                    // onLoading: controller.dataModelResponse.value.state == ResponseStates.COMPLETE 
-                    // && controller.dataList.value.isNotEmpty
-                    // ? () {
-                    //   controller.fetchDataIklan(
-                    //     refresh: false,
-                    //   );
-                    // } : null,
+                    onLoading: controller.locationController.location.value == null ? 
+                      controller.dataModelResponse.value.state == ResponseStates.COMPLETE && controller.dataList.value.isNotEmpty  ? 
+                        () {
+                          controller.fetchDataIklan(
+                            refresh: false,
+                          );
+                        } : null
+                      : null,
                     scrollController: controller.scrollController,
                     onRefresh: controller.dataModelResponse.value.state == ResponseStates.COMPLETE ? () {
                       print('REFRESH');
@@ -437,6 +438,7 @@ class _ListIklanPlacesPromoViewState extends State<ListIklanPlacesPromoView> {
                                   )
                                 else ...[
                                   Padding(
+                                    key: controller.listKey,
                                     padding: EdgeInsets.symmetric(
                                       horizontal: GlobalVariable.ratioWidth(context) * 16,
                                       vertical: GlobalVariable.ratioWidth(context) * 10,
@@ -460,7 +462,8 @@ class _ListIklanPlacesPromoViewState extends State<ListIklanPlacesPromoView> {
                                     ),
                                   ),
                                   if (controller.isLoading.value) Center(child: CircularProgressIndicator()),
-                                  Container(
+                                  if (controller.locationController.location.value != null) Container(
+                                    key: controller.buttonKey,
                                     padding: EdgeInsets.only(
                                       left: GlobalVariable.ratioWidth(context) * 16,
                                       right: GlobalVariable.ratioWidth(context) * 16,

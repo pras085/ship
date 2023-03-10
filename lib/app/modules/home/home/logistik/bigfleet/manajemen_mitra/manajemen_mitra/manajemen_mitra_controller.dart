@@ -76,7 +76,12 @@ class ManajemenMitraController extends GetxController
   final numberApprove = "0".obs;
   var listGroup = 0.obs;
   var namaListGroup = "PartnerManagementSemuaGrup".tr.obs;
-  var invite = "true".obs;
+  var invite =  true.obs;
+  var adding =  true.obs;
+  var seeprofile =  true.obs;
+  var acceptance = true.obs;
+  var disabled = true.obs;
+
   var loading = true.obs;
 
   final searchMitraTextEditingController = TextEditingController().obs;
@@ -239,6 +244,9 @@ class ManajemenMitraController extends GetxController
   @override
   void onInit() async {
     await cekInvite();
+    await cekAdd();
+    await cekSeeProfile();
+    await cekAcceptance();
     loading.value = false;
     _setListUndangRekanBisnisDesc2();
     _initListDesign();
@@ -379,9 +387,37 @@ class ManajemenMitraController extends GetxController
   // }
 
    Future<void> cekInvite() async {
-          var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "61", showDialog: false);
+          var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "607", showDialog: false);
           if (!hasAccess) {
-            invite.value = "false";
+            invite.value = false;
+          }
+    }
+
+    Future<void> cekAdd() async {
+          var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "410", showDialog: false);
+          if (!hasAccess) {
+            adding.value = false;
+          }
+    }
+
+    Future<void> cekSeeProfile() async {
+          var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "132", showDialog: false);
+          if (!hasAccess) {
+            seeprofile.value = false;
+          }
+    }
+
+    Future<void> cekAcceptance() async {
+          var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "411", showDialog: false);
+          if (!hasAccess) {
+            acceptance.value = false;
+          }
+    }
+
+    Future<void> cekReject() async {
+          var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "413", showDialog: false);
+          if (!hasAccess) {
+            disabled.value = false;
           }
     }
 
@@ -606,6 +642,7 @@ class ManajemenMitraController extends GetxController
         searchValue: textSearch);
   }
 
+  // listnya
   Future _getAllMitra(
       {@required int offset,
       @required RxList<dynamic> list,
@@ -1826,6 +1863,8 @@ class ManajemenMitraController extends GetxController
       void Function(bool) onResultFromDetailTransporter}) {
     return listDataDesignFunction.getTransporterTileWidget(index,
         typeButton: ListDataDesignTypeButtonCornerRight.THREE_DOT_VERT,
+        disableaccept: acceptance.value,
+        disablereject: disabled.value,
         dari: ListDataMitraFrom.MITRA, onTapBottonCornerRight: () {
       _showMenuApproveRejectMitra(listApproveRejectMitra[index],
           onResultFromDetailTransporter: onResultFromDetailTransporter);

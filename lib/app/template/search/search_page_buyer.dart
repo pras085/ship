@@ -128,7 +128,7 @@ class _SearchPageBuyerState extends State<SearchPageBuyer> {
                                       hintText: 'Masukkan Pencarian',
                                       hintStyle: TextStyle(
                                         fontFamily: 'AvenirNext', 
-                                        color: Color(ListColor.colorGreyTemplate3), 
+                                        color: Color(ListColor.colorGreyTemplate6), 
                                         fontWeight: FontWeight.w600, 
                                         fontSize: GlobalVariable.ratioWidth(context) * 14,
                                       ),

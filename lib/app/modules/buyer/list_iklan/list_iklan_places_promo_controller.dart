@@ -37,7 +37,9 @@ class ListIklanPlacesPromoController extends GetxController {
   var isLoading = false.obs;
   var scrollController = ScrollController();
   var bannerKey = GlobalKey();
+  var listKey = GlobalKey();
   var badgeKey = GlobalKey();
+  var buttonKey = GlobalKey();
   var lastPosition = 0.0.obs;
 
   var isBF = true.obs;
@@ -63,13 +65,16 @@ class ListIklanPlacesPromoController extends GetxController {
 
       // ensure argument is not null, initialize on "onInit" func in view
       final body = {
-        'KategoriID': kategoriId,
-        'SubKategoriID': subKategoriId,
         'search': searchResult.value,
-        'limit': "5",
+        'limit': locationController.location.value == null ? "10" : "5",
         'pageNow': "${page.value+1}",
         'isWishList': isFavorite.value ? "1" : "0"
       };
+
+      if (subKategoriId != "49") {
+        body['KategoriID'] = kategoriId;
+        body['SubKategoriID'] = subKategoriId;
+      }
 
       // add user ID if there is a user
       if (GlobalVariable.userModelGlobal.docID != null && GlobalVariable.userModelGlobal.docID.isNotEmpty) {
@@ -123,7 +128,7 @@ class ListIklanPlacesPromoController extends GetxController {
           refreshController.loadNoData();
         } else {
           refreshController.loadComplete();
-          getCurrentPosition(first: false);
+          // if (locationController.location.value != null) getCurrentPosition(first: false, item: [...dataList.value, response['Data']]);
         }
         if (response['Message']['Code'] == 200 && (response['Data'] is Iterable)) {
           // increase page
@@ -136,12 +141,12 @@ class ListIklanPlacesPromoController extends GetxController {
             ...response['Data'],
           ];
           
-          if (refresh) {
-            lastPosition.value = 0;
-            Future.delayed(Duration(milliseconds: 500), () {
-              getCurrentPosition(first: true);
-            });
-          }
+          // if (locationController.location.value != null && refresh) {
+          //   lastPosition.value = 0;
+          //   Future.delayed(Duration(milliseconds: 500), () {
+          //     getCurrentPosition(first: true, item: dataList.value);
+          //   });
+          // }
         } else {
           // error
           if (response['Message'] != null && response['Message']['Text'] != null) {
@@ -161,10 +166,10 @@ class ListIklanPlacesPromoController extends GetxController {
   }
 
   Future addToWishlist(int index) async {
-    String subKategoriId = "${argument.value['ID']}";
+    String subKategoriId = "${dataList[index]['SubKategoriID']}";
     addToWishlistBuyer(
       body: {
-        'KategoriID': "${argument.value['KategoriID']}",
+        'KategoriID': "${dataList[index]['KategoriID']}",
         'SubKategoriID': "$subKategoriId",
         'IklanID': "${dataList[index]['ID']}",
         'isWishList': "${dataList[index]['favorit']}" == "1" ? "0" : "1",
@@ -177,15 +182,15 @@ class ListIklanPlacesPromoController extends GetxController {
     );
   }
 
-  double getCurrentPosition({bool first = false}) {
-    double counter = 499;
+  double getCurrentPosition({bool first = false, List item}) {
+    int itemCount = 0;
 
-    if (first) {
-      lastPosition.value = counter + getWidgetSizeByKey(bannerKey).height + getWidgetSizeByKey(badgeKey).height;
-    } else {
-      lastPosition.value += counter;
+    if (item != null && item.isNotEmpty) {
+      itemCount = item.length - 2;
+      lastPosition.value = (itemCount * 186) + getWidgetSizeByKey(buttonKey).height + getWidgetSizeByKey(bannerKey).height;
+      // print("FIRST POSITION: ${(itemCount * 186)} + ${getWidgetSizeByKey(buttonKey).height} + ${getWidgetSizeByKey(bannerKey).height} = ${lastPosition.value}");
     }
-    
+
     return lastPosition.value;
   }
 

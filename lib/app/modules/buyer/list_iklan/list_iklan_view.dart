@@ -179,7 +179,7 @@ class _ListIklanViewState extends State<ListIklanView> {
               // Pencarian
               Center(
                 child: InkWell(
-                  onTap: () async {
+                  onTap: controller.isFavorite.value ? null : () async {
                     final res = await Get.to(() => SearchPageBuyer(),
                       arguments: controller.searchResult.value,
                     );
@@ -220,8 +220,8 @@ class _ListIklanViewState extends State<ListIklanView> {
                             fontSize: 14,
                             color: Color(
                               controller.searchResult.value.isNotEmpty
-                              ? 0xFF000000
-                              : 0xFF676767
+                              ? Colors.black
+                              : ListColor.colorGreyTemplate6
                             ),
                             overflow: TextOverflow.ellipsis,
                           )),

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -8,8 +6,6 @@ import 'package:muatmuat/app/template/media_preview/video_player_buyer.dart';
 import 'package:muatmuat/app/utils/utils.dart';
 import 'package:muatmuat/app/widgets/custom_text.dart';
 import 'package:muatmuat/global_variable.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
 
 import 'video_thumbnail_buyer.dart';
 
@@ -30,12 +26,6 @@ class MediaPreviewBuyer extends StatefulWidget {
 }
 
 class _MediaPreviewBuyerState extends State<MediaPreviewBuyer> with SingleTickerProviderStateMixin {
-  // var listData = [
-  //   "https://apiiklan.assetlogistik.com/muatmuatiklanaz/assets/File/09-02-2023/14-18-00.jpeg",
-  //   "https://apiiklan.assetlogistik.com/muatmuatiklanaz/assets/File/09-02-2023/14-18-00-v2.jpeg"
-  //   'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
-  //   'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
-  // ];
 
   PageController pageController;
   int selectedPosition;
@@ -69,7 +59,6 @@ class _MediaPreviewBuyerState extends State<MediaPreviewBuyer> with SingleTicker
 
   @override
   Widget build(BuildContext context) {
-    print("POSITION :: ${position != null ? position.localPosition : 'null'}");
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
@@ -95,7 +84,7 @@ class _MediaPreviewBuyerState extends State<MediaPreviewBuyer> with SingleTicker
                     );
                   }
                   // if it is an image
-                  else if (Utils.isItImage.contains(url.split(".").last.toLowerCase())) {
+                  if (Utils.isItImage.contains(url.split(".").last.toLowerCase())) {
                     return GestureDetector(
                       // get position tap by collecting data from details here
                       onDoubleTapDown: (details) {
@@ -201,7 +190,7 @@ class _MediaPreviewBuyerState extends State<MediaPreviewBuyer> with SingleTicker
                                 ),
                                 child: Builder(
                                   builder: (c) {
-                                    final url = widget.urlMedia[i] = '';
+                                    final url = widget.urlMedia[i] ?? '';
                                     // cek if it os a video
                                     if (Utils.isItVideo.contains(url.split(".").last.toLowerCase())) {
                                       return VideoThumbnailBuyer(

@@ -100,6 +100,9 @@ class DetailTitleProductBuyer extends StatelessWidget {
               height: 16.8/14,
               textAlign: TextAlign.center,
               color: Color(promoType == PromoType.KABKOTA ? 0xFF000000 : 0xFFFFFFFF),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              withoutExtraPadding: true,
             ),
           ),
         ],
@@ -134,36 +137,40 @@ class DetailTitleProductBuyer extends StatelessWidget {
             withoutExtraPadding: true,
             height: 19.2 / 16,
           ),
-          gap,
           if (!hidePrice)
-            Row(
-              children: [
-                if (adDiscPrice != null)
-                  Row(
-                    children: [
-                      CustomText(
-                        adDiscPrice,
-                        color: Color(0xFF676767),
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                        height: 19.2 / 16,
-                        withoutExtraPadding: true,
-                      ),
-                      SizedBox(
-                        width: GlobalVariable.ratioWidth(context) * 12,
-                      ),
-                    ],
+            ...[
+              gap,
+              Row(
+                children: [
+                  if (adDiscPrice != null)
+                    Row(
+                      children: [
+                        CustomText(
+                          adDiscPrice,
+                          color: Color(0xFF676767),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                          height: 19.2 / 16,
+                          decoration: TextDecoration.lineThrough,
+                          decorationColor: Color(0xFF676767),
+                          withoutExtraPadding: true,
+                        ),
+                        SizedBox(
+                          width: GlobalVariable.ratioWidth(context) * 12,
+                        ),
+                      ],
+                    ),
+                  CustomText(
+                    adPrice ?? "Harga Hubungi Penjual",
+                    color: adPrice == null ? Color(ListColor.colorBlue) : null,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20,
+                    height: 24 / 20,
+                    withoutExtraPadding: true,
                   ),
-                CustomText(
-                  adPrice ?? "Harga Hubungi Penjual",
-                  color: adPrice == null ? Color(ListColor.colorBlue) : null,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 20,
-                  height: 24 / 20,
-                  withoutExtraPadding: true,
-                ),
-              ],
-            ),
+                ],
+              ),
+            ],
           if (adPriceInfo != null)
             CustomText(
               adPriceInfo,

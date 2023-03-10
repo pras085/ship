@@ -259,7 +259,7 @@ class RulesBuyer {
           height: 12/10,
         );
       } else if (subKategoriId == '26') { // Dealer & Karoseri | Katalog Produk Karoseri
-        title = "${data['JenisKaroseri']}";
+        title = "${data['JenisKaroseri']}".replaceAll("Lainnya_", "");
         harga = "${data['Harga'] ?? '0'}";
         verticalDetail = true;
         detailStyle = TextStyle(
@@ -410,17 +410,20 @@ class RulesBuyer {
         title = data['data_seller']['nama_seller'];
       }
 
-      if(
-        subKategoriId == '14' // Repair & Maintenance | Perusahaan Lainnya
-        || subKategoriId == '40' // Transportasi Intermoda | Perusahaan Lainnya
-        || subKategoriId == '53' // Human Capital | Perusahaan Lainnya
-        || subKategoriId == '22' // Property & Warehouse | Perusahaan Lainnya
-        || subKategoriId == '28' // Dealer & Karoseri | Perusahaan Lainnya
-        || subKategoriId == '48' // Transportation Store | Perusahaan Lainnya
-      ){
+      if (
+        subKategoriId == '14' //Repair & maintenance | Peruhsanaan Lainnya
+        || subKategoriId == '40' //Transportasi INtermoda | Peruhsanaan Lainnya
+        || subKategoriId == '53' // HUman capial | Peruhsanaan Lainnya
+        || subKategoriId == '22' // Property & warehouse | Peruhsanaan Lainnya
+        || subKategoriId == '28' // Dealer Karoseri | Peruhsanaan Lainnya
+        || subKategoriId == '48' // Transportais Store | Peruhsanaan Lainnya
+        || subKategoriId == '12' // Repair & Maintenance | Teknisi
+        || subKategoriId == '32' // Transportasi Intermoda | Sea Freight
+      ) {
         date = null;
         title = data['data_seller']['nama_seller'];
       }
+
       return CardCompany(
         onTap: () {
           Get.to(() => DetailIklanComproView(),
@@ -499,41 +502,6 @@ class RulesBuyer {
         ),
         // maxWidthDetailLabel: 70,
         showDateAtFooter: false, // menyesuaikan berdasarkan modul
-      );
-    }
-    else if (subKategoriId == '21'){
-      return CardProduct(
-        onTap: () {
-          Get.to(() => DetailIklanProductView(),
-            arguments: {
-              'KategoriID': kategoriId,
-              'SubKategoriID': subKategoriId,
-              'IklanID': data['ID'],
-              'Kategori': data['kategori'],
-              'Layanan': layanan
-            },
-          );
-        },
-        highlight: "${data['highlight']}" != "0",
-        verified: "${data['verified']}" != "0",
-        favorite: "${data['favorit']}" != "0",
-        onFavorited: onFavorited,
-        report: data['report'] == null ? false : data['report'] != "0",
-        onReported: onReported,
-        date: DateTime.parse(data['Created']),
-        // title: data['Judul'] ?? "",
-        imageUrl: data['Foto'][0] ?? "",
-        price: double.parse(Utils.removeNumberFormat(data['Harga'])),
-        // description: data['Deskripsi'],
-        description: data['Judul'],
-        location: data['LokasiIklan'],
-        // detail: getCardDataKeyBySubKategoriId(subKategoriId, data),
-        // verticalDetail: true,
-        detailValueStyle: TextStyle(
-          fontWeight: FontWeight.w600,
-        ),
-        maxWidthDetailLabel: 70,
-        showDateAtFooter: true, // menyesuaikan berdasarkan modul
       );
     }
     // Card Compro Human Capital | Lowongan Professional
@@ -774,8 +742,8 @@ class RulesBuyer {
         onTap: () {
           Get.to(() => DetailIklanComproView(),
             arguments: {
-              'KategoriID': kategoriId,
-              'SubKategoriID': subKategoriId,
+              'KategoriID': data['KategoriID'],
+              'SubKategoriID': data['SubKategoriID'],
               'IklanID': data['ID'],
               'Kategori': data['kategori']
             },
@@ -1023,7 +991,7 @@ class RulesBuyer {
         if (data['Engine'] != null) 'Engine': "${data['Engine']} Silinder",
         if (data['VolEngine'] != null) 'Vol Engine': "${Utils.delimeter('${data['VolEngine']}')}cc",
         if (data['OutputHP'] != null) 'Output HP': "${data['OutputHP']} HP",
-        if (data['TahunPembuatan_'] != null) 'Tahun': "${data['TahunPembuatan_']}",
+        if (data['TahunPembuatan'] != null) 'Tahun': "${data['TahunPembuatan']}",
         if (data['MaxGVW'] != null) 'Max GVW': "${Utils.delimeter('${data['MaxGVW']}')} Kg",
       };
     }
@@ -1278,7 +1246,7 @@ class RulesBuyer {
         if (data['Engine'] != null) 'Engine': "${data['Engine']} Silinder",
         if (data['VolEngine'] != null) 'Vol Engine': "${Utils.delimeter('${data['VolEngine']}')}cc",
         if (data['OutputHP'] != null) 'Output HP': "${data['OutputHP']} HP",
-        if (data['TahunPembuatan_'] != null) 'Tahun': "${data['TahunPembuatan_']}",
+        if (data['TahunPembuatan'] != null) 'Tahun': "${data['TahunPembuatan']}",
         if (data['MaxGVW'] != null) 'Max GVW': "${Utils.delimeter('${data['MaxGVW']}')} Kg",
       };
     }
@@ -1320,6 +1288,21 @@ class RulesBuyer {
         if (data['JenisKelamin'] != null) 'Jenis Kelamin': "${data['JenisKelamin']}",
       };
     }
+    // Places & Promo | Promo Kab/Kota
+    else if (subKategoriId == '50') {
+      return {
+        'Alamat Pengiklan': "${data['AlamatPengiklan'] ?? '-'}",
+        'Lokasi Promo Kab/Kota': "${data['LokasiPromoKotaKab'] ?? '-'}",
+        'Kategori': "${data['Kategori']}",
+      };
+    }
+    // Places & Promo | Promo Nasional
+    else if (subKategoriId == '51') {
+      return {
+        'Alamat Pengiklan': "${data['AlamatPengiklan'] ?? '-'}",
+        'Kategori': "${data['Kategori']}",
+      };
+    }
     // Khabib9 >
 
     // Octa9 <
@@ -1357,10 +1340,6 @@ class RulesBuyer {
       return {
         'Kondisi': data['Kondisi'],
         'Jenis Peralatan': data['JenisPeralatan'],
-      };
-    }
-    else if (subKategoriId == '21') {
-      return {
       };
     }
     // Refo9 >
@@ -3365,6 +3344,147 @@ class RulesBuyer {
           'title': 'Opsi Penjual',
           'KategoriID': 43,
           'SubKategoriID': 54,
+          'tag_frontend': "opsi_penjual-checkboxfield",
+          'value_alias': "Hanya Tampilkan Penjual yang Terverifikasi", // must be have the same length as value
+          'value': "1",
+        },
+      ];
+    }
+    // Places & Promo | Promo Kab/kota
+    else if (
+      subKategoriId == '50' // Places & Promo | Promo Kab/kota
+    ) {
+      return [
+        {
+          'key': 'LokasiPromoKotaKab',
+          'title': 'Lokasi',
+          'KategoriID': 54,
+          'SubKategoriID': 50,
+          'tag_frontend': "lokasi_promo-lokasifield",
+        },
+        {
+          'key': 'Harga',
+          'title': 'Rentang Harga',
+          'KategoriID': 54,
+          'SubKategoriID': 50,
+          'min_value': '0',
+          'max_value': '1000000000',
+          'dynamic_min_key': '-',
+          'dynamic_max_key': 'Harga',
+          'tag_frontend': "harga_promo-rangefield",
+        },
+        {
+          'key': 'PeriodeMulai',
+          'title': null,
+          'KategoriID': 54,
+          'SubKategoriID': 50,
+          'tag_frontend': "periode_mulai-periodepromofield",
+          'group_by_title': 'Masa Berlaku Promo'
+        },
+        {
+          'key': 'PeriodeBerakhir',
+          'title': null,
+          'KategoriID': 54,
+          'SubKategoriID': 50,
+          'tag_frontend': "periode_berakhir-periodepromofield",
+          'group_by_title': 'Masa Berlaku Promo'
+        },
+        {
+          'key': 'KategoriIklan',
+          'title': 'Area',
+          'KategoriID': 54,
+          'SubKategoriID': 50,
+          'tag_frontend': "platform-checkboxfield",
+          'value_alias': "Kota/Kabupaten,Nasional",
+          'value': "50,51",
+        },
+        {
+          'key': 'Kategori',
+          'title': 'Kategori Promo',
+          'KategoriID': 54,
+          'SubKategoriID': 50,
+          'tag_frontend': "kategori_promo_kota-checkboxfield",
+        },
+        {
+          'key': 'PlatformRekomendasi',
+          'title': 'Platform Rekomendasi',
+          'KategoriID': 54,
+          'SubKategoriID': 50,
+          'tag_frontend': "platform-checkboxfield",
+          'value_alias': "Big Fleets,Transport Market",
+          'value': "0,1",
+        },
+        {
+          'key': 'verified',
+          'title': 'Opsi Penjual',
+          'KategoriID': 54,
+          'SubKategoriID': 50,
+          'tag_frontend': "opsi_penjual-checkboxfield",
+          'value_alias': "Hanya Tampilkan Penjual yang Terverifikasi", // must be have the same length as value
+          'value': "1",
+        },
+      ];
+    }
+    // Places & Promo | Promo Nasional
+    else if (
+      subKategoriId == '51' // Places & Promo | Promo Nasional
+    ) {
+      return [
+        {
+          'key': 'LokasiPromoKotaKab',
+          'title': 'Lokasi',
+          'KategoriID': 55,
+          'SubKategoriID': 51,
+          'tag_frontend': "lokasi_promo-lokasifield",
+        },
+        {
+          'key': 'Harga',
+          'title': 'Rentang Harga',
+          'KategoriID': 55,
+          'SubKategoriID': 51,
+          'min_value': '0',
+          'max_value': '1000000000',
+          'dynamic_min_key': '-',
+          'dynamic_max_key': 'Harga',
+          'tag_frontend': "harga_promo-rangefield",
+        },
+        {
+          'key': 'PeriodeMulai',
+          'title': null,
+          'KategoriID': 54,
+          'SubKategoriID': 50,
+          'tag_frontend': "periode_mulai-periodepromofield",
+          'group_by_title': 'Masa Berlaku Promo'
+        },
+        {
+          'key': 'PeriodeBerakhir',
+          'title': null,
+          'KategoriID': 54,
+          'SubKategoriID': 50,
+          'tag_frontend': "periode_berakhir-periodepromofield",
+          'group_by_title': 'Masa Berlaku Promo'
+        },
+        {
+          'key': 'Kategori',
+          'title': 'Kategori Promo',
+          'KategoriID': 55,
+          'SubKategoriID': 51,
+          'tag_frontend': "kategori_promo_nasional-checkboxfield",
+        },
+        {
+          'key': 'PlatformRekomendasi',
+          'title': 'Platform Rekomendasi',
+          'KategoriID': 55,
+          'SubKategoriID': 51,
+          'tag_frontend': "platform-checkboxfield",
+          'value_alias': "Big Fleets,Transport Market",
+          'value': "0,1",
+        },
+        {
+          'key': 'verified',
+          'title': 'Opsi Penjual',
+          'KategoriID': 55,
+          'SubKategoriID': 51,
           'tag_frontend': "opsi_penjual-checkboxfield",
           'value_alias': "Hanya Tampilkan Penjual yang Terverifikasi", // must be have the same length as value
           'value': "1",

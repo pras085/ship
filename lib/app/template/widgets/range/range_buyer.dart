@@ -93,7 +93,7 @@ class _RangeBuyerState extends State<RangeBuyer> {
           children: [
             EditText(
               controller: controllerStart,
-              hintText: widget.minValue.toInt().toString(),
+              hintText: widget.numberType != NumberType.YEAR ? "${Utils.delimeter(widget.minValue.toString())}" : widget.minValue.toInt().toString(),
               numberType: numberType,
               onChanged: (value) {
                 _start = controllerStart.text.isEmpty ? widget.minValue : double.parse(Utils.removeNumberFormat(controllerStart.text));
@@ -140,7 +140,7 @@ class _RangeBuyerState extends State<RangeBuyer> {
             ),
             EditText(
               controller: controllerEnd,
-              hintText: widget.maxValue.toInt().toString(),
+              hintText: widget.numberType != NumberType.YEAR ? "${Utils.delimeter(widget.maxValue.toString())}" : widget.maxValue.toInt().toString(),
               numberType: numberType,
               onChanged: (value) {
                 _start = controllerStart.text.isEmpty ? widget.minValue : double.parse(Utils.removeNumberFormat(controllerStart.text));
