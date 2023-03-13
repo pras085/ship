@@ -72,55 +72,55 @@ class _TutorialAwalState extends State<TutorialAwal> {
                   color: Color(ListColor.colorBlue3).withOpacity(0.9),
 
                 ),
-                //lingkaran kiri
-                Positioned(
-                  left: GlobalVariable.ratioWidth(context) * -35,
-                  top: ((MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) / 2) - 56 * GlobalVariable.ratioWidth(context),
-                  child: circle(
-                    size: 112, 
-                    color: Colors.white, 
-                    opacity: 0.1,
-                    child: circle(
-                      size: 69.04, 
-                      color: Colors.white, 
-                      opacity: 0.1,
-                      child: circle(
-                        size: 40.66, 
-                        color: Colors.white, 
-                        opacity: 0.2,
-                      )
-                    )
-                  ),
-                ),
+                // //lingkaran kiri
+                // Positioned(
+                //   left: GlobalVariable.ratioWidth(context) * -35,
+                //   top: ((MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) / 2) - 56 * GlobalVariable.ratioWidth(context),
+                //   child: circle(
+                //     size: 112, 
+                //     color: Colors.white, 
+                //     opacity: 0.1,
+                //     child: circle(
+                //       size: 69.04, 
+                //       color: Colors.white, 
+                //       opacity: 0.1,
+                //       child: circle(
+                //         size: 40.66, 
+                //         color: Colors.white, 
+                //         opacity: 0.2,
+                //       )
+                //     )
+                //   ),
+                // ),
 
-                //tangan kiri
-                Positioned(
-                  left: GlobalVariable.ratioWidth(context) * 22,
-                  top: ((MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) / 2),
-                  child: SvgPicture.asset(
-                    "assets/tutor_ic_left_hand.svg",
-                    width: GlobalVariable.ratioWidth(context) * 25,
-                  ),
-                ),
+                // //tangan kiri
+                // Positioned(
+                //   left: GlobalVariable.ratioWidth(context) * 22,
+                //   top: ((MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) / 2),
+                //   child: SvgPicture.asset(
+                //     "assets/tutor_ic_left_hand.svg",
+                //     width: GlobalVariable.ratioWidth(context) * 25,
+                //   ),
+                // ),
 
-                //text tangan kiri
-                Positioned(
-                  left: GlobalVariable.ratioWidth(context) * 20,
-                  top: ((MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) / 2) + 39 * GlobalVariable.ratioWidth(context),
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    width: GlobalVariable.ratioWidth(context) * 296,
-                    child: CustomText(
-                      "Klik bagian kiri\nuntuk kembali ke\ntutorial sebelumnya",
-                      textAlign: TextAlign.left,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12,
-                      height: 15.6/12,
-                      color: Colors.white,
-                      decoration: TextDecoration.none,
-                    ),
-                  ),
-                ),
+                // //text tangan kiri
+                // Positioned(
+                //   left: GlobalVariable.ratioWidth(context) * 20,
+                //   top: ((MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) / 2) + 39 * GlobalVariable.ratioWidth(context),
+                //   child: Container(
+                //     alignment: Alignment.centerLeft,
+                //     width: GlobalVariable.ratioWidth(context) * 296,
+                //     child: CustomText(
+                //       "Klik bagian kiri\nuntuk kembali ke\ntutorial sebelumnya",
+                //       textAlign: TextAlign.left,
+                //       fontWeight: FontWeight.w600,
+                //       fontSize: 12,
+                //       height: 15.6/12,
+                //       color: Colors.white,
+                //       decoration: TextDecoration.none,
+                //     ),
+                //   ),
+                // ),
 
                 
                 //lingkaran kanan
@@ -162,7 +162,7 @@ class _TutorialAwalState extends State<TutorialAwal> {
                     alignment: Alignment.centerRight,
                     width: GlobalVariable.ratioWidth(context) * 148,
                     child: CustomText(
-                      "Klik bagian kanan\nuntuk kembali ke\ntutorial selanjutnya",
+                      "Klik untuk menuju ke\ntutorial selanjutnya",
                       textAlign: TextAlign.right,
                       fontWeight: FontWeight.w600,
                       fontSize: 12,
@@ -292,37 +292,74 @@ class _TutorialAwalState extends State<TutorialAwal> {
 }
 
 class Tutorial {
-  void showTutor ({
+  void showTutor2 ({
+    @required TutorialCoachMark tcm, 
+  }) {
+    tcm.show();
+  }
+
+  void disposeTutor ({
+    @required TutorialCoachMark tcm, 
+  }) {
+    tcm.finish();
+  }
+
+  TutorialCoachMark showTutor ({
     @required BuildContext context, 
     @required TutorialCoachMark tcm, 
-    @required List<TargetFocus> targets
+    @required List<TargetFocus> targets,
+    ScrollController scrollController,
+    GlobalKey keyScroll,
   }) {
-    tcm = TutorialCoachMark(
+    return TutorialCoachMark(
       context,
       targets: targets,
       colorShadow: Color(ListColor.colorBlue3).withOpacity(0.9),
       textSkip: "",
       hideSkip: true,
+      focusAnimationDuration: Duration(seconds: 1),
       paddingFocus: GlobalVariable.ratioWidth(context) * 7,
       opacityShadow: 0.9,
-      onFinish: () {
-        print("finish");
-      },
+      onFinish: () {},
       onClickTarget: (target) {
-        print('onClickTarget: $target');
+        try {
+          if (scrollController != null && keyScroll != null) {
+            if (int.parse(target.identify) < targets.length -1) {
+              // RenderBox renderNextTarget = targets[int.parse(target.identify) + 1].keyTarget.currentContext?.findRenderObject() as RenderBox;
+              RenderBox renderNextTarget = targets[int.parse(target.identify) + 1].keyTarget.currentContext?.findRenderObject() as RenderBox;
+              Size sizeNextTarget  = renderNextTarget.size; // or _widgetKey.currentContext?.size
+              // print('Size sizeNextTarget: ${sizeNextTarget.height}');
+              Offset offsetMerahTerhadapLayar = renderNextTarget.localToGlobal(Offset.zero,);
+              // print('Offset atas Merah Terhadap Layar: ${offsetMerahTerhadapLayar.dx}, ${offsetMerahTerhadapLayar.dy}');
+
+              RenderBox renderBoxScroll = keyScroll.currentContext?.findRenderObject() as RenderBox;
+              Size sizeScroll = renderBoxScroll.size; // or _widgetKey.currentContext?.size
+              // print('Size Scroll: ${sizeScroll.width}, ${sizeScroll.height}');
+              Offset offsetMerahTerhadapScroll = renderBoxScroll.globalToLocal(offsetMerahTerhadapLayar);
+              //nilai negatif berarti titik atas terpotong
+              print('Offset Merah Terhadap Scroll atas: ${offsetMerahTerhadapScroll.dy}');
+              //nilai positif berarti titik bawah terpotong
+              print('Offset Biru Terhadap Scroll Bawah: ${sizeNextTarget.height + offsetMerahTerhadapScroll.dy - sizeScroll.height }');
+
+              if(sizeNextTarget.height + offsetMerahTerhadapScroll.dy - sizeScroll.height > 0.0) {
+                scrollController.animateTo(scrollController.position.pixels + (sizeNextTarget.height + offsetMerahTerhadapScroll.dy - sizeScroll.height), duration: Duration(microseconds: 500), curve: Curves.linear);
+              }
+              
+            } 
+          } 
+        } catch (err) {
+          print(err);
+        }
       },
-      onSkip: () {
-        print("skip");
-      },
-      onClickOverlay: (target) {
-        print('onClickOverlay: $target');
-      },
+      onSkip: () {},
+      onClickOverlay: (target) {},
     )..show();
   }
 
   TargetFocus setTarget (
     {
       @required BuildContext context,
+      @required Function onSkip,
       @required String identify,
       @required GlobalKey globalKey,
       @required String title,
@@ -421,17 +458,22 @@ class Tutorial {
               bottom: GlobalVariable.ratioWidth(context) * 30
             )
           ,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget> [
-              CustomText(
-                "LEWATI",
-                color: Colors.white, 
-                fontWeight: FontWeight.w700,
-                fontSize: 14,
-              ),
-            ],
+          child: GestureDetector(
+            onTap: () {
+              onSkip();
+            },
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget> [
+                CustomText(
+                  "LEWATI",
+                  color: Colors.white, 
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14,
+                ),
+              ],
+            ),
           )
         )
       ],
@@ -445,15 +487,17 @@ class Tutorial {
 class TutorListener extends StatefulWidget {
   final Widget child;
   final Function listener;
+  final Function onDispose;
   final List<TutorialCoachMark> listTcm;
   final bool tutorAwal;
 
   final Key key;
   TutorListener({
-    this.child,
-    this.listener,
-    this.listTcm,
-    this.tutorAwal,
+    @required this.child,
+    @required this.listener,
+    @required this.onDispose,
+    @required this.listTcm,
+    this.tutorAwal = false,
     this.key,
   }): super(key: key);
 
@@ -465,9 +509,7 @@ class _TutorListenerState extends State<TutorListener> {
   
   @override
   void dispose() {
-    widget.listTcm.forEach((element) {
-      element.finish();
-    });
+    widget.onDispose();
     super.dispose();
   }
 
@@ -475,9 +517,8 @@ class _TutorListenerState extends State<TutorListener> {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!widget.tutorAwal) {
-        widget.listener();
+        return widget.listener();
       } 
-      return;
     });
     return TutorialAwal(
       onTap: () {

@@ -39,12 +39,9 @@ class NotifViewNew extends GetView<NotifControllerNew> {
                               },
                               child: Padding(
                                 padding: EdgeInsets.only(
-                                    left:
-                                        GlobalVariable.ratioWidth(context) * 16,
-                                    top: GlobalVariable.ratioWidth(context) *
-                                        0), //16
-                                child: Image.asset(
-                                  'assets/backnotif.png',
+                                    left: GlobalVariable.ratioWidth(context) * 16,
+                                    top: GlobalVariable.ratioWidth(context) * 0), //16
+                                child: Image.asset('assets/backnotif.png',
                                   height:
                                       GlobalVariable.ratioWidth(context) * 24,
                                   width:
@@ -56,8 +53,7 @@ class NotifViewNew extends GetView<NotifControllerNew> {
                               padding: EdgeInsets.only(
                                   top: GlobalVariable.ratioWidth(context) *
                                       0), //22
-                              child: CustomText(
-                                'Notifikasi',
+                              child: CustomText('Notifikasi',
                                 fontWeight: FontWeight.w700,
                                 fontSize: 14,
                               ),
@@ -68,154 +64,71 @@ class NotifViewNew extends GetView<NotifControllerNew> {
                                     backgroundColor: Colors.transparent,
                                     context: context,
                                     builder: (context) => SingleChildScrollView(
-                                          controller:
-                                              ModalScrollController.of(context),
-                                          child: Container(
-                                            height: GlobalVariable.ratioWidth(
-                                                    context) *
-                                                178,
-                                            width: GlobalVariable.ratioWidth(
-                                                    context) *
-                                                360,
-                                            // color: Colors.red,
-                                            decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.only(
-                                                    topRight: Radius.circular(
-                                                        GlobalVariable
-                                                                .ratioWidth(
-                                                                    context) *
-                                                            16),
-                                                    topLeft: Radius.circular(
-                                                        GlobalVariable
-                                                                .ratioWidth(
-                                                                    context) *
-                                                            16))),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                SizedBox(
-                                                  height:
-                                                      GlobalVariable.ratioWidth(
-                                                              context) *
-                                                          6,
-                                                ),
-                                                Center(
-                                                    child: Container(
-                                                  height:
-                                                      GlobalVariable.ratioWidth(
-                                                              context) *
-                                                          3,
-                                                  width:
-                                                      GlobalVariable.ratioWidth(
-                                                              context) *
-                                                          38,
-                                                  decoration: BoxDecoration(
-                                                      color: Color(0xFFDDDDDD),
-                                                      borderRadius: BorderRadius
-                                                          .circular(GlobalVariable
-                                                                  .ratioWidth(
-                                                                      context) *
-                                                              4)),
-                                                )),
-                                                SizedBox(
-                                                  height:
-                                                      GlobalVariable.ratioWidth(
-                                                              context) *
-                                                          20,
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                          left: GlobalVariable
-                                                                  .ratioWidth(
-                                                                      context) *
-                                                              16),
-                                                      child: GestureDetector(
-                                                          onTap: () {
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          child: Image.asset(
-                                                            'assets/close_other.png',
-                                                            height: GlobalVariable
-                                                                    .ratioWidth(
-                                                                        context) *
-                                                                24,
-                                                            width: GlobalVariable
-                                                                    .ratioWidth(
-                                                                        context) *
-                                                                24,
-                                                          )),
-                                                    ),
-                                                    SizedBox(
-                                                      width: GlobalVariable
-                                                              .ratioWidth(
-                                                                  context) *
-                                                          82,
-                                                    ),
-                                                    CustomText(
-                                                      'Pilih Notifikasi',
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      fontSize: 14,
-                                                      color: Colors.black,
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(
-                                                  height:
-                                                      GlobalVariable.ratioWidth(
-                                                              context) *
-                                                          27,
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                          left: GlobalVariable
-                                                                  .ratioWidth(
-                                                                      context) *
-                                                              16),
-                                                      child: CustomText(
-                                                        'Tampilkan semua notifikasi',
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontSize: 14,
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                          right: GlobalVariable
-                                                                  .ratioWidth(
-                                                                      context) *
-                                                              16),
-                                                      child: Obx(
-                                                        () =>
-                                                            RadioButtonCustomNotif(
-                                                                isDense: true,
-                                                                width: GlobalVariable
-                                                                        .ratioWidth(
-                                                                            context) *
-                                                                    20,
-                                                                height: GlobalVariable
-                                                                        .ratioWidth(
-                                                                            context) *
-                                                                    20,
-                                                                isWithShadow:
-                                                                    true,
-                                                                groupValue: controller
-                                                                    .selectedLang
-                                                                    .toString(),
-                                                                value:
-                                                                    controller
-                                                                        .indo
-                                                                        .value,
+                                    controller: ModalScrollController.of(context),
+                                    child: Container(
+                                    height: GlobalVariable.ratioWidth(context) * 178,
+                                    width: GlobalVariable.ratioWidth(context) * 360,
+                                      decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.only(
+                                    topRight:Radius.circular(GlobalVariable.ratioWidth(context) * 16),
+                                    topLeft: Radius.circular(GlobalVariable.ratioWidth(context) * 16))),
+                                    child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                    SizedBox(height: GlobalVariable.ratioWidth(context) * 6,),
+                                    Center(child: Container(
+                                    height: GlobalVariable.ratioWidth(context) * 3,
+                                    width: GlobalVariable.ratioWidth(context) * 38,
+                                      decoration: BoxDecoration(
+                                      color: Color(0xFFDDDDDD),
+                                      borderRadius: 
+                                      BorderRadius.circular(GlobalVariable.ratioWidth(context) *4)
+                                      ),),),
+                              
+                              SizedBox(height: GlobalVariable.ratioWidth(context) * 20),
+                              Row(children: [
+                              Padding(
+                              padding: EdgeInsets.only(
+                              left: GlobalVariable.ratioWidth(context) * 16),
+                              child: GestureDetector(
+                                onTap: () {
+                                    Navigator.pop(context);},
+                              child: Image.asset('assets/close_other.png',
+                                     height: GlobalVariable.ratioWidth(context) * 24,
+                                     width: GlobalVariable.ratioWidth(context) * 24,
+                                      )),),
+                              SizedBox(
+                              width: GlobalVariable.ratioWidth(context) * 82),
+                              CustomText(
+                              'Pilih Notifikasi',
+                              fontWeight: FontWeight.w700,
+                              fontSize: 14,
+                              color: Colors.black,), ], ),
+                              SizedBox(
+                              height: GlobalVariable.ratioWidth(context) * 27, ),
+                              Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                              Padding(
+                              padding: EdgeInsets.only(
+                              left: GlobalVariable.ratioWidth(context) * 16),
+                              child: 
+                              CustomText(
+                              'Tampilkan semua notifikasi',
+                               fontWeight: FontWeight.w600,
+                               fontSize: 14, ), ),
+                              Padding(
+                              padding: EdgeInsets.only(
+                              right: GlobalVariable.ratioWidth(context) * 16),
+                              child: Obx(
+                              () => RadioButtonCustomNotif(
+                                    isDense: true,
+                                    width: GlobalVariable.ratioWidth(context) * 20,
+                                    height: GlobalVariable.ratioWidth(context) * 20,
+                                    isWithShadow: true,
+                                    groupValue: controller.selectedLang.toString(),
+                                    value: controller.indo.value,
                                                                 onChanged:
                                                                     (value) async {
                                                                   controller

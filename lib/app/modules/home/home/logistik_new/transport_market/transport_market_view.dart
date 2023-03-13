@@ -36,10 +36,10 @@ class TransportMarketView extends GetView<TransportMarketController> {
         icon: GlobalVariable.imagePath + "ic_subscription.svg",
         color: ListColor.colorWhite,
         onPress: () async {
-          var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "612");
-          if (!hasAccess) {
-            return;
-          }
+          // var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "612");
+          // if (!hasAccess) {
+          //   return;
+          // }
           GetToPage.toNamed<TMSubscriptionHomeController>(Routes.TM_SUBSCRIPTION_HOME);
         }),
     MenuHorizontalScrollTransportMarket(

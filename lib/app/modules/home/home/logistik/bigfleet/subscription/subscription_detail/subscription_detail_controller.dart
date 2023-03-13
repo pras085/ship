@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
+import 'package:muatmuat/app/core/function/cek_sub_user_dan_hak_akses.dart';
 import 'package:muatmuat/app/core/function/custom_toast.dart';
 import 'package:muatmuat/app/core/function/get_to_page_function.dart';
 import 'package:muatmuat/app/core/function/global_alert_dialog.dart';
@@ -72,6 +73,10 @@ class SubscriptionDetailController extends GetxController {
   bool isNext;
   var loadingBatal = false.obs;
 
+  var hasAccessTambahLangganan = true.obs;
+  var hasAccessDownloadRiwayatPesanan = true.obs;
+  var hasAccessShareRiwayatPesanan = true.obs;
+
   @override
   void onInit() async {
     // fileName = "testFile.gif";
@@ -82,6 +87,14 @@ class SubscriptionDetailController extends GetxController {
     unbindBackgroundIsolate();
     bindBackgroundIsolate();
     FlutterDownloader.registerCallback(downloadCallBack);
+
+    hasAccessTambahLangganan.value = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "16", showDialog: false);
+    hasAccessDownloadRiwayatPesanan.value = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "584", showDialog: false);
+    hasAccessShareRiwayatPesanan.value = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "585", showDialog: false);
+
+    hasAccessTambahLangganan.value = false;
+    hasAccessDownloadRiwayatPesanan.value = false;
+    hasAccessShareRiwayatPesanan.value = false;
   }
 
   @override

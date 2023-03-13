@@ -40,15 +40,17 @@ class _ListIklanPlacesPromoViewState extends State<ListIklanPlacesPromoView> {
   final controller = Get.put(ListIklanPlacesPromoController());
   Map menu;
 
+  // key for auto scroll
+  final dataKeyTransportationStore = GlobalKey();
+  final dataKeyHumanCapital = GlobalKey();
+  final dataKeyPropertyWarehouse = GlobalKey();
+
   @override
   void initState() {
     super.initState();
     menu = Get.arguments;
     controller.argument.value = menu;
     controller.fetchDataIklan();
-    controller.scrollController.addListener(() {
-      print("SCROLL POSITION: ${controller.scrollController.position.pixels}");
-    });
   }
 
   @override
@@ -359,6 +361,9 @@ class _ListIklanPlacesPromoViewState extends State<ListIklanPlacesPromoView> {
                                       top: GlobalVariable.ratioWidth(context) * 8, // -2px customText
                                     ),
                                     child: BadgePlacesBuyer(
+                                      onTransportationStoreTap: () => Scrollable.ensureVisible(dataKeyTransportationStore.currentContext, duration: Duration(milliseconds: 100)),
+                                      onHumanCapitalTap: () => Scrollable.ensureVisible(dataKeyHumanCapital.currentContext, duration: Duration(milliseconds: 100)),
+                                      onPropertyWarehouseTap: () => Scrollable.ensureVisible(dataKeyPropertyWarehouse.currentContext, duration: Duration(milliseconds: 100)),
                                       location: controller.locationController.location.value,
                                     ),
                                   )
@@ -477,7 +482,7 @@ class _ListIklanPlacesPromoViewState extends State<ListIklanPlacesPromoView> {
                                         controller.isLoading.value = true;
                                         await controller.fetchDataIklan(refresh: false);
                                         controller.isLoading.value = false;
-                                        controller.scrollController.animateTo(controller.getCurrentPosition(), duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
+                                        // controller.scrollController.animateTo(controller.getCurrentPosition(), duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
                                       } : null,
                                       child: CustomText(
                                         'Tampilkan Selengkapnya',
@@ -506,6 +511,7 @@ class _ListIklanPlacesPromoViewState extends State<ListIklanPlacesPromoView> {
                                           height: GlobalVariable.ratioWidth(context) * 10,
                                         ),
                                         AdsPlacesCardBuyer(
+                                          key: dataKeyTransportationStore,
                                           title: "Temukan # Iklan Transportation Store di ${controller.locationController.location.value.city}", 
                                           location: controller.locationController.location.value,
                                           layananID: "4", // transportation Store 
@@ -513,6 +519,7 @@ class _ListIklanPlacesPromoViewState extends State<ListIklanPlacesPromoView> {
                                           adsType: ADS_TYPE.product,
                                         ),
                                         AdsPlacesCardBuyer(
+                                          key: dataKeyPropertyWarehouse,
                                           title: "Temukan # Iklan Gudang dijual di ${controller.locationController.location.value.city}", 
                                           location: controller.locationController.location.value,
                                           layananID: "6", // Property & Warehouse 
@@ -520,6 +527,7 @@ class _ListIklanPlacesPromoViewState extends State<ListIklanPlacesPromoView> {
                                           adsType: ADS_TYPE.product,
                                         ),
                                         AdsPlacesCardBuyer(
+                                          key: dataKeyHumanCapital,
                                           title: "Temukan # Iklan lowongan kerja di ${controller.locationController.location.value.city}", 
                                           location: controller.locationController.location.value,
                                           layananID: "9", // Human Capital

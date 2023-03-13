@@ -85,10 +85,37 @@ class SubscriptionHomeController extends GetxController {
   TutorialCoachMark tutorialCoachMark;
   List<TargetFocus> targets = List();
 
+  var hasAccessTambahLangganan = true.obs;
+  var hasAccessTambahSubUser = true.obs;
+  var hasAccessLihatDaftarSubUser = true.obs;
+  var hasAccessLihatRiwayatLangganan = true.obs;
+  var hasAccessLihatRiwayatLanggananSubUser = true.obs;
+  var hasAccessTambahLanggananBerikutnya = true.obs;
+  var hasAccessTambahSubUserLanggananBerikutnya = true.obs;
+  var hasAccessPilihUserLanggananBerikutnya = true.obs;
+
   @override
   void onInit() async {
     super.onInit();
     getDataCek();
+
+    hasAccessTambahLangganan.value = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "16", showDialog: false);
+    hasAccessTambahSubUser.value = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "400", showDialog: false);
+    hasAccessLihatDaftarSubUser.value = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "401", showDialog: false);
+    hasAccessLihatRiwayatLangganan.value = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "402", showDialog: false);
+    hasAccessLihatRiwayatLanggananSubUser.value = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "574", showDialog: false);
+    hasAccessTambahLanggananBerikutnya.value = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "403", showDialog: false);
+    hasAccessTambahSubUserLanggananBerikutnya.value = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "404", showDialog: false);
+    hasAccessPilihUserLanggananBerikutnya.value = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "405", showDialog: false);
+
+    hasAccessTambahLangganan.value = false;
+    hasAccessTambahSubUser.value = false;
+    hasAccessLihatDaftarSubUser.value = false;
+    hasAccessLihatRiwayatLangganan.value = false;
+    hasAccessLihatRiwayatLanggananSubUser.value = false;
+    hasAccessTambahLanggananBerikutnya.value = false;
+    hasAccessTambahSubUserLanggananBerikutnya.value = false;
+    hasAccessPilihUserLanggananBerikutnya.value = false;
   }
 
   @override
@@ -349,10 +376,11 @@ class SubscriptionHomeController extends GetxController {
         SubscriptionPopupKeuntungan.showAlertDialog(
             context: Get.context,
             onTap: () async {
-              var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "16");
-              if (!hasAccess) {
-                return;
-              }
+              if (!hasAccessTambahLangganan.value) { CekSubUserDanHakAkses().showDialogNoAccess(context: Get.context); return; }
+              // var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "16");
+              // if (!hasAccess) {
+              //   return;
+              // }
               var result =
                   await GetToPage.toNamed<CreateSubscriptionController>(
                       Routes.CREATE_SUBSCRIPTION,

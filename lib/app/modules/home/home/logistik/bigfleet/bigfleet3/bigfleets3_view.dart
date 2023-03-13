@@ -343,7 +343,7 @@ class Bigfleets3View extends GetView<Bigfleets3Controller> {
                   color: Colors.white,
                   borderRadius: BorderRadius.only(topRight: Radius.circular(GlobalVariable.ratioWidth(context) *10), topLeft: Radius.circular(GlobalVariable.ratioWidth(context) *10))
                 ),
-                height: GlobalVariable.ratioWidth(context) * 1400,
+                height: GlobalVariable.ratioWidth(context) * 1600,
                 // height: MediaQuery.of(context).size.height,
                 width: GlobalVariable.ratioWidth(context) * 360,
                 

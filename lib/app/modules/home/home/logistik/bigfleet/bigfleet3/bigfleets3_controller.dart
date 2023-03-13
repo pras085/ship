@@ -21,6 +21,8 @@ class Bigfleets3Controller extends GetxController {
 
   final indexImageSlider = 0.obs;
 
+  var hasAccessLihatSubscription = true.obs;
+
   @override
   void onInit() async{
     super.onInit();
@@ -65,6 +67,8 @@ class Bigfleets3Controller extends GetxController {
               ),
             ))
         .toList();
+    
+    hasAccessLihatSubscription.value = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "589", showDialog: false);
   }
 
   @override

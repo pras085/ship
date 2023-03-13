@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:muatmuat/app/modules/buyer/api_buyer.dart';
+import 'package:muatmuat/app/modules/buyer/list_iklan/list_iklan_controller.dart';
+import 'package:muatmuat/app/modules/buyer/list_iklan/list_iklan_view.dart';
 import 'package:muatmuat/app/modules/buyer/rules_buyer.dart';
 import 'package:muatmuat/app/template/select_location_buyer/select_location_buyer_model.dart';
 import 'package:muatmuat/app/utils/response_state.dart';
@@ -87,20 +90,50 @@ class _AdsPlacesCardBuyerState extends State<AdsPlacesCardBuyer> {
       builder: (c) {
         if (dataModelResponse.state == ResponseStates.COMPLETE) {
           final dataList = dataModelResponse.data;
+          ADS_TYPE adsType = widget.adsType;
+          final sampleData = dataList.isNotEmpty ? dataList.first : null;
+          if (sampleData != null) {
+            adsType = RulesBuyer.getAdsTypeBySubKategoriId("${sampleData['SubKategoriID']}");
+          }
           return dataList.isEmpty ? SizedBox.shrink() : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomText(widget.title.replaceAll("#", "${Utils.delimeter("$count")}") ?? "",
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                height: 14.4/12,
-                withoutExtraPadding: true,
+              Row(
+                children: [
+                  Expanded(
+                    child: CustomText(widget.title.replaceAll("#", "${Utils.delimeter("$count")}") ?? "",
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      height: 14.4/12,
+                      withoutExtraPadding: true,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      final dataArgs = {
+                        'layanan': widget.layananID,
+                        'kategori': widget.layananName,
+                        'subKategori': "${sampleData['Subkategori']['nama']}",
+                        'KategoriID': "${sampleData['KategoriID']}",
+                        'ID': "${sampleData['SubKategoriID']}",
+                      };
+                      Get.to(() => ListIklanView(),
+                        arguments: dataArgs,
+                      );
+                    },
+                    child: SvgPicture.asset("${GlobalVariable.urlImageTemplateBuyer}ic_arrow_right_frame.svg",
+                      width: GlobalVariable.ratioWidth(context) * 12,
+                      height: GlobalVariable.ratioWidth(context) * 12,
+                      color: Color(0xFF002D84),
+                    ),
+                  )
+                ],
               ),
               SizedBox(
                 height: GlobalVariable.ratioWidth(context) * 12,
               ),
               StaggeredGrid.count(
-                crossAxisCount: widget.adsType == ADS_TYPE.product ? 2 : 1,
+                crossAxisCount: adsType == ADS_TYPE.product ? 2 : 1,
                 mainAxisSpacing: GlobalVariable.ratioWidth(context) * 10,
                 crossAxisSpacing: GlobalVariable.ratioWidth(context) * 16,
                 children: [
@@ -111,7 +144,19 @@ class _AdsPlacesCardBuyerState extends State<AdsPlacesCardBuyer> {
                       data: dataList[i],
                       layanan: widget.layananName,
                       onFavorited: () {
-                        // addToWishlist(i);
+                        addToWishlistBuyer(
+                          body: {
+                            'KategoriID': "${dataList[i]['KategoriID']}",
+                            'SubKategoriID': "${dataList[i]['SubKategoriID']}",
+                            'IklanID': "${dataList[i]['ID']}",
+                            'isWishList': dataList[i]['favorit'] == "1" ? "0" : "1",
+                            'UserID': GlobalVariable.userModelGlobal.docID
+                          },
+                          onSuccess: () {
+                            dataList[i]['favorit'] = dataList[i]['favorit'] == "1" ? "0" : "1";
+                            setState(() {});
+                          },
+                        );
                       }
                     ),
                 ],

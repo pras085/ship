@@ -419,6 +419,9 @@ class RulesBuyer {
         || subKategoriId == '48' // Transportais Store | Peruhsanaan Lainnya
         || subKategoriId == '12' // Repair & Maintenance | Teknisi
         || subKategoriId == '32' // Transportasi Intermoda | Sea Freight
+        || subKategoriId == '25' // Dealer & Karoseri | Perusahaan Karoseri
+        || subKategoriId == '28' // Dealer & Karoseri | Perusahaan Lainnya
+        || subKategoriId == '23' // Dealer & Karoseri | Dealer
       ) {
         date = null;
         title = data['data_seller']['nama_seller'];

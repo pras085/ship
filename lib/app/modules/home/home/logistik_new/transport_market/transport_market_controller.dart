@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:muatmuat/app/core/function/cek_sub_user_dan_hak_akses.dart';
 import 'package:muatmuat/app/modules/ARK/extra_widget/api_helper_ark.dart';
 import 'package:muatmuat/app/network/api_helper.dart' as apiInternal;
 import 'package:muatmuat/app/modules/ARK/extra_widget/global_variable_ark.dart';
@@ -11,9 +12,16 @@ class TransportMarketController extends GetxController {
   var loading = true.obs;
   var newNotif = false.obs;
 
+  var hasAccessLihatSubscription = true.obs;
+
   @override
   void onInit() async {
+    super.onInit();
     getInit();
+
+    hasAccessLihatSubscription.value = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "612", showDialog: false);
+
+    hasAccessLihatSubscription.value = false;
   }
 
   @override

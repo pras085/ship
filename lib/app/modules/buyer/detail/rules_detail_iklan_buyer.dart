@@ -1154,8 +1154,21 @@ class RulesDetailIklanBuyer {
                     3 : default 
                   */
                 );
-              }
-              else if (
+              } else if (
+                subKategoriId == "52" // Human Capital |produk Lainnya
+              ){
+                return DialogBuyer.showCallBottomSheet(
+                  listData: data, 
+                  isHumanCapital: true,
+                  bottomSheetType: 3,
+                  /* JENIS BOTTOM SHEET TYPE
+                    0 : just showing email
+                    1 : without pic
+                    2 : showing all include email
+                    3 : default 
+                  */
+                );
+              } else if (
                 subKategoriId == "56" // Human Capital | JobSeeker
                 || subKategoriId == "53" // Human Capital | Perusahaan Lainnya
               ){
@@ -1170,23 +1183,7 @@ class RulesDetailIklanBuyer {
                     3 : default 
                   */
                 );
-              }
-              else if (
-                subKategoriId == "52" // Human Capital | Produk Lainnya
-              ){
-                return DialogBuyer.showCallBottomSheet(
-                  listData: data, 
-                  isHumanCapital: true,
-                  bottomSheetType: 3,
-                  /* JENIS BOTTOM SHEET TYPE
-                    0 : just showing email
-                    1 : without pic
-                    2 : showing all include email
-                    3 : default 
-                  */
-                );
-              }
-              else {
+              } else {
                 return DialogBuyer.showCallBottomSheet(listData: data);
               }
             },

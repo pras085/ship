@@ -73,6 +73,8 @@ class TMSubscriptionHomeController extends GetxController {
 
   var dateTimeFormat = DateFormat('dd MMM yyyy');
 
+  ScrollController scrollController = ScrollController();
+  GlobalKey keyScroll = GlobalKey();
   GlobalKey keyTutor0 = GlobalKey();
   GlobalKey keyTutor1 = GlobalKey();
   GlobalKey keyTutor2 = GlobalKey();
@@ -83,11 +85,38 @@ class TMSubscriptionHomeController extends GetxController {
   TutorialCoachMark tutorialCoachMark;
   List<TargetFocus> targets = List();
 
+  var hasAccessTambahLangganan = true.obs;
+  var hasAccessTambahSubUser = true.obs;
+  var hasAccessLihatDaftarSubUser = true.obs;
+  var hasAccessLihatRiwayatLangganan = true.obs;
+  var hasAccessLihatRiwayatLanggananSubUser = true.obs;
+  var hasAccessTambahLanggananBerikutnya = true.obs;
+  var hasAccessTambahSubUserLanggananBerikutnya = true.obs;
+  var hasAccessPilihUserLanggananBerikutnya = true.obs;
+
   @override
   void onInit() async {
     super.onInit();
     initTargets();
     getDataCek();
+
+    hasAccessTambahLangganan.value = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "475", showDialog: false);
+    hasAccessTambahSubUser.value = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "476", showDialog: false);
+    hasAccessLihatDaftarSubUser.value = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "477", showDialog: false);
+    hasAccessLihatRiwayatLangganan.value = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "478", showDialog: false);
+    hasAccessLihatRiwayatLanggananSubUser.value = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "479", showDialog: false);
+    hasAccessTambahLanggananBerikutnya.value = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "480", showDialog: false);
+    hasAccessTambahSubUserLanggananBerikutnya.value = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "481", showDialog: false);
+    hasAccessPilihUserLanggananBerikutnya.value = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "482", showDialog: false);
+
+    hasAccessTambahLangganan.value = false;
+    hasAccessTambahSubUser.value = false;
+    hasAccessLihatDaftarSubUser.value = false;
+    hasAccessLihatRiwayatLangganan.value = false;
+    hasAccessLihatRiwayatLanggananSubUser.value = false;
+    hasAccessTambahLanggananBerikutnya.value = false;
+    hasAccessTambahSubUserLanggananBerikutnya.value = false;
+    hasAccessPilihUserLanggananBerikutnya.value = false;
   }
 
   @override
@@ -317,10 +346,11 @@ class TMSubscriptionHomeController extends GetxController {
         TMSubscriptionPopupKeuntungan.showAlertDialog(
             context: Get.context,
             onTap: () async {
-              var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "475");
-              if (!hasAccess) {
-                return;
-              }
+              if (!hasAccessTambahLangganan.value) { CekSubUserDanHakAkses().showDialogNoAccess(context: Get.context); return; }
+              // var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "475");
+              // if (!hasAccess) {
+              //   return;
+              // }
               var result =
                   await GetToPage.toNamed<TMCreateSubscriptionController>(
                       Routes.TM_CREATE_SUBSCRIPTION,
@@ -344,8 +374,12 @@ class TMSubscriptionHomeController extends GetxController {
     Tutorial().showTutor(
       context: context,
       tcm: tutorialCoachMark,
-      targets: targets
+      targets: targets,
+      keyScroll: keyScroll,
+      scrollController: scrollController,
     );
+
+
     // tutorialCoachMark = TutorialCoachMark(
     //   context,
     //   targets: targets,
@@ -435,79 +469,5 @@ class TMSubscriptionHomeController extends GetxController {
         skipAlign: Alignment.topRight
       )
     );
-
-    // targets.add(
-    //   TargetFocus(
-    //     identify: "Target 0",
-    //     keyTarget: keyTutor0,
-    //     contents: [
-    //       TargetContent(
-    //         align: ContentAlign.bottom,
-    //         child: Container(
-    //           color: Colors.transparent,
-    //           child: Column(
-    //             mainAxisSize: MainAxisSize.min,
-    //             crossAxisAlignment: CrossAxisAlignment.center,
-    //             children: <Widget>[
-    //               Container(
-    //                 alignment: Alignment.center,
-    //                 width: GlobalVariable.ratioWidth(Get.context) * 296,
-    //                 child: Padding(
-    //                   padding: EdgeInsets.only(
-    //                     top: GlobalVariable.ratioWidth(Get.context) * 0,
-    //                     bottom: GlobalVariable.ratioWidth(Get.context) * 14
-    //                   ),
-    //                   child: CustomText(
-    //                     "Paket Langganan Saat Ini",
-    //                     fontWeight: FontWeight.w700,
-    //                     textAlign: TextAlign.center,
-    //                     fontSize: 18,
-    //                     height: 21.78/18,
-    //                     color: Colors.white,
-    //                   ),
-    //                 ),
-    //               ),
-    //               Container(
-    //                 alignment: Alignment.center,
-    //                 width: GlobalVariable.ratioWidth(Get.context) * 296,
-    //                 child: CustomText(
-    //                   "Pada section ini Anda dapat melihat status dan periode paket langganan Anda. Saat Ini Anda menikmati akses gratis Big Fleets selama 6 bulan.",
-    //                   fontWeight: FontWeight.w600,
-    //                   textAlign: TextAlign.center,
-    //                   fontSize: 14,
-    //                   height: 18.2/14,
-    //                   color: Colors.white,
-    //                 ),
-    //               ),
-    //             ],
-    //           ),
-    //         )),
-    //       TargetContent(
-    //         align: ContentAlign.custom,
-    //         customPosition: 
-    //           CustomTargetContentPosition(
-    //             left: GlobalVariable.ratioWidth(Get.context) * 269,
-    //             // left: 0,
-    //             bottom: GlobalVariable.ratioWidth(Get.context) * 30
-    //           )
-    //         ,
-    //         child: Column(
-    //           crossAxisAlignment: CrossAxisAlignment.start,
-    //           mainAxisSize: MainAxisSize.min,
-    //           children: <Widget> [
-    //             CustomText(
-    //               "LEWATI",
-    //               color: Colors.white, 
-    //               fontWeight: FontWeight.w700,
-    //               fontSize: 14,
-    //             ),
-    //           ],
-    //         )
-    //       )
-    //     ],
-    //     shape: ShapeLightFocus.RRect,
-    //     radius: GlobalVariable.ratioWidth(Get.context) * 10,
-    //   ),
-    // );
   }
 }

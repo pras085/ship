@@ -15,9 +15,9 @@ class CekSubUserDanHakAkses {
     bool showDialog = true,
   }) async {
     if (GlobalVariable.userModelGlobal.isSubUser) {
-      var response = await ApiHelper(context: context,isShowDialogLoading: showDialog).getHakAkses(menuId);
+      var response = await ApiHelper(context: context, isShowDialogLoading: showDialog).getHakAkses(menuId);
       log("RESPONSE GET HAK AKSES => " + response["Data"]["Message"].toString());
-      if (response["Data"]["Message"] is bool && response["Data"]["Message"] ) {
+      if (response["Data"]["Message"]) {
         // kalau sub user dan punya hak akses
         log("RUNNN => sub user dan punya hak akses");
         return true;
@@ -50,4 +50,21 @@ class CekSubUserDanHakAkses {
     }
   }
 
+  void showDialogNoAccess({
+    @required BuildContext context,
+  }) {
+    GlobalAlertDialog.showAlertDialogCustom(
+      context: context,
+      message: "Maaf, Anda belum memiliki akses.",
+      isDismissible: false,
+      isShowCloseButton: false,
+      labelButtonPriority1: "OK",
+      onTapPriority1: () {
+        print("RUNNN");
+      },
+      widthButton1: 104,
+      heightButton1: 36,
+      borderRadiusButton1: 18,
+    );
+  }
 }

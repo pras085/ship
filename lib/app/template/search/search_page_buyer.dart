@@ -135,6 +135,7 @@ class _SearchPageBuyerState extends State<SearchPageBuyer> {
                                     ),
                                     inputFormatters: [
                                       LengthLimitingTextInputFormatter(100),
+                                      FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z ]")),
                                     ],
                                     style: TextStyle(
                                       fontFamily: 'AvenirNext', 

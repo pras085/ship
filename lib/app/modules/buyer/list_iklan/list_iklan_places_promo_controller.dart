@@ -17,6 +17,7 @@ import 'package:muatmuat/global_variable.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../selected_location_controller.dart';
+import 'list_iklan_controller.dart';
 
 class ListIklanPlacesPromoController extends GetxController {
 
@@ -197,66 +198,5 @@ class ListIklanPlacesPromoController extends GetxController {
   Size getWidgetSizeByKey(GlobalKey<State<StatefulWidget>> key) {
     RenderBox box = key.currentContext.findRenderObject() as RenderBox;
     return box.size;
-  }
-}
-
-Future addToWishlistBuyer({
-  Map<String, dynamic> body,
-  VoidCallback onSuccess,
-}) async {
-  if (GlobalVariable.tokenApp.isEmpty) {
-    GlobalAlertDialog.showAlertDialogCustom(
-      context: Get.context,
-      insetPadding: 17,
-      customMessage: Container(
-        margin: EdgeInsets.only(
-          left: GlobalVariable.ratioWidth(Get.context) * 15,
-          right: GlobalVariable.ratioWidth(Get.context) * 15,
-          bottom: GlobalVariable.ratioWidth(Get.context) * 16,
-        ),
-        child: CustomText(
-          "Silahkan Masuk atau Daftar terlebih dahulu jika belum punya akun muatmuat",
-          textAlign: TextAlign.center,
-          fontSize: 14,
-          height: 21 / 14,
-          color: Colors.black,
-          fontWeight: FontWeight.w600
-        ),
-      ),
-      borderRadius: 12,
-      primaryColor: Color(ListColor.colorBlueTemplate),
-      labelButtonPriority1: "Daftar",
-      labelButtonPriority2: "Masuk",
-      positionColorPrimaryButton: PositionColorPrimaryButton.PRIORITY2,
-      onTapPriority1: () {
-        GetToPage.toNamed<RegisterUserController>(Routes.REGISTER_USER);
-      },
-      onTapPriority2: () {
-        GetToPage.toNamed<LoginController>(Routes.LOGIN);
-      }
-    );
-  } else {
-    try {
-      final response = await ApiBuyer(
-        context: Get.context,
-      ).saveWishlist(body);
-      if (response != null) {
-        if (response['Message'] != null && response['Message']['Code'] == 200) {
-          onSuccess();
-        } else {
-          throw("error");
-        }
-      } else {
-        throw("error");
-      }
-    } catch (error) {
-      // error
-      print("ERROR :: $error");
-      CustomToastTop.show(
-        context: Get.context, 
-        isSuccess: 0,
-        message: "failed to add wishlist!",
-      );
-    }
   }
 }

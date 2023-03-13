@@ -36,7 +36,7 @@ class _FilterIklanViewState extends State<FilterIklanView> {
   final locationController = Get.find<SelectedLocationController>();
 
   var argsData;
-  var filterArgs;
+  Map filterArgs;
   var filter = {};
   List<Map> formFields;
   var dataModelResponse = ResponseState<List<Map>>();
@@ -48,7 +48,7 @@ class _FilterIklanViewState extends State<FilterIklanView> {
   void initState() {
     super.initState();
     final args = Get.arguments;
-    if (args['filter'] != null) {
+    if (args['filter'] != null && args['filter'] is Map) {
       filterArgs = args['filter'];
     }
     if (args['data'] != null) {
@@ -699,18 +699,20 @@ class _FilterIklanViewState extends State<FilterIklanView> {
           children: [
             _button(
               context: context,
-              onTap: jumlahFilter == "0" ? null : () {
+              width: 160,
+              height: 32,
+              text: "Reset",
+              // add check, disable it if only user doesn't select the filter and
+              // initial value was null (history before)
+              onTap: (filterArgs == null || (filterArgs != null && filterArgs.isEmpty)) && jumlahFilter == "0" ? null : () {
                 Get.back(
                   result: {},
                 );
               },
-              width: 160,
-              height: 32,
-              text: "Reset",
-              color: jumlahFilter == "0" ? Color(0xFF676767) : Color(ListColor.colorBlueTemplate1),
+              color: (filterArgs == null || (filterArgs != null && filterArgs.isEmpty)) && jumlahFilter == "0" ? Color(0xFF676767) : Color(ListColor.colorBlueTemplate1),
+              borderColor: (filterArgs == null || (filterArgs != null && filterArgs.isEmpty)) && jumlahFilter == "0" ? Color(0xFFC6CBD4) : Color(ListColor.colorBlueTemplate1),
               backgroundColor: Colors.white,
               borderSize: 1.5,
-              borderColor: jumlahFilter == "0" ? Color(0xFFC6CBD4) : Color(ListColor.colorBlueTemplate1),
               borderRadius: 26,
               useBorder: true,
             ),
@@ -719,19 +721,30 @@ class _FilterIklanViewState extends State<FilterIklanView> {
             ),
             _button(
               context: context,
-              onTap: jumlahFilter == "0" ? null : () {
+              // add check, disable it if only user doesn't select the filter and
+              // initial value was null (history before)
+              onTap: (filterArgs == null || (filterArgs != null && filterArgs.isEmpty)) && jumlahFilter == "0" ? null : () {
                 for (var a in filter.keys.toList()) {
                   (filter[a] as Map).remove('textController');
                 }
-                Get.back(
-                  result: filter,
-                );
+                // reset if the user want to unselect all after use the filter
+                if (filterArgs != null && filterArgs.isNotEmpty && jumlahFilter == "0") {
+                  Get.back(
+                    result: {},
+                  );
+                } else {
+                  Get.back(
+                    result: filter,
+                  );
+                }
               },
               width: 160,
               height: 32,
               text: "Terapkan",
-              color: jumlahFilter == "0" ? Color(0xFF676767) : Colors.white,
-              backgroundColor: jumlahFilter == "0" ? Color(0xFFCECECE) : Color(ListColor.colorBlueTemplate1),
+              // add check, disable it if only user doesn't select the filter and
+              // initial value was null (history before)
+              color: (filterArgs == null || (filterArgs != null && filterArgs.isEmpty)) && jumlahFilter == "0" ? Color(0xFF676767) : Colors.white,
+              backgroundColor: (filterArgs == null || (filterArgs != null && filterArgs.isEmpty)) && jumlahFilter == "0" ? Color(0xFFCECECE) : Color(ListColor.colorBlueTemplate1),
               borderRadius: 26,
             ),
           ],

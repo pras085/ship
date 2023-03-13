@@ -50,16 +50,17 @@ class TMSubscriptionDetailView extends GetView<TMSubscriptionDetailController> {
                         child: InkWell(
                           onTap: () async {
                             // Get.back();
-                            var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "487");
-                            if (!hasAccess) {
-                              return;
-                            }
+                            if (!controller.hasAccessDownloadRiwayatPesanan.value) { CekSubUserDanHakAkses().showDialogNoAccess(context: Get.context); return; }
+                            // var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "487");
+                            // if (!hasAccess) {
+                            //   return;
+                            // }
                             controller.tapDownload = true;
                             controller.cekDownloadFile();
                           },
                           child: SvgPicture.asset(
                             "assets/ic_download.svg",
-                            color: Color(ListColor.colorBlue),
+                            color: controller.hasAccessDownloadRiwayatPesanan.value ? Color(ListColor.colorBlue) : Color(ListColor.colorLightGrey2),
                             width: GlobalVariable.ratioWidth(Get.context) * 24,
                             height: GlobalVariable.ratioWidth(Get.context) * 24,
                           ),
@@ -79,15 +80,16 @@ class TMSubscriptionDetailView extends GetView<TMSubscriptionDetailController> {
                           color: Colors.transparent,
                           child: InkWell(
                             onTap: () async {
-                              var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "488");
-                              if (!hasAccess) {
-                                return;
-                              }
+                              if (!controller.hasAccessShareRiwayatPesanan.value) { CekSubUserDanHakAkses().showDialogNoAccess(context: Get.context); return; }
+                              // var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "488");
+                              // if (!hasAccess) {
+                              //   return;
+                              // }
                               controller.shareFile();
                             },
                             child: SvgPicture.asset(
                               "assets/share_icon.svg",
-                              color: Color(ListColor.colorBlue),
+                              color: controller.hasAccessShareRiwayatPesanan.value ? Color(ListColor.colorBlue) : Color(ListColor.colorLightGrey2),
                               width:
                                   GlobalVariable.ratioWidth(Get.context) * 24,
                               height:
@@ -1276,10 +1278,11 @@ class TMSubscriptionDetailView extends GetView<TMSubscriptionDetailController> {
                   color: Color(ListColor.colorBlue),
                   useBorder: true,
                   onTap: () async {
-                    var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "475");
-                    if (!hasAccess) {
-                      return;
-                    }
+                    if (!controller.hasAccessTambahLangganan.value) { CekSubUserDanHakAkses().showDialogNoAccess(context: Get.context); return; }
+                    // var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "475");
+                    // if (!hasAccess) {
+                    //   return;
+                    // }
                     controller.showAskBatalDialog();
                   })),
           Expanded(
@@ -1288,10 +1291,11 @@ class TMSubscriptionDetailView extends GetView<TMSubscriptionDetailController> {
                 marginLeft: 6,
                 backgroundColor: Color(ListColor.colorBlue),
                 onTap: () async {
-                  var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "475");
-                  if (!hasAccess) {
-                    return;
-                  }
+                  if (!controller.hasAccessTambahLangganan.value) { CekSubUserDanHakAkses().showDialogNoAccess(context: Get.context); return; }
+                  // var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "475");
+                  // if (!hasAccess) {
+                  //   return;
+                  // }
                   controller.bayarSekarang();
                 }),
           ),

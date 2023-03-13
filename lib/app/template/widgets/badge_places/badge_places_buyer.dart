@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:muatmuat/app/core/function/global_alert_dialog.dart';
+import 'package:muatmuat/app/modules/api_profile.dart';
 import 'package:muatmuat/app/modules/buyer/api_buyer.dart';
 import 'package:muatmuat/app/template/select_location_buyer/select_location_buyer_model.dart';
 import 'package:muatmuat/app/utils/response_state.dart';
@@ -26,11 +29,17 @@ class BadgePlacesModelBuyer {
 
 class BadgePlacesBuyer extends StatefulWidget {
 
+  final VoidCallback onTransportationStoreTap;
+  final VoidCallback onHumanCapitalTap;
+  final VoidCallback onPropertyWarehouseTap;
   final SelectLocationBuyerModel location;
 
   const BadgePlacesBuyer({
     Key key,
     @required this.location,
+    this.onTransportationStoreTap,
+    this.onHumanCapitalTap,
+    this.onPropertyWarehouseTap,
   }) : super(key: key);
 
   @override
@@ -68,7 +77,7 @@ class _BadgePlacesBuyerState extends State<BadgePlacesBuyer> {
               BadgePlacesModelBuyer(
                 text: "${Utils.delimeter("${response[0]['Data']['transportation_store']}")} Produk Transportation Store",
                 type: 0,
-                onTap: () {},
+                onTap: widget.onTransportationStoreTap,
               ),
             );
           }
@@ -77,7 +86,7 @@ class _BadgePlacesBuyerState extends State<BadgePlacesBuyer> {
               BadgePlacesModelBuyer(
                 text: "${Utils.delimeter("${response[0]['Data']['human_capital']}")} Lowongan Kerja",
                 type: 0,
-                onTap: () {},
+                onTap: widget.onHumanCapitalTap,
               ),
             );
           }
@@ -86,7 +95,7 @@ class _BadgePlacesBuyerState extends State<BadgePlacesBuyer> {
               BadgePlacesModelBuyer(
                 text: "${Utils.delimeter("${response[0]['Data']['property_&_warehouse']}")} Gudang dan Peralatan Dijual Disewakan",
                 type: 0,
-                onTap: () {},
+                onTap: widget.onPropertyWarehouseTap,
               ),
             );
           }
@@ -215,18 +224,21 @@ class _BadgePlacesBuyerState extends State<BadgePlacesBuyer> {
   }
 
   Widget _card(BadgePlacesModelBuyer model) {
-    return Container(
-      padding: EdgeInsets.all(GlobalVariable.ratioWidth(context) * 6),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(GlobalVariable.ratioWidth(context) * 4),
-        color: Color(0xFFE6EAF3),
-      ),
-      child: CustomText(model.text,
-        fontSize: 12,
-        fontWeight: FontWeight.w600,
-        height: 14.4/12,
-        withoutExtraPadding: true,
-        color: Color(0xFF002D84),
+    return GestureDetector(
+      onTap: model.onTap,
+      child: Container(
+        padding: EdgeInsets.all(GlobalVariable.ratioWidth(context) * 6),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(GlobalVariable.ratioWidth(context) * 4),
+          color: Color(0xFFE6EAF3),
+        ),
+        child: CustomText(model.text,
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+          height: 14.4/12,
+          withoutExtraPadding: true,
+          color: Color(0xFF002D84),
+        ),
       ),
     );
   }
@@ -276,6 +288,61 @@ class _BadgePlacesBuyerState extends State<BadgePlacesBuyer> {
           ],
         ),
       ),
+    );
+  }
+
+  Future<void> _moveToPage() async {
+    // 1. cek status login
+    if (GlobalVariable.tokenApp != null && GlobalVariable.tokenApp.isNotEmpty) {
+      // kondisi sudah login
+      // 2. cek user status
+      try {
+        final response = await ApiProfile(
+          context: context,
+          isShowDialogLoading: true,
+          isShowDialogError: true,
+        ).getUserStatus({});
+        if (
+          response != null 
+          && response['Data'] != null
+          && response['Data']['UserLevel'] != null
+        ) {
+          // jika userLevel != 2/-2/3
+          if (
+            "${response['Data']['UserLevel']}" == "0"
+            || "${response['Data']['UserLevel']}" == "1"
+            || "${response['Data']['UserLevel']}" == "2"
+          ) {
+            showDialogBelumLogin(() {
+              // cek jika user masih belum verifikasi
+              if ("${response['Data']['UserLevel']}" == "2" && response['Data']['ShipperIsVerifBF'] == "-1") {
+                // muncul popup masih dalam tahap verifikasi.
+              }
+            });
+          } else {
+            // 3. redirect ke spesific page
+          }
+        }
+      } catch (e) {
+
+      }
+    } else {
+      // kondisi belum login
+      showDialogBelumLogin(() {
+        
+      });
+    }
+  }
+
+  void showDialogBelumLogin(VoidCallback onTap) {
+    GlobalAlertDialog.showAlertDialogCustom(
+      context: context,
+      title: "Pemberitahuan",
+      message: "Untuk dapat melihat daftar Truk Siap Muat di Big Fleets, Anda harus mendaftarkan diri terlebih dahulu sebagai Shipper pada fitur Big Fleets. Ayo segera daftarkan diri Anda",
+      onTapPriority1: Get.back,
+      labelButtonPriority1: "Tidak",
+      labelButtonPriority2: "Daftar",
+      onTapPriority2: onTap,
     );
   }
 

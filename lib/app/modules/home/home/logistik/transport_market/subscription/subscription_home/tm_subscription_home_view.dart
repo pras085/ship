@@ -124,7 +124,13 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
                       ],
                     ))
                 : TutorListener(
-                  tutorAwal: true,
+                  onDispose: (){
+                    controller.tutorialCoachMark.finish();
+                  },
+                  tutorAwal: false,
+                  listTcm: [
+                    // controller.tutorialCoachMark
+                  ],
                   listener: () async {
                     controller.showTutorial(context);
                     // print("tes call");
@@ -137,6 +143,8 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
                           GlobalVariable.ratioWidth(Get.context) * 16,
                           0),
                       child: ListView(
+                        controller: controller.scrollController,
+                        key: controller.keyScroll,
                         children: [
                           Container(
                             height: GlobalVariable.ratioWidth(Get.context) * 20,
@@ -158,6 +166,7 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
                           ),
                           _button(
                               //menunggu pembayaran
+                              key: controller.keyTutor3,
                               marginLeft: 0,
                               marginRight: 0,
                               borderRadius: 6,
@@ -205,10 +214,11 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
                                 ],
                               ),
                               onTap: () async {
-                                var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "475");
-                                if (!hasAccess) {
-                                  return;
-                                }
+                                if (!controller.hasAccessTambahLangganan.value) { CekSubUserDanHakAkses().showDialogNoAccess(context: Get.context); return; }
+                                // var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "475");
+                                // if (!hasAccess) {
+                                //   return;
+                                // }
                                 var result = await GetToPage.toNamed<
                                     TMSubscriptionMenungguPembayaranListController>(
                                   Routes.TM_SUBSCRIPTION_MENUNGGU_PEMBAYARAN_LIST,
@@ -228,6 +238,7 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
                               }),
                           _button(
                               //riwayat pesanan
+                              key: controller.keyTutor4,
                               marginLeft: 0,
                               marginRight: 0,
                               borderRadius: 6,
@@ -274,7 +285,12 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
                                   ),
                                 ],
                               ),
-                              onTap: () {
+                              onTap: () async {
+                                if (!controller.hasAccessLihatRiwayatLangganan.value) { CekSubUserDanHakAkses().showDialogNoAccess(context: Get.context); return; }
+                                // var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "478");
+                                // if (!hasAccess) {
+                                //   return;
+                                // }
                                 GetToPage.toNamed<
                                         TMSubscriptionRiwayatPesananListController>(
                                     Routes.TM_SUBSCRIPTION_RIWAYAT_PESANAN_LIST);
@@ -340,7 +356,8 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
                       borderRadius: 6,
                       useShadow: false,
                       maxWidth: false,
-                      color: Color(ListColor.colorBlue),
+                      backgroundColor: controller.hasAccessLihatRiwayatLangganan.value ? Colors.white : Color(ListColor.colorLightGrey2),
+                      color: controller.hasAccessLihatRiwayatLangganan.value ? Color(ListColor.colorBlue) : Colors.white,
                       customWidget: Row(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -358,6 +375,7 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
                                   GlobalVariable.ratioWidth(Get.context) * 14,
                               height:
                                   GlobalVariable.ratioWidth(Get.context) * 14,
+                              color: controller.hasAccessLihatRiwayatLangganan.value ? Color(ListColor.colorBlue) : Colors.white,
                             ),
                           ),
                           Container(
@@ -368,16 +386,17 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
                               "SubscriptionHistory".tr,
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
-                              color: Color(ListColor.colorBlue),
+                              color: controller.hasAccessLihatRiwayatLangganan.value ? Color(ListColor.colorBlue) : Colors.white,
                             ),
                           )
                         ],
                       ),
                       onTap: () async {
-                        var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "478");
-                        if (!hasAccess) {
-                          return;
-                        }
+                        if (!controller.hasAccessLihatRiwayatLangganan.value) { CekSubUserDanHakAkses().showDialogNoAccess(context: Get.context); return; }
+                        // var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "478");
+                        // if (!hasAccess) {
+                        //   return;
+                        // }
                         GetToPage.toNamed<
                                 TMSubscriptionRiwayatLanggananBFDanSUListController>(
                             Routes
@@ -393,17 +412,19 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
             marginBottom: 16,
             borderRadius: 20,
             minHeight: 32,
-            color: Color(ListColor.colorBlue),
+            backgroundColor: controller.hasAccessTambahLangganan.value ? Colors.white : Color(ListColor.colorLightGrey2),
+            color: controller.hasAccessTambahLangganan.value ? Color(ListColor.colorBlue) : Colors.white,
             text: tipeFirst
                 ? "SubscriptionSubscribeNow".tr
                 : "SubscriptionSubscribeAgain".tr,
             fontWeight: tipeFirst ? FontWeight.w700 : FontWeight.w600,
             onTap: () async {
               // if (tipeFirst) {
-              var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "475");
-              if (!hasAccess) {
-                return;
-              }
+              if (!controller.hasAccessTambahLangganan.value) { CekSubUserDanHakAkses().showDialogNoAccess(context: Get.context); return; }
+              // var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "475");
+              // if (!hasAccess) {
+              //   return;
+              // }
               var result =
                   await GetToPage.toNamed<TMCreateSubscriptionController>(
                       Routes.TM_CREATE_SUBSCRIPTION,
@@ -503,7 +524,8 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
                 borderRadius: 6,
                 useShadow: false,
                 maxWidth: false,
-                color: Color(ListColor.colorBlue),
+                backgroundColor: controller.hasAccessLihatRiwayatLangganan.value ? Colors.white: Color(ListColor.colorLightGrey2),
+                color: controller.hasAccessLihatRiwayatLangganan.value ? Color(ListColor.colorBlue) : Colors.white,
                 customWidget: Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -517,6 +539,7 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
                         "assets/ic_riwayat.svg",
                         width: GlobalVariable.ratioWidth(Get.context) * 14,
                         height: GlobalVariable.ratioWidth(Get.context) * 14,
+                        color: controller.hasAccessLihatRiwayatLangganan.value ? Color(ListColor.colorBlue) : Colors.white,
                       ),
                     ),
                     Container(
@@ -526,16 +549,17 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
                         "SubscriptionHistory".tr,
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
-                        color: Color(ListColor.colorBlue),
+                        color: controller.hasAccessLihatRiwayatLangganan.value ? Color(ListColor.colorBlue) : Colors.white,
                       ),
                     )
                   ],
                 ),
                 onTap: () async {
-                  var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "478");
-                  if (!hasAccess) {
-                    return;
-                  }
+                  if (!controller.hasAccessLihatRiwayatLangganan.value) { CekSubUserDanHakAkses().showDialogNoAccess(context: Get.context); return; }
+                  // var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "478");
+                  // if (!hasAccess) {
+                  //   return;
+                  // }
                   GetToPage.toNamed<
                           TMSubscriptionRiwayatLanggananBFDanSUListController>(
                       Routes.TM_SUBSCRIPTION_RIWAYAT_LANGGANAN_BF_DAN_SU_LIST,
@@ -562,13 +586,15 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
                 minHeight: 28,
                 fontWeight: FontWeight.w700,
                 borderRadius: 20,
-                color: Color(ListColor.colorBlue),
+                backgroundColor: controller.hasAccessTambahLanggananBerikutnya.value ? Colors.white : Color(ListColor.colorLightGrey2),
+                color: controller.hasAccessTambahLanggananBerikutnya.value ? Color(ListColor.colorBlue) : Colors.white,
                 maxWidth: true,
                 onTap: () async {
-                  var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "480");
-                  if (!hasAccess) {
-                    return;
-                  }
+                  if (!controller.hasAccessTambahLanggananBerikutnya.value) { CekSubUserDanHakAkses().showDialogNoAccess(context: Get.context); return; }
+                  // var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "480");
+                  // if (!hasAccess) {
+                  //   return;
+                  // }
                   var result =
                       await GetToPage.toNamed<TMCreateSubscriptionController>(
                           Routes.TM_CREATE_SUBSCRIPTION,
@@ -600,13 +626,15 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
                     text: "SubscriptionAddSubUser".tr,
                     minHeight: 28,
                     borderRadius: 20,
-                    color: Color(ListColor.colorBlue),
+                    backgroundColor: controller.hasAccessTambahSubUser.value ? Colors.white : Color(ListColor.colorLightGrey2),
+                    color: controller.hasAccessTambahSubUser.value ? Color(ListColor.colorBlue) : Colors.white,
                     maxWidth: true,
                     onTap: () async {
-                      var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "476");
-                      if (!hasAccess) {
-                        return;
-                      }
+                      if (!controller.hasAccessTambahSubUser.value) { CekSubUserDanHakAkses().showDialogNoAccess(context: Get.context); return; }
+                      // var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "476");
+                      // if (!hasAccess) {
+                      //   return;
+                      // }
                       var result =
                           await GetToPage.toNamed<TMCreateSubuserController>(
                               Routes.TM_CREATE_SUBUSER,
@@ -642,125 +670,223 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
   }
 
   Widget _cardSubUser() {
-    return Container(
-      margin: EdgeInsets.only(top: GlobalVariable.ratioWidth(Get.context) * 14),
-      //sub user
-      width: double.infinity,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage("assets/bg_subscription_sub.png"),
-          fit: BoxFit.fill,
-        ),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: Color(ListColor.colorBlack).withOpacity(0.1),
-            blurRadius: GlobalVariable.ratioWidth(Get.context) * 4,
-            spreadRadius: 0,
-            offset: Offset(0, GlobalVariable.ratioWidth(Get.context) * 4),
+    return Padding(
+      padding: EdgeInsets.only(top: GlobalVariable.ratioWidth(Get.context) * 14),
+      child: Container(
+        //sub user
+        key: controller.keyTutor1,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/bg_subscription_sub.png"),
+            fit: BoxFit.fill,
           ),
-        ],
-        borderRadius:
-            BorderRadius.circular(GlobalVariable.ratioWidth(Get.context) * 11),
-      ),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Container(
-          margin: EdgeInsets.all(GlobalVariable.ratioWidth(Get.context) * 16),
-          child: CustomText(
-            "SubscriptionPacketSubUserActive".tr,
-            fontWeight: FontWeight.w700,
-            fontSize: 14,
-            color: Color(ListColor.colorWhite),
-          ),
-        ),
-        Obx(
-          () => Container(
-            margin: EdgeInsets.only(
-                top: GlobalVariable.ratioWidth(Get.context) * 8,
-                left: GlobalVariable.ratioWidth(Get.context) * 16,
-                right: GlobalVariable.ratioWidth(Get.context) * 16),
-            padding: EdgeInsets.only(
-              top: GlobalVariable.ratioWidth(Get.context) * 10,
-              bottom: GlobalVariable.ratioWidth(Get.context) * 7,
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: Color(ListColor.colorBlack).withOpacity(0.1),
+              blurRadius: GlobalVariable.ratioWidth(Get.context) * 4,
+              spreadRadius: 0,
+              offset: Offset(0, GlobalVariable.ratioWidth(Get.context) * 4),
             ),
-            decoration: BoxDecoration(
-                color: Color(ListColor.colorLightGrey2).withOpacity(0.15),
-                borderRadius: BorderRadius.circular(
-                    GlobalVariable.ratioWidth(Get.context) * 6),
-                border: Border.all(
-                  width: GlobalVariable.ratioWidth(Get.context) * 0.5,
-                  color: Color(ListColor.colorLightGrey10),
-                )),
-            child: Column(
-              children: [
-                Container(
-                  alignment: Alignment.center,
-                  child: CustomText(
-                    controller.listDataSubUser.length < 1
-                        ? ""
-                        : "${controller.listDataSubUser[controller.indexSubUser.value].fullStartDate} - ${controller.listDataSubUser[controller.indexSubUser.value].fullEndDate}",
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: Color(ListColor.colorWhite),
-                    textAlign: TextAlign.center,
+          ],
+          borderRadius:
+              BorderRadius.circular(GlobalVariable.ratioWidth(Get.context) * 11),
+        ),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Container(
+            margin: EdgeInsets.all(GlobalVariable.ratioWidth(Get.context) * 16),
+            child: CustomText(
+              "SubscriptionPacketSubUserActive".tr,
+              fontWeight: FontWeight.w700,
+              fontSize: 14,
+              color: Color(ListColor.colorWhite),
+            ),
+          ),
+          Obx(
+            () => Container(
+              margin: EdgeInsets.only(
+                  top: GlobalVariable.ratioWidth(Get.context) * 8,
+                  left: GlobalVariable.ratioWidth(Get.context) * 16,
+                  right: GlobalVariable.ratioWidth(Get.context) * 16),
+              padding: EdgeInsets.only(
+                top: GlobalVariable.ratioWidth(Get.context) * 10,
+                bottom: GlobalVariable.ratioWidth(Get.context) * 7,
+              ),
+              decoration: BoxDecoration(
+                  color: Color(ListColor.colorLightGrey2).withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(
+                      GlobalVariable.ratioWidth(Get.context) * 6),
+                  border: Border.all(
+                    width: GlobalVariable.ratioWidth(Get.context) * 0.5,
+                    color: Color(ListColor.colorLightGrey10),
+                  )),
+              child: Column(
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    child: CustomText(
+                      controller.listDataSubUser.length < 1
+                          ? ""
+                          : "${controller.listDataSubUser[controller.indexSubUser.value].fullStartDate} - ${controller.listDataSubUser[controller.indexSubUser.value].fullEndDate}",
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: Color(ListColor.colorWhite),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(
-                      vertical: GlobalVariable.ratioWidth(Get.context) * 2),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Visibility(
-                        maintainSize: true,
-                        maintainState: true,
-                        maintainAnimation: true,
-                        visible: !(controller.listDataSubUser.length <= 1),
-                        child: Container(
-                          //button kiri
-                          margin: EdgeInsets.only(
-                              left:
-                                  GlobalVariable.ratioWidth(Get.context) * 14),
-                          decoration: BoxDecoration(
-                            color: Color(0 == controller.indexSubUser.value
-                                ? ListColor.colorLightGrey2
-                                : ListColor.colorWhite),
-                            boxShadow: <BoxShadow>[
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius:
-                                    GlobalVariable.ratioWidth(Get.context) * 4,
-                                spreadRadius: 0,
-                                offset: Offset(0,
-                                    GlobalVariable.ratioWidth(Get.context) * 4),
+                  Container(
+                    margin: EdgeInsets.symmetric(
+                        vertical: GlobalVariable.ratioWidth(Get.context) * 2),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Visibility(
+                          maintainSize: true,
+                          maintainState: true,
+                          maintainAnimation: true,
+                          visible: !(controller.listDataSubUser.length <= 1),
+                          child: Container(
+                            //button kiri
+                            margin: EdgeInsets.only(
+                                left:
+                                    GlobalVariable.ratioWidth(Get.context) * 14),
+                            decoration: BoxDecoration(
+                              color: Color(0 == controller.indexSubUser.value
+                                  ? ListColor.colorLightGrey2
+                                  : ListColor.colorWhite),
+                              boxShadow: <BoxShadow>[
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius:
+                                      GlobalVariable.ratioWidth(Get.context) * 4,
+                                  spreadRadius: 0,
+                                  offset: Offset(0,
+                                      GlobalVariable.ratioWidth(Get.context) * 4),
+                                ),
+                              ],
+                              borderRadius: BorderRadius.circular(
+                                  GlobalVariable.ratioWidth(Get.context) * 6),
+                            ),
+                            child: Material(
+                              borderRadius: BorderRadius.circular(
+                                  GlobalVariable.ratioWidth(Get.context) * 6),
+                              color: Colors.transparent,
+                              child: InkWell(
+                                customBorder: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      GlobalVariable.ratioWidth(Get.context) * 6),
+                                ),
+                                onTap: () {
+                                  if (0 != controller.indexSubUser.value) {
+                                    controller.indexSubUser.value--;
+                                  }
+                                },
+                                child: Container(
+                                  child: Transform(
+                                    alignment: Alignment.center,
+                                    transform: Matrix4.rotationY(math.pi),
+                                    child: SvgPicture.asset(
+                                      "assets/ic_arrow_right_subscription.svg",
+                                      color: Color(
+                                          0 == controller.indexSubUser.value
+                                              ? ListColor.colorWhite
+                                              : ListColor.colorBlue),
+                                      width:
+                                          GlobalVariable.ratioWidth(Get.context) *
+                                              24,
+                                      height:
+                                          GlobalVariable.ratioWidth(Get.context) *
+                                              24,
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ],
-                            borderRadius: BorderRadius.circular(
-                                GlobalVariable.ratioWidth(Get.context) * 6),
+                            ),
                           ),
-                          child: Material(
-                            borderRadius: BorderRadius.circular(
-                                GlobalVariable.ratioWidth(Get.context) * 6),
-                            color: Colors.transparent,
-                            child: InkWell(
-                              customBorder: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                    GlobalVariable.ratioWidth(Get.context) * 6),
-                              ),
-                              onTap: () {
-                                if (0 != controller.indexSubUser.value) {
-                                  controller.indexSubUser.value--;
-                                }
-                              },
-                              child: Container(
-                                child: Transform(
-                                  alignment: Alignment.center,
-                                  transform: Matrix4.rotationY(math.pi),
+                        ),
+                        Expanded(
+                          //text
+                          child: Center(
+                            child: controller.listDataSubUser.length < 1
+                                ? CustomText(
+                                    "Anda Tidak Memiliki Sub User",
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(ListColor.colorWhite),
+                                  )
+                                : Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      CustomText(
+                                        "SubscriptionSubUserHave".tr + " ",
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                        color: Color(ListColor.colorWhite),
+                                      ),
+                                      CustomText(
+                                        "${controller.listDataSubUser[controller.indexSubUser.value].quota} Sub User",
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w700,
+                                        color: Color(ListColor.colorWhite),
+                                      ),
+                                    ],
+                                  ),
+                          ),
+                        ),
+                        Visibility(
+                          maintainSize: true,
+                          maintainState: true,
+                          maintainAnimation: true,
+                          visible: !(controller.listDataSubUser.length <= 1),
+                          child: Container(
+                            //button kanan
+                            margin: EdgeInsets.only(
+                                right:
+                                    GlobalVariable.ratioWidth(Get.context) * 14),
+                            decoration: BoxDecoration(
+                              color: Color(
+                                  (controller.listDataSubUser.length - 1 ==
+                                          controller.indexSubUser.value)
+                                      ? ListColor.colorLightGrey2
+                                      : ListColor.colorWhite),
+                              boxShadow: <BoxShadow>[
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius:
+                                      GlobalVariable.ratioWidth(Get.context) * 4,
+                                  spreadRadius: 0,
+                                  offset: Offset(0,
+                                      GlobalVariable.ratioWidth(Get.context) * 4),
+                                ),
+                              ],
+                              borderRadius: BorderRadius.circular(
+                                  GlobalVariable.ratioWidth(Get.context) * 6),
+                            ),
+                            child: Material(
+                              borderRadius: BorderRadius.circular(
+                                  GlobalVariable.ratioWidth(Get.context) * 6),
+                              color: Colors.transparent,
+                              child: InkWell(
+                                customBorder: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      GlobalVariable.ratioWidth(Get.context) * 6),
+                                ),
+                                onTap: () {
+                                  if (controller.listDataSubUser.length - 1 !=
+                                      controller.indexSubUser.value) {
+                                    controller.indexSubUser.value++;
+                                  }
+                                },
+                                child: Container(
                                   child: SvgPicture.asset(
                                     "assets/ic_arrow_right_subscription.svg",
                                     color: Color(
-                                        0 == controller.indexSubUser.value
+                                        (controller.listDataSubUser.length - 1 ==
+                                                controller.indexSubUser.value)
                                             ? ListColor.colorWhite
                                             : ListColor.colorBlue),
                                     width:
@@ -775,280 +901,189 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
                             ),
                           ),
                         ),
-                      ),
-                      Expanded(
-                        //text
-                        child: Center(
-                          child: controller.listDataSubUser.length < 1
-                              ? CustomText(
-                                  "Anda Tidak Memiliki Sub User",
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(ListColor.colorWhite),
-                                )
-                              : Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    CustomText(
-                                      "SubscriptionSubUserHave".tr + " ",
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500,
-                                      color: Color(ListColor.colorWhite),
-                                    ),
-                                    CustomText(
-                                      "${controller.listDataSubUser[controller.indexSubUser.value].quota} Sub User",
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w700,
-                                      color: Color(ListColor.colorWhite),
-                                    ),
-                                  ],
-                                ),
+                      ],
+                    ),
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(
+                            left: GlobalVariable.ratioWidth(Get.context) * 1.5),
+                        padding: EdgeInsets.only(
+                            bottom: GlobalVariable.ratioWidth(Get.context) * 2),
+                        decoration: BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(
+                                    color: Colors.white,
+                                    width:
+                                        GlobalVariable.ratioWidth(Get.context) *
+                                            1.5))),
+                        child: CustomText(
+                          controller.listDataSubUser.length < 1 ||
+                                  controller
+                                          .listDataSubUser[
+                                              controller.indexSubUser.value]
+                                          .notUsed ==
+                                      0
+                              ? ""
+                              : "${controller.listDataSubUser[controller.indexSubUser.value].notUsed} Sub User " +
+                                  "SubscriptionSubUserNotUsed".tr,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: Color(ListColor.colorWhite),
                         ),
                       ),
-                      Visibility(
-                        maintainSize: true,
-                        maintainState: true,
-                        maintainAnimation: true,
-                        visible: !(controller.listDataSubUser.length <= 1),
-                        child: Container(
-                          //button kanan
-                          margin: EdgeInsets.only(
-                              right:
-                                  GlobalVariable.ratioWidth(Get.context) * 14),
-                          decoration: BoxDecoration(
-                            color: Color(
-                                (controller.listDataSubUser.length - 1 ==
-                                        controller.indexSubUser.value)
-                                    ? ListColor.colorLightGrey2
-                                    : ListColor.colorWhite),
-                            boxShadow: <BoxShadow>[
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius:
-                                    GlobalVariable.ratioWidth(Get.context) * 4,
-                                spreadRadius: 0,
-                                offset: Offset(0,
-                                    GlobalVariable.ratioWidth(Get.context) * 4),
+                      controller.listDataSubUser.length < 1 ||
+                              controller
+                                      .listDataSubUser[
+                                          controller.indexSubUser.value]
+                                      .notUsed ==
+                                  0
+                          ? Container()
+                          : Container(
+                              margin: EdgeInsets.only(
+                                  left:
+                                      GlobalVariable.ratioWidth(Get.context) * 2),
+                              padding: EdgeInsets.only(
+                                  bottom:
+                                      GlobalVariable.ratioWidth(Get.context) * 3),
+                              child: SvgPicture.asset(
+                                "assets/ic_arrow_top_right_subscription.svg",
+                                color: Color(ListColor.colorWhite),
+                                width:
+                                    GlobalVariable.ratioWidth(Get.context) * 11,
+                                height:
+                                    GlobalVariable.ratioWidth(Get.context) * 11,
                               ),
-                            ],
-                            borderRadius: BorderRadius.circular(
-                                GlobalVariable.ratioWidth(Get.context) * 6),
-                          ),
-                          child: Material(
-                            borderRadius: BorderRadius.circular(
-                                GlobalVariable.ratioWidth(Get.context) * 6),
-                            color: Colors.transparent,
-                            child: InkWell(
-                              customBorder: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                    GlobalVariable.ratioWidth(Get.context) * 6),
-                              ),
-                              onTap: () {
-                                if (controller.listDataSubUser.length - 1 !=
-                                    controller.indexSubUser.value) {
-                                  controller.indexSubUser.value++;
-                                }
-                              },
-                              child: Container(
-                                child: SvgPicture.asset(
-                                  "assets/ic_arrow_right_subscription.svg",
-                                  color: Color(
-                                      (controller.listDataSubUser.length - 1 ==
-                                              controller.indexSubUser.value)
-                                          ? ListColor.colorWhite
-                                          : ListColor.colorBlue),
-                                  width:
-                                      GlobalVariable.ratioWidth(Get.context) *
-                                          24,
-                                  height:
-                                      GlobalVariable.ratioWidth(Get.context) *
-                                          24,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                            )
                     ],
                   ),
-                ),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(
-                          left: GlobalVariable.ratioWidth(Get.context) * 1.5),
-                      padding: EdgeInsets.only(
-                          bottom: GlobalVariable.ratioWidth(Get.context) * 2),
-                      decoration: BoxDecoration(
-                          border: Border(
-                              bottom: BorderSide(
-                                  color: Colors.white,
-                                  width:
-                                      GlobalVariable.ratioWidth(Get.context) *
-                                          1.5))),
-                      child: CustomText(
-                        controller.listDataSubUser.length < 1 ||
-                                controller
-                                        .listDataSubUser[
-                                            controller.indexSubUser.value]
-                                        .notUsed ==
-                                    0
-                            ? ""
-                            : "${controller.listDataSubUser[controller.indexSubUser.value].notUsed} Sub User " +
-                                "SubscriptionSubUserNotUsed".tr,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: Color(ListColor.colorWhite),
-                      ),
-                    ),
-                    controller.listDataSubUser.length < 1 ||
-                            controller
-                                    .listDataSubUser[
-                                        controller.indexSubUser.value]
-                                    .notUsed ==
-                                0
-                        ? Container()
-                        : Container(
-                            margin: EdgeInsets.only(
-                                left:
-                                    GlobalVariable.ratioWidth(Get.context) * 2),
-                            padding: EdgeInsets.only(
-                                bottom:
-                                    GlobalVariable.ratioWidth(Get.context) * 3),
-                            child: SvgPicture.asset(
-                              "assets/ic_arrow_top_right_subscription.svg",
-                              color: Color(ListColor.colorWhite),
-                              width:
-                                  GlobalVariable.ratioWidth(Get.context) * 11,
-                              height:
-                                  GlobalVariable.ratioWidth(Get.context) * 11,
-                            ),
-                          )
-                  ],
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-        controller.isRiwayatSubUser
-            ? Row(
-                children: [
-                  _button(
-                      marginTop: 24,
-                      useShadow: false,
-                      maxWidth: false,
-                      minHeight: 23,
-                      borderRadius: 6,
-                      customWidget: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(
-                                left:
-                                    GlobalVariable.ratioWidth(Get.context) * 8,
-                                right:
-                                    GlobalVariable.ratioWidth(Get.context) * 4),
-                            child: SvgPicture.asset(
-                              "assets/ic_riwayat.svg",
-                              width:
-                                  GlobalVariable.ratioWidth(Get.context) * 14,
-                              height:
-                                  GlobalVariable.ratioWidth(Get.context) * 14,
+          controller.isRiwayatSubUser
+              ? Row(
+                  children: [
+                    _button(
+                        marginTop: 24,
+                        useShadow: false,
+                        maxWidth: false,
+                        minHeight: 23,
+                        borderRadius: 6,
+                        backgroundColor: controller.hasAccessLihatRiwayatLanggananSubUser.value ? Colors.white : Color(ListColor.colorLightGrey2),
+                        color: controller.hasAccessLihatRiwayatLanggananSubUser.value ? Color(ListColor.colorBlue) : Colors.white,
+                        customWidget: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(
+                                  left: GlobalVariable.ratioWidth(Get.context) * 8,
+                                  right: GlobalVariable.ratioWidth(Get.context) * 4),
+                              child: SvgPicture.asset(
+                                "assets/ic_riwayat.svg",
+                                width: GlobalVariable.ratioWidth(Get.context) * 14,
+                                height:  GlobalVariable.ratioWidth(Get.context) * 14,
+                                color: controller.hasAccessLihatRiwayatLanggananSubUser.value ? Color(ListColor.colorBlue) : Colors.white,
+                              ),
                             ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(
-                                right:
-                                    GlobalVariable.ratioWidth(Get.context) * 8),
-                            child: CustomText(
-                              "SubscriptionHistory".tr,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: Color(ListColor.colorBlue),
-                            ),
-                          )
-                        ],
-                      ),
-                      onTap: () async {
-                        var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "479");
-                        if (!hasAccess) {
-                          return;
-                        }
-                        GetToPage.toNamed<
-                                TMSubscriptionRiwayatLanggananBFDanSUListController>(
-                            Routes
-                                .TM_SUBSCRIPTION_RIWAYAT_LANGGANAN_BF_DAN_SU_LIST,
-                            arguments: TMTipeLayananSubscription.SU);
-                      }),
-                ],
-              )
-            : Container(),
-        Container(
-          height: GlobalVariable.ratioWidth(Get.context) * 24,
-        ),
-        controller.tipe == TMTipePaketSubscription.FIRST ||
-                controller.tipe == TMTipePaketSubscription.EXPIRED
-            ? Container()
-            : _button(
-                text: "SubscriptionAdd".tr,
-                marginBottom: 12,
-                minHeight: 28,
-                fontWeight: FontWeight.w700,
-                borderRadius: 20,
-                color: Color(ListColor.colorBlue),
-                maxWidth: true,
-                onTap: () async {
-                  var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "476");
-                  if (!hasAccess) {
-                    return;
-                  }
-                  var result =
-                      await GetToPage.toNamed<TMCreateSubuserController>(
-                          Routes.TM_CREATE_SUBUSER,
-                          arguments: [
-                        controller.dataPaketNow.id.toString(),
-                        controller.dataPaketNow.paketID.toString(),
-                        controller.dataPaketNow.name,
-                        // "${controller.dataPaketNow.periodeAwal} - ${controller.dataPaketNow.periodeAkhir}",
-                        false,
-                        DateTime.parse(controller.dataPaketNow.packetStartDate),
-                        DateTime.parse(controller.dataPaketNow.packetEndDate),
-                        controller.dataPaketNow.periodeAwal,
-                        controller.dataPaketNow.periodeAkhir,
-                        controller.dataPaketNow.nextPeriode
-                      ]);
-                  if (result != null) {
-                    CustomToast.show(
-                      context: Get.context,
-                      message: "SubscriptionAlertSubUserBuySuccess".tr,
-                    );
-                    controller.getDataCek();
-                  }
-                }),
-        _button(
-            text: "SubscriptionViewDetail".tr,
-            minHeight: 28,
-            fontWeight: FontWeight.w600,
-            borderRadius: 20,
-            color: Color(ListColor.colorBlue),
-            maxWidth: true,
-            onTap: () async {
-              var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "477");
-              if (!hasAccess) {
-                return;
-              }
-            }),
-        Container(
-          height: GlobalVariable.ratioWidth(Get.context) * 16,
-        )
-      ]),
+                            Container(
+                              margin: EdgeInsets.only(
+                                  right:
+                                      GlobalVariable.ratioWidth(Get.context) * 8),
+                              child: CustomText(
+                                "SubscriptionHistory".tr,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: controller.hasAccessLihatRiwayatLanggananSubUser.value ? Color(ListColor.colorBlue) : Colors.white,
+                              ),
+                            )
+                          ],
+                        ),
+                        onTap: () async {
+                          if (!controller.hasAccessLihatRiwayatLanggananSubUser.value) { CekSubUserDanHakAkses().showDialogNoAccess(context: Get.context); return; }
+                          // var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "479");
+                          // if (!hasAccess) {
+                          //   return;
+                          // }
+                          GetToPage.toNamed<
+                                  TMSubscriptionRiwayatLanggananBFDanSUListController>(
+                              Routes
+                                  .TM_SUBSCRIPTION_RIWAYAT_LANGGANAN_BF_DAN_SU_LIST,
+                              arguments: TMTipeLayananSubscription.SU);
+                        }),
+                  ],
+                )
+              : Container(),
+          Container(
+            height: GlobalVariable.ratioWidth(Get.context) * 24,
+          ),
+          controller.tipe == TMTipePaketSubscription.FIRST ||
+                  controller.tipe == TMTipePaketSubscription.EXPIRED
+              ? Container()
+              : _button(
+                  text: "SubscriptionAdd".tr,
+                  marginBottom: 12,
+                  minHeight: 28,
+                  fontWeight: FontWeight.w700,
+                  borderRadius: 20,
+                  backgroundColor: controller.hasAccessTambahSubUser.value ? Colors.white : Color(ListColor.colorLightGrey2),
+                  color: controller.hasAccessTambahSubUser.value ? Color(ListColor.colorBlue) : Colors.white,
+                  maxWidth: true,
+                  onTap: () async {
+                    if (!controller.hasAccessTambahSubUser.value) { CekSubUserDanHakAkses().showDialogNoAccess(context: Get.context); return; }
+                    // var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "476");
+                    // if (!hasAccess) {
+                    //   return;
+                    // }
+                    var result =
+                        await GetToPage.toNamed<TMCreateSubuserController>(
+                            Routes.TM_CREATE_SUBUSER,
+                            arguments: [
+                          controller.dataPaketNow.id.toString(),
+                          controller.dataPaketNow.paketID.toString(),
+                          controller.dataPaketNow.name,
+                          // "${controller.dataPaketNow.periodeAwal} - ${controller.dataPaketNow.periodeAkhir}",
+                          false,
+                          DateTime.parse(controller.dataPaketNow.packetStartDate),
+                          DateTime.parse(controller.dataPaketNow.packetEndDate),
+                          controller.dataPaketNow.periodeAwal,
+                          controller.dataPaketNow.periodeAkhir,
+                          controller.dataPaketNow.nextPeriode
+                        ]);
+                    if (result != null) {
+                      CustomToast.show(
+                        context: Get.context,
+                        message: "SubscriptionAlertSubUserBuySuccess".tr,
+                      );
+                      controller.getDataCek();
+                    }
+                  }),
+          _button(
+              key: controller.keyTutor2,
+              text: "SubscriptionViewDetail".tr,
+              minHeight: 28,
+              fontWeight: FontWeight.w600,
+              backgroundColor: controller.hasAccessLihatDaftarSubUser.value ? Colors.white : Color(ListColor.colorLightGrey2),
+              color: controller.hasAccessLihatDaftarSubUser.value ? Color(ListColor.colorBlue) : Colors.white,
+              maxWidth: true,
+              onTap: () async {
+                if (!controller.hasAccessLihatDaftarSubUser.value) { CekSubUserDanHakAkses().showDialogNoAccess(context: Get.context); return; }
+                // var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "477");
+                // if (!hasAccess) {
+                //   return;
+                // }
+              }),
+          Container(
+            height: GlobalVariable.ratioWidth(Get.context) * 16,
+          )
+        ]),
+      ),
     );
   }
 
@@ -1128,13 +1163,15 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
                 ? FontWeight.w700
                 : FontWeight.w600,
             borderRadius: 20,
-            color: Color(ListColor.colorBlue),
+            backgroundColor: controller.hasAccessTambahSubUserLanggananBerikutnya.value ? Colors.white : Color(ListColor.colorLightGrey2),
+            color: controller.hasAccessTambahSubUserLanggananBerikutnya.value ? Color(ListColor.colorBlue) : Colors.white,
             maxWidth: true,
             onTap: () async {
-              var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "481");
-              if (!hasAccess) {
-                return;
-              }
+              if (!controller.hasAccessTambahSubUserLanggananBerikutnya.value) { CekSubUserDanHakAkses().showDialogNoAccess(context: Get.context); return; }
+              // var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "481");
+              // if (!hasAccess) {
+              //   return;
+              // }
               var result = await GetToPage.toNamed<TMCreateSubuserController>(
                   Routes.TM_CREATE_SUBUSER,
                   arguments: [
@@ -1163,13 +1200,15 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
                 minHeight: 28,
                 fontWeight: FontWeight.w600,
                 borderRadius: 20,
-                color: Color(ListColor.colorBlue),
+                backgroundColor: controller.hasAccessPilihUserLanggananBerikutnya.value ? Colors.white : Color(ListColor.colorLightGrey2),
+                color: controller.hasAccessPilihUserLanggananBerikutnya.value ? Color(ListColor.colorBlue) : Colors.white,
                 maxWidth: true,
                 onTap: () async {
-                  var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "482");
-                  if (!hasAccess) {
-                    return;
-                  }
+                  if (!controller.hasAccessPilihUserLanggananBerikutnya.value) { CekSubUserDanHakAkses().showDialogNoAccess(context: Get.context); return; }
+                  // var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "482");
+                  // if (!hasAccess) {
+                  //   return;
+                  // }
                 })
             : Container(),
         Container(
@@ -1180,6 +1219,7 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
   }
 
   Widget _button({
+    GlobalKey key,
     bool maxWidth = false,
     double marginLeft = 16,
     double marginTop = 0,
@@ -1202,6 +1242,7 @@ class TMSubscriptionHomeView extends GetView<TMSubscriptionHomeController> {
     Widget customWidget,
   }) {
     return Container(
+      key: key,
       margin: EdgeInsets.fromLTRB(
           GlobalVariable.ratioWidth(Get.context) * marginLeft,
           GlobalVariable.ratioWidth(Get.context) * marginTop,
@@ -1374,10 +1415,11 @@ class _AppBar extends PreferredSize {
                                           .showAlertDialog(
                                               context: Get.context,
                                               onTap: () async {
-                                                var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "475");
-                                                if (!hasAccess) {
-                                                  return;
-                                                }
+                                                if (!controller.hasAccessTambahLangganan.value) { CekSubUserDanHakAkses().showDialogNoAccess(context: Get.context); return; }
+                                                // var hasAccess = await CekSubUserDanHakAkses().cekSubUserDanHakAksesWithShowDialog(context: Get.context, menuId: "475");
+                                                // if (!hasAccess) {
+                                                //   return;
+                                                // }
                                                 var result = await GetToPage.toNamed<
                                                         TMCreateSubscriptionController>(
                                                     Routes

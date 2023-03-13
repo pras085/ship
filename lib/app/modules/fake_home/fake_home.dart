@@ -397,7 +397,7 @@ class FakeHome extends GetView<FakeHomeController> {
                               borderRadius: 25,
                               onTap: () {
                                 // Get.to(KatalogIklan());
-                                Get.to(Tour2());
+                                Get.to(Tour(), duration: Duration());
                               }),
                         ],
                       ),

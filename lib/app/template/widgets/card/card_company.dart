@@ -449,6 +449,7 @@ class CardCompany extends CardItem {
             fontSize: 10,
             height: 1.2,
             color: Color(ListColor.colorBlueTemplate1),
+            withoutExtraPadding: true,
           ),
         )).toList(),
       ),
