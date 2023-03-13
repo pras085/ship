@@ -1128,20 +1128,6 @@ class RulesDetailIklanBuyer {
             onTapHubungi: () {
               if (
                 subKategoriId == "54" // Human Capital | Lowongan Professional
-                // Andy7 <
-                // Andy7 >
-
-                // Khabib7 < 
-                // Khabib7 >
-
-                // Octa7 <
-                // Octa7 >
-
-                // Pras7 <
-                // Pras7 >
-
-                // Refo7 <
-                // Refo7 >
               ){
                 return DialogBuyer.showCallBottomSheet(
                   listData: data, 
@@ -1154,7 +1140,53 @@ class RulesDetailIklanBuyer {
                     3 : default 
                   */
                 );
-              } else {
+              } else if (
+                subKategoriId == "55" // Human Capital | Lowongan Umum
+              ){
+                return DialogBuyer.showCallBottomSheet(
+                  listData: data, 
+                  isHumanCapital: true,
+                  bottomSheetType: 2,
+                  /* JENIS BOTTOM SHEET TYPE
+                    0 : just showing email
+                    1 : without pic
+                    2 : showing all include email
+                    3 : default 
+                  */
+                );
+              }
+              else if (
+                subKategoriId == "56" // Human Capital | JobSeeker
+                || subKategoriId == "53" // Human Capital | Perusahaan Lainnya
+              ){
+                return DialogBuyer.showCallBottomSheet(
+                  listData: data, 
+                  isHumanCapital: true,
+                  bottomSheetType: 1,
+                  /* JENIS BOTTOM SHEET TYPE
+                    0 : just showing email
+                    1 : without pic
+                    2 : showing all include email
+                    3 : default 
+                  */
+                );
+              }
+              else if (
+                subKategoriId == "52" // Human Capital | Produk Lainnya
+              ){
+                return DialogBuyer.showCallBottomSheet(
+                  listData: data, 
+                  isHumanCapital: true,
+                  bottomSheetType: 3,
+                  /* JENIS BOTTOM SHEET TYPE
+                    0 : just showing email
+                    1 : without pic
+                    2 : showing all include email
+                    3 : default 
+                  */
+                );
+              }
+              else {
                 return DialogBuyer.showCallBottomSheet(listData: data);
               }
             },

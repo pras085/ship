@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:muatmuat/app/modules/buyer/api_buyer.dart';
 import 'package:muatmuat/app/utils/response_state.dart';
+import 'package:muatmuat/global_variable.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class BarangLainnyaController extends GetxController {
@@ -16,6 +17,7 @@ class BarangLainnyaController extends GetxController {
       String kategoriId = "${args['KategoriID']}";
       String subKategoriId = "${args['SubKategoriID']}";
       String sellerId = "${args['Data']['data_seller']['ID']}";
+      String userID = GlobalVariable.userModelGlobal.docID;
 
       if (refresh || isFavorite.value) {
         dataList.value = [];
@@ -40,6 +42,7 @@ class BarangLainnyaController extends GetxController {
         'SellerID': sellerId,
         'isKatalog': isKatalog,
         'limit': "10",
+        'UserID': userID,
         'pageNow': "${page.value+1}",
       };
 

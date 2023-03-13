@@ -167,10 +167,10 @@ class _HubungiSellerBuyerComponentState extends State<HubungiSellerBuyerComponen
                     title: 'No Telepon',
                     value: dataContact['EmergencyPhone'] ?? '',
                     icon: SvgPicture.asset(
-                      'assets/detail_compro_buyer/ic_blue_phone_buyer.svg',
+                      'assets/detail_compro_buyer/ic_phone_green_buyer.svg',
                       height: GlobalVariable.ratioWidth(context) * 22,
                       width: GlobalVariable.ratioWidth(context) * 22,
-                      color: Color(ListColor.colorGreenTemplate),
+                      color: Color(ListColor.colorGreenTemplate1),
                     ),
                     onTap: () => openDialPad(dataContact['EmergencyPhone']),
                   ),
@@ -565,7 +565,7 @@ class _HubungiSellerBuyerWithEmailComponentState extends State<HubungiSellerBuye
                             height: GlobalVariable.ratioWidth(context) * 22,
                             width: GlobalVariable.ratioWidth(context) * 22,
                           ),
-                          onTap: () => openEmail(emailSeller) ,
+                          onTap: () => openEmail(emailSeller),
                         )
                       ],
                     )
@@ -578,10 +578,10 @@ class _HubungiSellerBuyerWithEmailComponentState extends State<HubungiSellerBuye
                           title: 'No Telepon',
                           value: dataContact['EmergencyPhone'] ?? '',
                           icon: SvgPicture.asset(
-                            'assets/detail_compro_buyer/ic_blue_phone_buyer.svg',
+                            'assets/detail_compro_buyer/ic_phone_green_buyer.svg',
                             height: GlobalVariable.ratioWidth(context) * 22,
                             width: GlobalVariable.ratioWidth(context) * 22,
-                            color: Color(ListColor.colorGreenTemplate),
+                            color: Color(ListColor.colorGreenTemplate1),
                           ),
                           onTap: () => openDialPad(dataContact['EmergencyPhone']),
                         ),
@@ -649,10 +649,10 @@ class _HubungiSellerBuyerWithEmailComponentState extends State<HubungiSellerBuye
                           title: 'No Telepon',
                           value: dataContact['EmergencyPhone'] ?? '',
                           icon: SvgPicture.asset(
-                            'assets/detail_compro_buyer/ic_blue_phone_buyer.svg',
+                            'assets/detail_compro_buyer/ic_phone_green_buyer.svg',
                             height: GlobalVariable.ratioWidth(context) * 22,
                             width: GlobalVariable.ratioWidth(context) * 22,
-                            color: Color(ListColor.colorGreenTemplate),
+                            color: Color(ListColor.colorGreenTemplate1),
                           ),
                           onTap: () => openDialPad(dataContact['EmergencyPhone']),
                         ),
@@ -732,10 +732,10 @@ class _HubungiSellerBuyerWithEmailComponentState extends State<HubungiSellerBuye
                           title: 'No Telepon',
                           value: dataContact['EmergencyPhone'] ?? '',
                           icon: SvgPicture.asset(
-                            'assets/detail_compro_buyer/ic_blue_phone_buyer.svg',
+                            'assets/detail_compro_buyer/ic_phone_green_buyer.svg',
                             height: GlobalVariable.ratioWidth(context) * 22,
                             width: GlobalVariable.ratioWidth(context) * 22,
-                            color: Color(ListColor.colorGreenTemplate),
+                            color: Color(ListColor.colorGreenTemplate1),
                           ),
                           onTap: () => openDialPad(dataContact['EmergencyPhone']),
                         ),
@@ -816,7 +816,6 @@ class _HubungiSellerBuyerWithEmailComponentState extends State<HubungiSellerBuye
     launch(emailUri.toString());
   }
 
-
   Future launchWhatsApp(String phoneNumber) async {
     var formatter = phoneNumber.replaceAll('-', '');
     formatter = phoneNumber.replaceAll('+', '');
@@ -895,7 +894,7 @@ class _HubungiSellerBuyerWithEmailComponentState extends State<HubungiSellerBuye
                       'assets/detail_compro_buyer/ic_phone_green_buyer.svg',
                       height: GlobalVariable.ratioWidth(context) * 18,
                       width: GlobalVariable.ratioWidth(context) * 18,
-                      // color: Color(ListColor.colorGreenTemplate1),
+                      color: Color(ListColor.colorGreenTemplate1),
                     ),
                   ),
                   SizedBox(width: GlobalVariable.ratioWidth(context) * 16),
@@ -940,8 +939,10 @@ class _HubungiSellerBuyerWithEmailComponentState extends State<HubungiSellerBuye
       child: Container(
         // height: GlobalVariable.ratioWidth(context) * 35,
         width: double.infinity,
-        padding: EdgeInsets.zero, margin: EdgeInsets.zero,
+        padding: EdgeInsets.zero,
+        margin: EdgeInsets.zero,
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Column(
@@ -955,6 +956,9 @@ class _HubungiSellerBuyerWithEmailComponentState extends State<HubungiSellerBuye
                 ),
                 SizedBox(height: GlobalVariable.ratioWidth(context) * 4),
                 RichText(
+                  softWrap: true,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   text: TextSpan(
                     text: value,
                     style: TextStyle(

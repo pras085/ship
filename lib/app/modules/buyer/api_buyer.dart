@@ -95,7 +95,7 @@ class ApiBuyer {
   }
 
   Future getContactSellerProfile(String sellerID) async {
-    var body = {'SellerID' : sellerID};
+    var body = {'UserID' : sellerID};
     return _apiHelper.fetchDataFromUrlPOSTMuatMuatAfterLogin(
         ApiHelper.urlInternal + "base/get_contact_seller_profile", body);
   }
